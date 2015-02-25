@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.widget.Toast;
 
+import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Tilt;
 
@@ -33,27 +34,29 @@ public class TiltHandler implements IHandler {
     }
 
 
-    public void handle(IMetric metric){
+    public boolean handle(IMetric metric){
 
         Tilt tilt = null;
         if(metric instanceof Tilt){
             tilt = (Tilt)metric;
         }
         else{
-            return;
+            return false;
         }
 
         float tiltAngle = tilt.getValue();
-        if(tiltAngle > 0) {
-            long[] pattern = new long[]{100, 50};
-            if (tiltAngle < 40 || tiltAngle > 60) {
-                vibrator.vibrate(pattern, 0);
+        if(tiltAngle > Baseline.PHONE_FLAT_MAX_ANGLE) {
+            if (tiltAngle < Baseline.MIN_TILT_ANGLE || tiltAngle > Baseline.MAX_TILT_ANGLE) {
+                vibrator.vibrate(Baseline.VIBRATION_ALERT_PATTERN, 0);
                 Toast.makeText(activity, "Hold phone at the correct angle", Toast.LENGTH_SHORT).show();
+                return true;
             }
             else{
                 vibrator.cancel();
             }
         }
+
+        return false;
     }
 
 }

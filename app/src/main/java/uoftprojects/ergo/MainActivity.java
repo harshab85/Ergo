@@ -3,15 +3,17 @@ package uoftprojects.ergo;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import uoftprojects.ergo.alerts.engine.AlertsEngine;
+import uoftprojects.ergo.engine.AlertsEngine;
 import uoftprojects.ergo.engine.ErgoEngine;
 import uoftprojects.ergo.metrics.IMetric;
+import uoftprojects.ergo.metrics.Tilt;
 
 public class MainActivity extends Activity{
 
@@ -22,6 +24,7 @@ public class MainActivity extends Activity{
 
     private AlertsEngine alertsEngine = null;
 
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +55,25 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onDestroy() {
+        timer.cancel();
         ergoEngine.unregister();
         super.onDestroy();
     }
 
+
+
     /*
-        Run a timer every 5 seconds to get metric updates
-     */
+            Run a timer every 5 seconds to get metric updates
+         */
     private void createMetricsUpdateLoop(){
-        new Timer().schedule(new TimerTask() {
+
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 GetUpdates getUpdates = new GetUpdates();
                 getUpdates.execute();
             }
-        }, 0, 2500);
+        }, 500, 3000);
     }
 
 
@@ -74,7 +81,17 @@ public class MainActivity extends Activity{
 
         @Override
         protected List<IMetric> doInBackground(String... params) {
-            IMetric tilt = ergoEngine.getTilt();
+            final IMetric tilt = ergoEngine.getTilt();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView currentPhoneTilt = (TextView)findViewById(R.id.current_PhoneTilt);
+                    currentPhoneTilt.setText("Current phone angle is " + ((Tilt)tilt).getValue());
+                }
+            });
+
+
             IMetric proximity = ergoEngine.getProximity();
             IMetric startTime = ergoEngine.getStartTime();
 

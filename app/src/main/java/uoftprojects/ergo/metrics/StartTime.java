@@ -11,7 +11,7 @@ public class StartTime implements IMetric {
         this.startTime = startTime;
     }
 
-    public long getStartTime(){
+    public long getTime(){
         return this.startTime;
     }
 

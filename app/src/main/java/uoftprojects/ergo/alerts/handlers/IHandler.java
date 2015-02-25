@@ -1,5 +1,7 @@
 package uoftprojects.ergo.alerts.handlers;
 
+import java.util.concurrent.locks.Lock;
+
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
@@ -7,5 +9,5 @@ import uoftprojects.ergo.metrics.IMetric;
  */
 public interface IHandler {
 
-    public void handle(IMetric metric);
+    public boolean handle(IMetric metric);
 }

@@ -39,17 +39,14 @@ public class ProximityHandler implements IHandler {
             return false;
         }
 
-        // TODO improve using rect area
-        /*if(!proximity.didDetectFace()) {
-            Toast.makeText(activity, "Too close to face", Toast.LENGTH_SHORT).show();
-            return true;
-        }*/
-
         if(proximity.didDetectFace()){
             long rectArea = proximity.getRectArea();
-            if(rectArea < Baseline.MIN_RECT_AREA || rectArea > Baseline.MAX_RECT_AREA){
-                // TODO proximity alert
+
+            if(rectArea > Baseline.MAX_RECT_AREA){
                 Toast.makeText(activity, "Too close to face", Toast.LENGTH_SHORT).show();
+            }
+            else if(rectArea < Baseline.MIN_RECT_AREA){
+                Toast.makeText(activity, "Too far from face", Toast.LENGTH_SHORT).show();
             }
         }
 

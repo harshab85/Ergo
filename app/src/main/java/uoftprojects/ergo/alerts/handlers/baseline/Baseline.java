@@ -15,6 +15,6 @@ public final class Baseline {
     public static final long MAX_CONTINUOUS_DEVICE_TIME = 30000;
 
     // Proximity Baseline
-    public static final long MIN_RECT_AREA = 0;
-    public static final long MAX_RECT_AREA = 0;
+    public static final long MIN_RECT_AREA = 500000;
+    public static final long MAX_RECT_AREA = 800000;
 }

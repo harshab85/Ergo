@@ -86,8 +86,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Face detection stops when face is less than 25 cm from front camera. The engine currently uses only this to show the message. That's why the message appears even when the face is not detected. I'll be using the rect formed around the person's face to improve on this."
+        android:text="Face detection stops when face is less than 25 cm from front camera or when phone is placed down. The engine uses the rect area around the face to determine distance. Ideal distance is between 500,000 and 800,000"
         android:layout_below="@+id/label_proximity"
+        android:textSize="15sp"/>
+
+    <TextView android:id="@+id/curr_proximity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/proximity_message"
         android:textSize="15sp"/>
 
 </RelativeLayout>

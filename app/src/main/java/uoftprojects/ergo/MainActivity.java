@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import uoftprojects.ergo.engine.AlertsEngine;
 import uoftprojects.ergo.engine.ErgoEngine;
 import uoftprojects.ergo.metrics.IMetric;
+import uoftprojects.ergo.metrics.Proximity;
 import uoftprojects.ergo.metrics.Tilt;
 
 public class MainActivity extends Activity{
@@ -39,6 +40,9 @@ public class MainActivity extends Activity{
 
             createOnce = false;
         }
+
+
+
     }
 
     @Override
@@ -73,7 +77,7 @@ public class MainActivity extends Activity{
                 GetUpdates getUpdates = new GetUpdates();
                 getUpdates.execute();
             }
-        }, 500, 3000);
+        }, 5000, 3000);
     }
 
 
@@ -82,17 +86,20 @@ public class MainActivity extends Activity{
         @Override
         protected List<IMetric> doInBackground(String... params) {
             final IMetric tilt = ergoEngine.getTilt();
-
+            final IMetric proximity = ergoEngine.getProximity();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     TextView currentPhoneTilt = (TextView)findViewById(R.id.current_PhoneTilt);
                     currentPhoneTilt.setText("Current phone angle is " + ((Tilt)tilt).getValue());
+
+                    TextView currProximity = (TextView)findViewById(R.id.curr_proximity);
+                    currProximity.setText("Current rect area angle is " + ((Proximity)proximity).getRectArea());
                 }
             });
 
 
-            IMetric proximity = ergoEngine.getProximity();
+
             IMetric startTime = ergoEngine.getStartTime();
 
             List<IMetric> metricsList = new ArrayList<>();

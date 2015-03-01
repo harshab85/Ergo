@@ -1,7 +1,9 @@
 package uoftprojects.ergo.sensors.proximity;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.hardware.Camera;
+import android.media.FaceDetector;
 import android.view.SurfaceHolder;
 
 import uoftprojects.ergo.metrics.Proximity;
@@ -14,6 +16,7 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
     private Activity activity;
     private Camera camera;
     private boolean detectedFace;
+    private long rectArea;
 
     private static ProximitySensor INSTANCE = null;
 
@@ -92,18 +95,22 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
 
     @Override
     public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-
         if (faces.length > 0) {
             this.detectedFace = true;
+            Camera.Face face = faces[0];
+            Rect rect = face.rect;
+            int width = Math.abs(rect.width());
+            int height = Math.abs(rect.height());
+            this.rectArea = width * height;
         }
-
-        // TODO Improve this using rect
+        else{
+            this.detectedFace = false;
+            this.rectArea = 0;
+        }
     }
 
     public Proximity getProximity(){
-        boolean val = this.detectedFace;
-        Proximity proximity = new Proximity(val);
-        this.detectedFace = false;
+        Proximity proximity = new Proximity(this.rectArea, this.detectedFace);
         return proximity;
     }
 

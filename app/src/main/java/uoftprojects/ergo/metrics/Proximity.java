@@ -8,10 +8,6 @@ public class Proximity implements IMetric {
     private boolean didDetectFace;
     private long rectArea;
 
-    public Proximity(boolean didDetectFace){
-        this.didDetectFace = didDetectFace;
-    }
-
     public Proximity(long rectArea, boolean didDetectFace){
         this.rectArea = rectArea;
         this.didDetectFace = didDetectFace;

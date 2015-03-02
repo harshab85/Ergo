@@ -16,7 +16,7 @@ import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 import uoftprojects.ergo.metrics.Tilt;
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
 
     // Flag used to ensure that ergo engine and alert engine are created only once during the app's lifetime
     private static boolean createOnce = true;

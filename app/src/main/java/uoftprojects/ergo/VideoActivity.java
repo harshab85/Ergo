@@ -33,9 +33,9 @@ public class VideoActivity extends Activity {
     // Flag used to ensure that ergo engine and alert engine are created only once during the app's lifetime
     private static boolean createOnce = true;
 
-    private ErgoEngine ergoEngine = null;
+    private static ErgoEngine ergoEngine = null;
 
-    private AlertsEngine alertsEngine = null;
+    private static AlertsEngine alertsEngine = null;
 
     private Timer timer = new Timer();
 
@@ -44,7 +44,6 @@ public class VideoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        if(createOnce) {
             List<VideoInfo> videos = loadVideos();
 
             final Activity activity = this;
@@ -76,6 +75,7 @@ public class VideoActivity extends Activity {
                 }
             });
 
+        if(createOnce) {
             ergoEngine = new ErgoEngine(this);
             alertsEngine = new AlertsEngine(this);
 

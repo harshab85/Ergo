@@ -76,7 +76,7 @@ public class VideoActivity extends Activity {
             });
 
         if(createOnce) {
-            ergoEngine = new ErgoEngine(this);
+            ergoEngine =   new ErgoEngine(this);
             alertsEngine = new AlertsEngine(this);
 
             createMetricsUpdateLoop();

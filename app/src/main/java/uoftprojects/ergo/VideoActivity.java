@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -17,55 +18,71 @@ import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import uoftprojects.ergo.engine.AlertsEngine;
+import uoftprojects.ergo.engine.ErgoEngine;
+import uoftprojects.ergo.metrics.IMetric;
 
 
 public class VideoActivity extends Activity {
 
     private Cursor cursor;
-    private List<VideoInfo> videos;
 
+    // Flag used to ensure that ergo engine and alert engine are created only once during the app's lifetime
+    private static boolean createOnce = true;
+
+    private ErgoEngine ergoEngine = null;
+
+    private AlertsEngine alertsEngine = null;
+
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        this.videos = loadVideos();
+        if(createOnce) {
+            List<VideoInfo> videos = loadVideos();
 
-        final Activity activity = this;
+            final Activity activity = this;
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new VideoGalleryAdapter(this, videos));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (cursor.moveToPosition(position)) {
-                    int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-                    String videoFilePath = cursor.getString(fileColumn);
+            GridView gridview = (GridView) findViewById(R.id.gridview);
+            gridview.setAdapter(new VideoGalleryAdapter(this, videos));
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (cursor.moveToPosition(position)) {
+                        int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                        String videoFilePath = cursor.getString(fileColumn);
 
-                    VideoView videoView = (VideoView) toggleVideoMode();
-                    MediaController mediaController = new MediaController(activity);
-                    /*DisplayMetrics displayMetrics = new DisplayMetrics();
-                    activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int height = displayMetrics.heightPixels;
-                    int width = displayMetrics.widthPixels;*/
-                    /*videoView.setMinimumWidth(width);
-                    videoView.setMinimumHeight(height);*/
+                        VideoView videoView = (VideoView) toggleVideoMode();
+                        MediaController mediaController = new MediaController(activity);
 
-                    videoView.setMediaController(mediaController);
-                    videoView.setVideoPath(videoFilePath);
+                        videoView.setMediaController(mediaController);
+                        videoView.setVideoPath(videoFilePath);
 
-                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            toggleGalleryMode();
-                        }
-                    });
+                        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                toggleGalleryMode();
+                            }
+                        });
 
-                    videoView.start();
+                        videoView.start();
+                    }
                 }
-            }
-        });
+            });
+
+            ergoEngine = new ErgoEngine(this);
+            alertsEngine = new AlertsEngine(this);
+
+            createMetricsUpdateLoop();
+
+            createOnce = false;
+        }
     }
 
     private View toggleVideoMode(){
@@ -125,6 +142,76 @@ public class VideoActivity extends Activity {
 
         return videos;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ergoEngine.register();
+    }
+
+    @Override
+    protected void onPause() {
+        ergoEngine.unregister();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        timer.cancel();
+        ergoEngine.unregister();
+        super.onDestroy();
+    }
+
+    /*
+            Run a timer every 5 seconds to get metric updates
+         */
+    private void createMetricsUpdateLoop(){
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                GetUpdates getUpdates = new GetUpdates();
+                getUpdates.execute();
+            }
+        }, 5000, 3000);
+    }
+
+
+    class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {
+
+        @Override
+        protected List<IMetric> doInBackground(String... params) {
+            final IMetric tilt = ergoEngine.getTilt();
+            final IMetric proximity = ergoEngine.getProximity();
+            /*runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView currentPhoneTilt = (TextView)findViewById(R.id.current_PhoneTilt);
+                    currentPhoneTilt.setText("Current phone angle is " + ((Tilt)tilt).getValue());
+
+                    TextView currProximity = (TextView)findViewById(R.id.curr_proximity);
+                    currProximity.setText("Current rect area angle is " + ((Proximity)proximity).getRectArea());
+                }
+            });*/
+
+
+
+            IMetric startTime = ergoEngine.getStartTime();
+
+            List<IMetric> metricsList = new ArrayList<>();
+            metricsList.add(tilt);
+            metricsList.add(proximity);
+            metricsList.add(startTime);
+            return metricsList;
+        }
+
+        @Override
+        protected void onPostExecute(List<IMetric> metricList) {
+            alertsEngine.testWithBaseLine(metricList);
+        }
+
+
+    }
 }
 
 class VideoInfo {
@@ -171,4 +258,3 @@ class VideoGalleryAdapter extends BaseAdapter {
         return imageView;
     }
 }
-

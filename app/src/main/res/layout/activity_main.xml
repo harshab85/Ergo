@@ -5,5 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/testMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Click the button to go to the video gallery"
+        android:layout_centerHorizontal="true"/>
+
+
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Video Library"
+        android:layout_below="@+id/testMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>

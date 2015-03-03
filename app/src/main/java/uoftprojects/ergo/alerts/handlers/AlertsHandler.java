@@ -1,38 +1,33 @@
 package uoftprojects.ergo.alerts.handlers;
 
-import android.app.Activity;
-
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class AlertsHandler {
 
     private static AlertsHandler INSTANCE;
 
-    private Activity activity;
-
-    private AlertsHandler(Activity activity){
-        this.activity = activity;
+    private AlertsHandler(){
     }
 
-    public static AlertsHandler getInstance(Activity activity){
+    public static AlertsHandler getInstance(){
         if(INSTANCE == null){
-            INSTANCE = new AlertsHandler(activity);
+            INSTANCE = new AlertsHandler();
         }
         return INSTANCE;
     }
 
     public IHandler getHandler(IMetric.MetricType type){
         if(type == IMetric.MetricType.Proximity){
-            return ProximityHandler.getInstance(activity);
+            return ProximityHandler.getInstance();
         }
         else if(type == IMetric.MetricType.Tilt){
-            return TiltHandler.getInstance(activity);
+            return TiltHandler.getInstance();
         }
         else if(type == IMetric.MetricType.Time){
-            return TimerHandler.getInstance(activity);
+            return TimerHandler.getInstance();
         }
 
         return null;

@@ -16,7 +16,6 @@ public class TiltSensor implements SensorEventListener {
     private Sensor accelerometer;
     private float[] mGravity = null;
     private float tilt = 0;
-    private boolean sensorChanged;
 
     private static TiltSensor INSTANCE = null;
 
@@ -30,7 +29,6 @@ public class TiltSensor implements SensorEventListener {
         if(INSTANCE == null){
             INSTANCE = new TiltSensor(sensorManager);
         }
-
         return INSTANCE;
     }
 
@@ -51,7 +49,6 @@ public class TiltSensor implements SensorEventListener {
             mGravity[2] = (float) (mGravity[2] / norm_Of_g);
 
             tilt = (int) Math.round(Math.toDegrees(Math.acos(mGravity[2])));
-            sensorChanged = true;
         }
     }
 
@@ -60,8 +57,7 @@ public class TiltSensor implements SensorEventListener {
     }
 
     public Tilt getTilt(){
-        Tilt tilt = new Tilt(this.tilt, sensorChanged);
-        sensorChanged = false;
+        Tilt tilt = new Tilt(this.tilt);
         return tilt;
     }
 }

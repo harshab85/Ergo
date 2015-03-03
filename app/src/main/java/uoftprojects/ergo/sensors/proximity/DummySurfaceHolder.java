@@ -6,6 +6,9 @@ import android.graphics.SurfaceTexture;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+/**
+ * Created by Harsha Balasubramanian on 2/21/2015.
+ */
 class DummySurfaceHolder implements SurfaceHolder {
 
     private static final int MAGIC_NUMBER = 1;

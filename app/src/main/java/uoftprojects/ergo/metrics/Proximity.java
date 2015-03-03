@@ -1,20 +1,29 @@
 package uoftprojects.ergo.metrics;
 
 /**
- * Created by H on 2/21/2015.
+ * Created by Harsha Balasubramanian on 2/21/2015.
  */
 public class Proximity implements IMetric {
 
-    private boolean didDetectFace;
+    private boolean detectedFace;
     private long rectArea;
+    private IMetric tilt;
 
-    public Proximity(long rectArea, boolean didDetectFace){
+    public Proximity(long rectArea, boolean detectedFace){
         this.rectArea = rectArea;
-        this.didDetectFace = didDetectFace;
+        this.detectedFace = detectedFace;
     }
 
-    public boolean didDetectFace() {
-        return this.didDetectFace;
+    public IMetric getTilt() {
+        return tilt;
+    }
+
+    public void setTilt(IMetric tilt) {
+        this.tilt = tilt;
+    }
+
+    public boolean detectedFace() {
+        return this.detectedFace;
     }
 
     public long getRectArea(){

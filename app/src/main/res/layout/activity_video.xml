@@ -12,7 +12,8 @@
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_marginTop="30dp"/>
 
     <VideoView
         android:id="@+id/video_playback"
@@ -21,5 +22,6 @@
         android:visibility="invisible"
         android:layout_marginLeft="0dp"
         android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>

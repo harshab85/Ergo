@@ -7,13 +7,12 @@ import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.sensors.proximity.ProximitySensor;
 import uoftprojects.ergo.sensors.tilt.TiltSensor;
 import uoftprojects.ergo.sensors.timer.Timer;
+import uoftprojects.ergo.util.ActivityUtil;
 
 /**
- * Created by H on 2/16/2015.
+ * Created by Harsha Balasubramanian on 2/16/2015.
  */
 public class ErgoEngine implements IRegistration {
-
-    private Activity parentActivity;
 
     private TiltSensor tiltSensor = null;
 
@@ -21,19 +20,18 @@ public class ErgoEngine implements IRegistration {
 
     private Timer timer = null;
 
-    public ErgoEngine(Activity parentActivity){
-        this.parentActivity = parentActivity;
+    public ErgoEngine(){
         register();
     }
 
     @Override
     public void register() {
-        SensorManager sensorManager = (SensorManager)this.parentActivity.getSystemService(Activity.SENSOR_SERVICE);
+        SensorManager sensorManager = (SensorManager) ActivityUtil.getMainActivity().getSystemService(Activity.SENSOR_SERVICE);
         tiltSensor = TiltSensor.getInstance(sensorManager);
 
         timer = Timer.getInstance();
 
-        proximitySensor = ProximitySensor.getInstance(this.parentActivity);
+        proximitySensor = ProximitySensor.getInstance();
     }
 
     @Override

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Created by Harsha Balasubramanian on 3/2/2015.
+ */
 public class MainActivity extends Activity {
 
     @Override

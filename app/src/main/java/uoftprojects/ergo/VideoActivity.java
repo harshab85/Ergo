@@ -1,11 +1,13 @@
 package uoftprojects.ergo;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.MediaController;
@@ -29,9 +31,9 @@ public class VideoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
         initialize();
     }
+
 
     private void initialize() {
 
@@ -61,11 +63,20 @@ public class VideoActivity extends Activity {
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
 
+
+                    View decorView = getWindow().getDecorView();
+                    // Hide the status bar.
+                    int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                    decorView.setSystemUiVisibility(uiOptions);
+                    // Remember that you should never show the action bar if the
+                    // status bar is hidden, so hide that too if necessary.
+
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             toggleGalleryMode();
                             SparkPlug.stop();
+
                         }
                     });
                     videoView.start();

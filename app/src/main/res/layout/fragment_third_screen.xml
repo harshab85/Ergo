@@ -17,7 +17,8 @@
         android:textColor="#ff000000"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="74dp" />
+        android:layout_marginTop="74dp"
+        android:textSize="18dp" />
 
 
     <ImageView
@@ -29,13 +30,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+
     <Button
+        android:id="@+id/button"
+        android:text="VIDEOS"
+        android:layout_below="@+id/textView"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:onClick ="endTutorial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start!"
-        android:id="@+id/button"
-        android:onClick ="endTutorial"
-        android:layout_below="@+id/textView"
+        android:background="@drawable/buttonshape"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp" />
 

@@ -1,27 +1,48 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ff000000"
+    android:id="@+id/video_layout">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/gridview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:columnWidth="90dp"-->
+        <!--android:numColumns="2"-->
+        <!--android:verticalSpacing="10dp"-->
+        <!--android:horizontalSpacing="10dp"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:gravity="center"-->
+        <!--android:background="#ffffffff"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:choiceMode="none"-->
+        <!--android:clickable="false" />-->
+
+    <GridView
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="90dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:layout_marginTop="30dp"/>
+        android:numColumns="2"
+        android:background="#ffffffff"
+        android:choiceMode="none"
+        android:minHeight="150dp"
+        android:minWidth="150dp" />
+
 
     <VideoView
         android:id="@+id/video_playback"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="275dp"
         android:visibility="invisible"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentStart="true" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
 
 
 </RelativeLayout>

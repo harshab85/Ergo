@@ -87,7 +87,7 @@ public class SetUpTabbedActivity extends ActionBarActivity {
 
         Intent intent = new Intent(SetUpTabbedActivity.this, VideoActivity.class);
         startActivity(intent);
-
+        finish();
     }
 
 

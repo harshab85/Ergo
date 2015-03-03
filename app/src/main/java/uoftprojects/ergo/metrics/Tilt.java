@@ -1,20 +1,14 @@
 package uoftprojects.ergo.metrics;
 
 /**
- * Created by H on 2/21/2015.
+ * Created by Harsha Balasubramanian on 2/21/2015.
  */
 public class Tilt implements IMetric {
 
     private float value;
-    private boolean didSensorChange;
 
-    public Tilt(float value, boolean sensorChanged){
+    public Tilt(float value){
         this.value = value;
-        this.didSensorChange = sensorChanged;
-    }
-
-    public boolean didSensorChange() {
-        return this.didSensorChange;
     }
 
     public float getValue() {

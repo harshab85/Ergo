@@ -9,16 +9,13 @@ import uoftprojects.ergo.alerts.handlers.IHandler;
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class AlertsEngine {
 
-    private Activity mainActivity;
-
     private static IMetric.MetricType currentAlert_MetricType = null;
 
-    public AlertsEngine(Activity mainActivity){
-        this.mainActivity = mainActivity;
+    public AlertsEngine(){
     }
 
     public void testWithBaseLine(List<IMetric> metricsList){
@@ -37,7 +34,7 @@ public class AlertsEngine {
     }
 
     private void handleCurrentAlert(IMetric metric){
-        IHandler handler = AlertsHandler.getInstance(mainActivity).getHandler(metric.getType());
+        IHandler handler = AlertsHandler.getInstance().getHandler(metric.getType());
         if(handler != null) {
             boolean isAlertTriggered = handler.handle(metric);
             if(isAlertTriggered){

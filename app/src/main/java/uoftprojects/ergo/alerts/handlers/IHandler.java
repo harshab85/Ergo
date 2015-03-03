@@ -1,11 +1,9 @@
 package uoftprojects.ergo.alerts.handlers;
 
-import java.util.concurrent.locks.Lock;
-
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public interface IHandler {
 

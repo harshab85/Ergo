@@ -3,7 +3,7 @@ package uoftprojects.ergo.sensors.timer;
 import uoftprojects.ergo.metrics.StartTime;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class Timer {
 

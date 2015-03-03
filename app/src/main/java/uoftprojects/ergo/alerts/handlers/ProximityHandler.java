@@ -1,28 +1,27 @@
 package uoftprojects.ergo.alerts.handlers;
 
-import android.app.Activity;
 import android.widget.Toast;
 
 import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
+import uoftprojects.ergo.metrics.Tilt;
+import uoftprojects.ergo.util.ActivityUtil;
+import uoftprojects.ergo.util.VideoUtil;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class ProximityHandler implements IHandler {
 
-    private Activity activity;
-
     private static ProximityHandler INSTANCE = null;
 
-    private ProximityHandler(Activity activity){
-        this.activity = activity;
+    private ProximityHandler(){
     }
 
-    public static ProximityHandler getInstance(Activity activity){
+    public static ProximityHandler getInstance(){
         if(INSTANCE == null){
-            INSTANCE = new ProximityHandler(activity);
+            INSTANCE = new ProximityHandler();
         }
 
         return INSTANCE;
@@ -39,17 +38,34 @@ public class ProximityHandler implements IHandler {
             return false;
         }
 
-        if(proximity.didDetectFace()){
-            long rectArea = proximity.getRectArea();
+        IMetric tilt = proximity.getTilt();
+        float phoneAngle = 0;
+        if(tilt instanceof Tilt){
+            phoneAngle = ((Tilt)tilt).getValue();
+        }
 
-            if(rectArea > Baseline.MAX_RECT_AREA){
-                Toast.makeText(activity, "Too close to face", Toast.LENGTH_SHORT).show();
-            }
-            else if(rectArea < Baseline.MIN_RECT_AREA){
-                Toast.makeText(activity, "Too far from face", Toast.LENGTH_SHORT).show();
+        // If phone is too close (<25cm), face detection stops. Handles that case
+        if(!proximity.detectedFace()){
+            if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
+                VideoUtil.pauseVideo();
+                Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+                return true;
             }
         }
 
+        // if face gets detected, check rect baseline
+        if(proximity.detectedFace()) {
+            long rectArea = proximity.getRectArea();
+
+            if (rectArea > Baseline.MAX_RECT_AREA) {
+                VideoUtil.pauseVideo();
+                Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+
+        // All good so resume video if needed
+        VideoUtil.resumeVideoWhenPaused();
         return false;
     }
 }

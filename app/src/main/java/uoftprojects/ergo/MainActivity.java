@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Created by Harsha Balasubramanian on 3/2/2015.
+ */
 public class MainActivity extends Activity {
 
     @Override
@@ -13,7 +16,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button)findViewById(R.id.testButton);
+        Button button = (Button) findViewById(R.id.testButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

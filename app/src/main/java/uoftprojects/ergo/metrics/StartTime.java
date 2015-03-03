@@ -1,7 +1,7 @@
 package uoftprojects.ergo.metrics;
 
 /**
- * Created by H on 2/22/2015.
+ * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class StartTime implements IMetric {
 

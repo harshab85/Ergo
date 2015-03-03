@@ -46,10 +46,10 @@ public class SparkPlug {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                GetUpdates getUpdates = new GetUpdates();
-                getUpdates.execute();
+            GetUpdates getUpdates = new GetUpdates();
+            getUpdates.execute();
             }
-        }, 0, 2500);
+        }, 5000, 2500);
     }
 
     class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {

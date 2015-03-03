@@ -49,6 +49,9 @@ public class ProximityHandler implements IHandler {
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
                 VideoUtil.pauseVideo();
                 Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+
+                // Add splash screen
+
                 return true;
             }
         }
@@ -60,6 +63,9 @@ public class ProximityHandler implements IHandler {
             if (rectArea > Baseline.MAX_RECT_AREA) {
                 VideoUtil.pauseVideo();
                 Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+
+                // Add splash screen
+
                 return true;
             }
         }

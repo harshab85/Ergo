@@ -40,18 +40,16 @@ public class TimerHandler implements IHandler {
         long currentTime = System.currentTimeMillis();
         if((currentTime - startTime.getTime()) >= Baseline.MAX_CONTINUOUS_DEVICE_TIME) {
             Toast.makeText(ActivityUtil.getMainActivity(), "Take a break for 5 seconds", Toast.LENGTH_LONG).show();
+
+
+            // TODO Show exercise here for a few seconds
+
+
             Timer.getInstance().resetStartTime();
-            VideoUtil.pauseVideo();
-            try {
-                Thread.sleep(3000);
-            }
-            catch (InterruptedException e) {
-            }
 
             return true;
         }
         else{
-            VideoUtil.resumeVideoWhenPaused();
             return false;
         }
     }

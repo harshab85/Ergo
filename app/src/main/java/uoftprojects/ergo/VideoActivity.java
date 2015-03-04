@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
 
@@ -34,6 +36,24 @@ public class VideoActivity extends Activity {
         initialize();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialize();
+    }
+
+    @Override
+    protected void onPause() {
+        AlertsHandler.cancelAlerts();
+        SparkPlug.stop();
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        toggleGalleryMode();
+        SparkPlug.stop();
+    }
 
     private void initialize() {
 
@@ -63,14 +83,6 @@ public class VideoActivity extends Activity {
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
 
-
-                    View decorView = getWindow().getDecorView();
-                    // Hide the status bar.
-                    int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-                    decorView.setSystemUiVisibility(uiOptions);
-                    // Remember that you should never show the action bar if the
-                    // status bar is hidden, so hide that too if necessary.
-
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
@@ -96,7 +108,7 @@ public class VideoActivity extends Activity {
         return videoView;
     }
 
-    private View toggleGalleryMode() {
+    private View  toggleGalleryMode() {
         VideoView videoView = (VideoView) findViewById(R.id.video_playback);
         videoView.setVisibility(View.INVISIBLE);
 

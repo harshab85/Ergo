@@ -8,4 +8,6 @@ import uoftprojects.ergo.metrics.IMetric;
 public interface IHandler {
 
     public boolean handle(IMetric metric);
+
+    public void cancel();
 }

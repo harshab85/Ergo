@@ -60,8 +60,6 @@ public class ProximityHandler implements IHandler {
                     public void run() {
                         ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
                         imageView.setVisibility(View.VISIBLE);
-
-
                     }
                 });
 

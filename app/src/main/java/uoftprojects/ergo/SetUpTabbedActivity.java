@@ -3,6 +3,8 @@ package uoftprojects.ergo;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -80,7 +82,8 @@ public class SetUpTabbedActivity extends ActionBarActivity {
 //            }
  //       });
 
-
+        /*MediaPlayer mPlayer2 = MediaPlayer.create(this, R.raw.Ergo_hello);
+        mPlayer2.start();*/
     }
 
     public void endTutorial(View view) {

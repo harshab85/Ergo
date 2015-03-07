@@ -32,4 +32,11 @@ public class AlertsHandler {
 
         return null;
     }
+
+    public static void cancelAlerts(){
+        ProximityHandler.getInstance().cancel();
+        TiltHandler.getInstance().cancel();
+        TimerHandler.getInstance().cancel();
+    }
+
 }

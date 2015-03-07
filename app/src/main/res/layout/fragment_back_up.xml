@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="150dp"
+    android:layout_height="150dp" tools:context="uoftprojects.ergo.BackUp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView3"
+        android:layout_gravity="center"
+        android:src="@drawable/ergobackup" />
+</FrameLayout>

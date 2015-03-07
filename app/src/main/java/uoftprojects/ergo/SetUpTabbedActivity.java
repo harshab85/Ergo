@@ -1,31 +1,35 @@
 package uoftprojects.ergo;
 
-import android.app.Activity;
+import java.util.Locale;
+
 import android.content.Intent;
-import android.os.Bundle;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Locale;
 
-/**
- * Created by Harsha Balasubramanian on 3/2/2015.
- */
-public class MainActivity extends ActionBarActivity {
+public class SetUpTabbedActivity extends ActionBarActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
-     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which will keep every
+     * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
@@ -53,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Attach the page change listener inside the activity
 
-        //       mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+ //       mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 //            // This method will be invoked when a new page becomes selected.
 //            @Override
@@ -76,14 +80,15 @@ public class MainActivity extends ActionBarActivity {
 //            public void onPageScrollStateChanged(int state) {
 //                // Code goes here
 //            }
-        //       });
+ //       });
 
-
+        /*MediaPlayer mPlayer2 = MediaPlayer.create(this, R.raw.Ergo_hello);
+        mPlayer2.start();*/
     }
 
     public void endTutorial(View view) {
 
-        Intent intent = new Intent(this, VideoActivity.class);
+        Intent intent = new Intent(SetUpTabbedActivity.this, VideoActivity.class);
         startActivity(intent);
         finish();
     }
@@ -113,7 +118,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     /**
-     * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -232,6 +237,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -267,5 +273,6 @@ public class MainActivity extends ActionBarActivity {
             return rootView;
         }
     }
+
 
 }

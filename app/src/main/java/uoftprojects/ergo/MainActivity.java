@@ -1,7 +1,7 @@
 package uoftprojects.ergo;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -42,6 +42,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up_tabbed);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        if(sharedPreferences != null) {
+            boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
+            if (setupCompleted) {
+                openVideoLibrary(findViewById(R.id.button));
+            }
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -51,37 +58,16 @@ public class MainActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        // Attach the page change listener inside the activity
-
-        //       mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-//            // This method will be invoked when a new page becomes selected.
-//            @Override
-//            public void onPageSelected(int position) {
-//                Toast.makeText(SetUpTabbedActivity.this,
-//                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//
-//            // This method will be invoked when the current page is scrolled
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                // Code goes here
-//            }
-//
-//            // Called when the scroll state changes:
-//            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//                // Code goes here
-//            }
-        //       });
 
 
     }
 
-    public void endTutorial(View view) {
+    public void openVideoLibrary(View view) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("setupCompleted", true);
+        editor.commit();
 
         Intent intent = new Intent(this, VideoActivity.class);
         startActivity(intent);

@@ -70,12 +70,16 @@ public class VideoActivity extends Activity {
         for(int i=0 ; i<videos.size() ; i++){
             Map<String, String> hm = new HashMap<>();
             hm.put("thumbnail", videos.get(i).thumbPath);
+            hm.put("name", videos.get(i).displayName);
             aList.add(hm);
         }
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new SimpleAdapter(this, aList, R.layout.video_layout, new String[]{"thumbnail"}, new int[]{R.id.thumbnail}));
 
+        String[] rows = new String[]{"thumbnail", "name"};
+        int[] ids = new int[]{R.id.thumbnail, R.id.thumbnail_name};
+
+        gridview.setAdapter(new SimpleAdapter(this, aList, R.layout.video_layout, rows, ids));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -149,6 +153,14 @@ public class VideoActivity extends Activity {
                         thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
                                 + "=" + id, null, null);
 
+                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+                if(displayName != null && displayName.toLowerCase().startsWith("demo")){
+                    videoInfo.displayName = displayName.substring(4);
+                }
+                else{
+                    continue;
+                }
+
                 if (thumbCursor.moveToFirst()) {
                     videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
                 }
@@ -163,6 +175,7 @@ public class VideoActivity extends Activity {
 }
 
 class VideoInfo {
+    String displayName;
     String filePath;
     String thumbPath;
 }

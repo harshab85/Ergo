@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.MediaController;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,11 @@ public class VideoActivity extends Activity {
         ActivityUtil.setMainActivity(this);
 
         List<VideoInfo> videos = loadVideos();
+
+        if(videos == null || videos.isEmpty()){
+            Toast.makeText(this, "No videos in phone library.", Toast.LENGTH_SHORT).show();
+        }
+
         List<Map<String, String>> aList = new ArrayList<>();
         for(int i=0 ; i<videos.size() ; i++){
             Map<String, String> hm = new HashMap<>();
@@ -69,6 +75,7 @@ public class VideoActivity extends Activity {
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new SimpleAdapter(this, aList, R.layout.video_layout, new String[]{"thumbnail"}, new int[]{R.id.thumbnail}));
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

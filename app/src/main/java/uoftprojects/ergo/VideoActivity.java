@@ -1,20 +1,25 @@
 package uoftprojects.ergo;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.MediaController;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
 
@@ -29,8 +34,26 @@ public class VideoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
         initialize();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialize();
+    }
+
+    @Override
+    protected void onPause() {
+        AlertsHandler.cancelAlerts();
+        SparkPlug.stop();
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        toggleGalleryMode();
+        SparkPlug.stop();
     }
 
     private void initialize() {
@@ -38,6 +61,11 @@ public class VideoActivity extends Activity {
         ActivityUtil.setMainActivity(this);
 
         List<VideoInfo> videos = loadVideos();
+
+        if(videos == null || videos.isEmpty()){
+            Toast.makeText(this, "No videos in phone library.", Toast.LENGTH_SHORT).show();
+        }
+
         List<Map<String, String>> aList = new ArrayList<>();
         for(int i=0 ; i<videos.size() ; i++){
             Map<String, String> hm = new HashMap<>();
@@ -47,7 +75,9 @@ public class VideoActivity extends Activity {
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new SimpleAdapter(this, aList, R.layout.video_layout, new String[]{"thumbnail"}, new int[]{R.id.thumbnail}));
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (cursor.moveToPosition(position)) {
@@ -65,9 +95,9 @@ public class VideoActivity extends Activity {
                         public void onCompletion(MediaPlayer mp) {
                             toggleGalleryMode();
                             SparkPlug.stop();
+
                         }
                     });
-
                     videoView.start();
                     SparkPlug.start();
                 }
@@ -85,7 +115,7 @@ public class VideoActivity extends Activity {
         return videoView;
     }
 
-    private View toggleGalleryMode() {
+    private View  toggleGalleryMode() {
         VideoView videoView = (VideoView) findViewById(R.id.video_playback);
         videoView.setVisibility(View.INVISIBLE);
 

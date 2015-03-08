@@ -1,7 +1,10 @@
 package uoftprojects.ergo.alerts.handlers;
 
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import uoftprojects.ergo.R;
 import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
@@ -44,34 +47,40 @@ public class ProximityHandler implements IHandler {
             phoneAngle = ((Tilt)tilt).getValue();
         }
 
+        System.out.println(proximity.getRectArea());
         // If phone is too close (<25cm), face detection stops. Handles that case
-        if(!proximity.detectedFace()){
+        if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
                 VideoUtil.pauseVideo();
-                Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
 
-                // Add splash screen
-
-                return true;
-            }
-        }
-
-        // if face gets detected, check rect baseline
-        if(proximity.detectedFace()) {
-            long rectArea = proximity.getRectArea();
-
-            if (rectArea > Baseline.MAX_RECT_AREA) {
-                VideoUtil.pauseVideo();
-                Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
-
-                // Add splash screen
+                // Add splash screen\
+                ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                });
 
                 return true;
             }
         }
 
         // All good so resume video if needed
+        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+                imageView.setVisibility(View.INVISIBLE);
+            }
+        });
         VideoUtil.resumeVideoWhenPaused();
         return false;
+    }
+
+    @Override
+    public void cancel() {
+        // not implemented
     }
 }

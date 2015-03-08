@@ -63,4 +63,11 @@ public class TiltHandler implements IHandler {
         return false;
     }
 
+    @Override
+    public void cancel() {
+        if(vibrator != null){
+            vibrator.cancel();
+        }
+    }
+
 }

@@ -36,8 +36,14 @@ public class SparkPlug {
     }
 
     public static void stop(){
-        ergoEngine.unregister();
-        timer.cancel();
+        if(ergoEngine != null) {
+            ergoEngine.unregister();
+        }
+
+        if(timer != null) {
+            timer.cancel();
+        }
+
         INSTANCE = null;
     }
 

@@ -12,8 +12,8 @@ public final class Baseline {
     public static final int PHONE_MIN_USAGE_ANGLE = 20;
     public static final long[] VIBRATION_ALERT_PATTERN = new long[]{500, 50};
 
-    // Timer Baseline
-    public static final long MAX_CONTINUOUS_DEVICE_TIME = 30000;
+    // Timer Baseline (msec)
+    public static final long MAX_CONTINUOUS_DEVICE_TIME = 60000;
 
     // Proximity Baseline
     public static final long MIN_RECT_AREA = 500000;

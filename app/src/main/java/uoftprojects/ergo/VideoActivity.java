@@ -3,14 +3,25 @@ package uoftprojects.ergo;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.FloatMath;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -53,6 +64,7 @@ public class VideoActivity extends Activity {
     @Override
     public void onBackPressed() {
         toggleGalleryMode();
+        AlertsHandler.cancelAlerts();
         SparkPlug.stop();
     }
 
@@ -85,19 +97,18 @@ public class VideoActivity extends Activity {
                     String videoFilePath = cursor.getString(fileColumn);
 
                     VideoView videoView = (VideoView) toggleVideoMode();
-                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
-
-                    videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
-
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             toggleGalleryMode();
                             SparkPlug.stop();
-
                         }
                     });
+
+                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+                    videoView.setMediaController(mediaController);
+
                     videoView.start();
                     SparkPlug.start();
                 }

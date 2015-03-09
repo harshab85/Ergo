@@ -10,6 +10,20 @@ import uoftprojects.ergo.R;
  */
 public final class VideoUtil {
 
+    public static enum VideoAnchor{
+        CENTER(0), TOPLEFT(1);
+
+        private int value;
+
+        VideoAnchor(int value){
+            this.value = value;
+        }
+
+        public int getValue(){
+            return this.value;
+        }
+    }
+
     private static boolean PAUSED = false;
 
     public static void pauseVideo(){

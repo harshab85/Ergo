@@ -64,7 +64,11 @@ public class VideoActivity extends Activity {
 
         if(videos == null || videos.isEmpty()){
             Toast.makeText(this, "No videos in phone library.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Yes videos!", Toast.LENGTH_SHORT).show();
         }
+
+        System.out.println("NO ERROR YET?");
 
         List<Map<String, String>> aList = new ArrayList<>();
         for(int i=0 ; i<videos.size() ; i++){

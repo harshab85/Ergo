@@ -2,25 +2,25 @@ package uoftprojects.ergo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.Locale;
+
+import uoftprojects.ergo.SignUpScreens.WelcomeFragements;
 
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements WelcomeFragements.OnFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_up_tabbed);
+        setContentView(R.layout.activity_welcome);
 
         SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         if(sharedPreferences != null) {
@@ -50,20 +50,17 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
-        // Create the adapter that will return a fragment for each of the three
+       // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
-
     }
 
     public void openVideoLibrary(View view) {
-
+        //TODO: Add are you sure you want to proceed without an email address?
         SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
@@ -98,6 +95,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
+    public void onFragmentInteraction(Uri uri){
+        System.out.println("ON FRAGMENT INTERACTION METHOD CALLED");
+    }
+
+
     /**
      * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -113,11 +116,11 @@ public class MainActivity extends ActionBarActivity {
 
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return WelcomeFragements.newInstance(position + 1);
                 case 1:
-                    return PlaceholderFragment2.newInstance(position + 1);
+                    return WelcomeFragements.newInstance(position + 1);
                 case 2:
-                    return PlaceholderFragment3.newInstance(position + 1);
+                    return WelcomeFragements.newInstance(position + 1);
             }
             return null;
         }
@@ -125,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -142,116 +145,4 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            System.out.println("HERE: "+sectionNumber);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_set_up_tabbed, container, false);
-//            TextView view = (TextView) rootView.findViewById(R.id.section_label);
-//            view.setText("hi");
-            return rootView;
-        }
-    }
-
-
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment2 extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment2 newInstance(int sectionNumber) {
-            PlaceholderFragment2 fragment = new PlaceholderFragment2();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            System.out.println("HERE: "+sectionNumber);
-            return fragment;
-        }
-
-        public PlaceholderFragment2() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_second_screen, container, false);
-//            TextView view = (TextView) rootView.findViewById(R.id.section_label);
-//            view.setText("hi");
-            return rootView;
-        }
-    }
-
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment3 extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment3 newInstance(int sectionNumber) {
-            PlaceholderFragment3 fragment = new PlaceholderFragment3();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            System.out.println("HERE: "+sectionNumber);
-            return fragment;
-        }
-
-        public PlaceholderFragment3() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_third_screen, container, false);
-//            TextView view = (TextView) rootView.findViewById(R.id.section_label);
-//            view.setText("hi");
-            return rootView;
-        }
-    }
-
 }

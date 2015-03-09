@@ -64,11 +64,11 @@ public class VideoActivity extends Activity {
 
         if(videos == null || videos.isEmpty()){
             Toast.makeText(this, "No videos in phone library.", Toast.LENGTH_SHORT).show();
-        }else{
+        }/*else{
             Toast.makeText(this, "Yes videos!", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
-        System.out.println("NO ERROR YET?");
+        //System.out.println("NO ERROR YET?");
 
         List<Map<String, String>> aList = new ArrayList<>();
         for(int i=0 ; i<videos.size() ; i++){
@@ -158,12 +158,12 @@ public class VideoActivity extends Activity {
                                 + "=" + id, null, null);
 
                 String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
-                if(displayName != null && displayName.toLowerCase().startsWith("demo")){
+                /*if(displayName != null && displayName.toLowerCase().startsWith("demo")){
                     videoInfo.displayName = displayName.substring(4);
                 }
                 else{
                     continue;
-                }
+                }*/
 
                 if (thumbCursor.moveToFirst()) {
                     videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));

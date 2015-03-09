@@ -158,6 +158,7 @@ public class VideoActivity extends Activity {
                                 + "=" + id, null, null);
 
                 String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+                videoInfo.displayName = displayName;
                 /*if(displayName != null && displayName.toLowerCase().startsWith("demo")){
                     videoInfo.displayName = displayName.substring(4);
                 }

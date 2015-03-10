@@ -1,7 +1,6 @@
 package uoftprojects.ergo;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +15,8 @@ import android.view.View;
 import java.util.Locale;
 
 import uoftprojects.ergo.SignUpScreens.WelcomeFragements;
+import uoftprojects.ergo.util.ActivityUtil;
+import uoftprojects.ergo.util.SetupUtil;
 
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
@@ -42,12 +43,18 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         if(sharedPreferences != null) {
             boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
             if (setupCompleted) {
                 openVideoLibrary(findViewById(R.id.button));
             }
+        }*/
+
+        ActivityUtil.setMainActivity(this);
+
+        if( SetupUtil.isSetupCompeted()){
+            openVideoLibrary(findViewById(R.id.button));
         }
 
        // Create the adapter that will return a fragment for each of the three
@@ -61,10 +68,11 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragements
 
     public void openVideoLibrary(View view) {
         //TODO: Add are you sure you want to proceed without an email address?
-        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
-        editor.commit();
+        editor.commit();*/
+        SetupUtil.setupCompleted();
 
         Intent intent = new Intent(this, VideoActivity.class);
         startActivity(intent);

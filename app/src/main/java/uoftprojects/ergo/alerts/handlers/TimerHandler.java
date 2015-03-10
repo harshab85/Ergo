@@ -39,7 +39,7 @@ public class TimerHandler implements IHandler {
 
         long currentTime = System.currentTimeMillis();
         if((currentTime - startTime.getTime()) >= Baseline.MAX_CONTINUOUS_DEVICE_TIME) {
-            Toast.makeText(ActivityUtil.getMainActivity(), "Take a break for 5 seconds", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityUtil.getMainActivity(), "Timer ran out (60 seconds). Replace this and show an eye exercise", Toast.LENGTH_LONG).show();
 
 
             // TODO Show exercise here for a few seconds

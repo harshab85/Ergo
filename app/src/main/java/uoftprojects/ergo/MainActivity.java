@@ -14,14 +14,14 @@ import android.view.View;
 
 import java.util.Locale;
 
-import uoftprojects.ergo.SignUpScreens.WelcomeFragements;
+import uoftprojects.ergo.SignUpScreens.WelcomeFragments;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
 
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
  */
-public class MainActivity extends ActionBarActivity implements WelcomeFragements.OnFragmentInteractionListener{
+public class MainActivity extends ActionBarActivity implements WelcomeFragments.OnFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -124,11 +124,11 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragements
 
             switch (position) {
                 case 0:
-                    return WelcomeFragements.newInstance(position + 1);
+                    return WelcomeFragments.newInstance(position + 1);
                 case 1:
-                    return WelcomeFragements.newInstance(position + 1);
+                    return WelcomeFragments.newInstance(position + 1);
                 case 2:
-                    return WelcomeFragements.newInstance(position + 1);
+                    return WelcomeFragments.newInstance(position + 1);
             }
             return null;
         }

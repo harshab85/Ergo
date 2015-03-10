@@ -14,12 +14,12 @@ import uoftprojects.ergo.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WelcomeFragements.OnFragmentInteractionListener} interface
+ * {@link WelcomeFragments.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link WelcomeFragements#newInstance} factory method to
+ * Use the {@link WelcomeFragments#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WelcomeFragements extends Fragment {
+public class WelcomeFragments extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -28,13 +28,13 @@ public class WelcomeFragements extends Fragment {
     private OnFragmentInteractionListener mListener;
 
 
-    public static WelcomeFragements newInstance(int pSectionNumber) {
-        WelcomeFragements fragment = new WelcomeFragements();
+    public static WelcomeFragments newInstance(int pSectionNumber) {
+        WelcomeFragments fragment = new WelcomeFragments();
         fragment.aSectionNumber = pSectionNumber;
         return fragment;
     }
 
-    public WelcomeFragements() {
+    public WelcomeFragments() {
         // Required empty public constructor
     }
 

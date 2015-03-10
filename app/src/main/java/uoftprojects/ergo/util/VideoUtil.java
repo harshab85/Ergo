@@ -10,9 +10,11 @@ import uoftprojects.ergo.R;
  */
 public final class VideoUtil {
 
+    public static final String MOVED_TO_BKGRND_FLAG_NAME = "background";
+
     private static boolean PAUSED = false;
 
-    public static void pauseVideo(){
+    public static void pauseVideo() {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -25,17 +27,25 @@ public final class VideoUtil {
         });
     }
 
-    public static void resumeVideoWhenPaused(){
+    public static void resumeVideoWhenPaused() {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
-                if(PAUSED && videoView != null && !videoView.isPlaying()) {
+                if (PAUSED && videoView != null && !videoView.isPlaying()) {
                     videoView.start();
                     PAUSED = false;
                 }
             }
         });
+    }
+
+    public static void setMovedToBkgrnd() {
+        StorageUtil.addLocalFlag(MOVED_TO_BKGRND_FLAG_NAME, true);
+    }
+
+    public static boolean fromBackGround() {
+        return StorageUtil.getFlag(MOVED_TO_BKGRND_FLAG_NAME);
     }
 
 }

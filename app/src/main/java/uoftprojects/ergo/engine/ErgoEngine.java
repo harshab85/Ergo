@@ -27,11 +27,12 @@ public class ErgoEngine implements IRegistration {
     @Override
     public void register() {
         SensorManager sensorManager = (SensorManager) ActivityUtil.getMainActivity().getSystemService(Activity.SENSOR_SERVICE);
-        tiltSensor = TiltSensor.getInstance(sensorManager);
+
+        tiltSensor = new TiltSensor(sensorManager);
 
         timer = Timer.getInstance();
 
-        proximitySensor = ProximitySensor.getInstance();
+        proximitySensor = new ProximitySensor();//.getInstance();
     }
 
     @Override

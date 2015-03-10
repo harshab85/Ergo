@@ -17,23 +17,26 @@ public class TiltSensor implements SensorEventListener {
     private float[] mGravity = null;
     private float tilt = 0;
 
-    private static TiltSensor INSTANCE = null;
+    //private static TiltSensor INSTANCE = null;
 
-    private TiltSensor(SensorManager sensorManager){
+    public TiltSensor(SensorManager sensorManager){
         this.accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         this.sensorManager = sensorManager;
     }
 
-    public static TiltSensor getInstance(SensorManager sensorManager){
+    /*public static TiltSensor getInstance(SensorManager sensorManager){
         if(INSTANCE == null){
             INSTANCE = new TiltSensor(sensorManager);
         }
         return INSTANCE;
-    }
+    }*/
 
     public void unregister(){
-        sensorManager.unregisterListener(this);
+        if(sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override

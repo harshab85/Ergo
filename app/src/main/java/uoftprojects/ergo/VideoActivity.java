@@ -2,7 +2,10 @@ package uoftprojects.ergo;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -106,8 +109,9 @@ public class VideoActivity extends Activity {
 
                         }
                     });
-                    videoView.start();
+
                     SparkPlug.start();
+                    videoView.start();
                 }
             }
         });
@@ -136,11 +140,15 @@ public class VideoActivity extends Activity {
     private List<VideoInfo> loadVideos(){
         List<VideoInfo> videos = new ArrayList<>();
 
-        String[] thumbColumns = { MediaStore.Video.Thumbnails.DATA,
-                MediaStore.Video.Thumbnails.VIDEO_ID };
+        String[] thumbColumns = {
+                MediaStore.Video.Thumbnails.DATA,
+                MediaStore.Video.Thumbnails.VIDEO_ID,
+        };
 
-        String[] mediaColumns = { MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA, MediaStore.Video.Media.TITLE,
+        String[] mediaColumns = {
+                MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.TITLE,
                 MediaStore.Video.Media.MIME_TYPE };
 
         cursor = managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
@@ -152,25 +160,34 @@ public class VideoActivity extends Activity {
 
                 int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
 
+                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+                String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+
+                videoInfo.displayName = displayName;
+                videoInfo.filePath = filePath;
+
+
+                /*ContentResolver crThumb = getContentResolver();
+                BitmapFactory.Options options=new BitmapFactory.Options();
+                options.inSampleSize = 1;
+                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+                System.out.println();
+                if(curThumb != null) {
+                    videoInfo.thumbPath = curThumb;
+                }*/
+
+
                 Cursor thumbCursor = managedQuery(
                         MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
                         thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
                                 + "=" + id, null, null);
 
-                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
-                videoInfo.displayName = displayName;
-                /*if(displayName != null && displayName.toLowerCase().startsWith("demo")){
-                    videoInfo.displayName = displayName.substring(4);
-                }
-                else{
-                    continue;
-                }*/
-
                 if (thumbCursor.moveToFirst()) {
                     videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+                    System.out.println(videoInfo.thumbPath);
                 }
 
-                videoInfo.filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+
                 videos.add(videoInfo);
             } while (cursor.moveToNext());
         }

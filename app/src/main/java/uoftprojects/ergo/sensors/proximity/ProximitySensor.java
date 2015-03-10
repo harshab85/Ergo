@@ -17,18 +17,18 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
     private boolean detectedFace;
     private long rectArea;
 
-    private static ProximitySensor INSTANCE = null;
+    //private static ProximitySensor INSTANCE = null;
 
-    private ProximitySensor(){
+    public ProximitySensor(){
         register();
     }
 
-    public static ProximitySensor getInstance(){
+    /*public static ProximitySensor getInstance(){
         if(INSTANCE == null){
             INSTANCE = new ProximitySensor();
         }
         return INSTANCE;
-    }
+    }*/
 
     private void register(){
         try {

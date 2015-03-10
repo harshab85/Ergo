@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 
@@ -21,18 +22,21 @@ public class SparkPlug {
 
     private static Timer timer;
 
-    private static SparkPlug INSTANCE;
+    //private static SparkPlug INSTANCE;
 
-    private SparkPlug(){
+   /* private SparkPlug(){
         ergoEngine = new ErgoEngine();
         alertsEngine = new AlertsEngine();
         createMetricsUpdateLoop();
-    }
+    }*/
 
     public static void start(){
-        if(INSTANCE == null){
+        /*if(INSTANCE == null){
             INSTANCE = new SparkPlug();
-        }
+        }*/
+        ergoEngine = new ErgoEngine();
+        alertsEngine = new AlertsEngine();
+        createMetricsUpdateLoop();
     }
 
     public static void stop(){
@@ -44,10 +48,12 @@ public class SparkPlug {
             timer.cancel();
         }
 
-        INSTANCE = null;
+        AlertsHandler.cancelAlerts();
+
+        //INSTANCE = null;
     }
 
-    private void createMetricsUpdateLoop(){
+    private static void createMetricsUpdateLoop(){
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -58,7 +64,7 @@ public class SparkPlug {
         }, 5000, 2500);
     }
 
-    class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {
+    static class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {
         @Override
         protected List<IMetric> doInBackground(String... params) {
             IMetric tilt = ergoEngine.getTilt();

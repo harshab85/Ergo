@@ -68,6 +68,12 @@ public class ProximityHandler implements IHandler {
         }
 
         // All good so resume video if needed
+        cancel();
+        return false;
+    }
+
+    @Override
+    public void cancel() {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -76,11 +82,5 @@ public class ProximityHandler implements IHandler {
             }
         });
         VideoUtil.resumeVideoWhenPaused();
-        return false;
-    }
-
-    @Override
-    public void cancel() {
-        // not implemented
     }
 }

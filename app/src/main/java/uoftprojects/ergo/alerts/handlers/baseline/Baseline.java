@@ -6,7 +6,7 @@ package uoftprojects.ergo.alerts.handlers.baseline;
 public final class Baseline {
 
     // Tilt Baseline
-    public static final int MIN_TILT_ANGLE = 50;
+    public static final int MIN_TILT_ANGLE = 40;
     public static final int MAX_TILT_ANGLE = 70;
     public static final int PHONE_FLAT_MAX_ANGLE = 10;
     public static final int PHONE_MIN_USAGE_ANGLE = 20;

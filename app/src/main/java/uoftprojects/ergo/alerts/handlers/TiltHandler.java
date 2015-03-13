@@ -47,7 +47,7 @@ public class TiltHandler implements IHandler {
             if (tiltAngle < Baseline.MIN_TILT_ANGLE || tiltAngle > Baseline.MAX_TILT_ANGLE) {
                 VideoUtil.pauseVideo();
 
-                String message = "Hold phone at the correct angle (50 to 70). Current: " + tiltAngle;
+                String message = "Hold phone at the correct angle (40 to 70). Current: " + tiltAngle;
 
                 vibrator.vibrate(Baseline.VIBRATION_ALERT_PATTERN, 0);
                 Toast.makeText(ActivityUtil.getMainActivity(), message, Toast.LENGTH_SHORT).show();

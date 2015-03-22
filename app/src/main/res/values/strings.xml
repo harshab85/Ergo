@@ -25,5 +25,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_single_video">SingleVideo</string>
+    <string name="title_activity_material_video_selection">MaterialVideoSelectionActivity</string>
+    <string name="title_activity_main_activity22">MainActivity22Activity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="title_activity_top">TopActivity</string>
 
 </resources>

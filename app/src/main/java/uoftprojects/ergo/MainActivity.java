@@ -1,13 +1,20 @@
 package uoftprojects.ergo;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+
+
+
+
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +28,7 @@ import uoftprojects.ergo.util.SetupUtil;
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
  */
-public class MainActivity extends ActionBarActivity implements WelcomeFragments.OnFragmentInteractionListener{
+public class MainActivity extends Activity implements WelcomeFragments.OnFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -31,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+   // SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -51,19 +58,18 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
             }
         }*/
 
-        ActivityUtil.setMainActivity(this);
-
-        if( SetupUtil.isSetupCompeted()){
+      //  ActivityUtil.setMainActivity(this);
+//
+//        if( SetupUtil.isSetupCompeted()){
             openVideoLibrary(findViewById(R.id.button));
-        }
-
+//        }
+//
        // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(this.getFragmentManager());
+//        // Set up the ViewPager with the sections adapter.
+ //       mViewPager = (ViewPager) findViewById(R.id.pager);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
     public void openVideoLibrary(View view) {
@@ -72,7 +78,7 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
         editor.commit();*/
-        SetupUtil.setupCompleted();
+        //SetupUtil.setupCompleted();
 
         Intent intent = new Intent(this, VideoActivity.class);
         startActivity(intent);
@@ -113,44 +119,44 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
      * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    return WelcomeFragments.newInstance(position + 1);
-                case 1:
-                    return WelcomeFragments.newInstance(position + 1);
-                case 2:
-                    return WelcomeFragments.newInstance(position + 1);
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
-    }
+//    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+//
+//        public SectionsPagerAdapter(FragmentManager fm) {
+//            super(fm);
+//        }
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//
+//            switch (position) {
+//                case 0:
+//                    return WelcomeFragments.newInstance(position + 1);
+//                case 1:
+//                    return WelcomeFragments.newInstance(position + 1);
+//                case 2:
+//                    return WelcomeFragments.newInstance(position + 1);
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            // Show 3 total pages.
+//            return 2;
+//        }
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            Locale l = Locale.getDefault();
+//            switch (position) {
+//                case 0:
+//                    return getString(R.string.title_section1).toUpperCase(l);
+//                case 1:
+//                    return getString(R.string.title_section2).toUpperCase(l);
+//                case 2:
+//                    return getString(R.string.title_section3).toUpperCase(l);
+//            }
+//            return null;
+//        }
+//    }
 }

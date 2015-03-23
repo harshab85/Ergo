@@ -18,7 +18,7 @@ public final class VideoUtil {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (videoView != null && videoView.canPause()) {
                     videoView.pause();
                     PAUSED = true;
@@ -31,7 +31,7 @@ public final class VideoUtil {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (PAUSED && videoView != null && !videoView.isPlaying()) {
                     videoView.start();
                     PAUSED = false;

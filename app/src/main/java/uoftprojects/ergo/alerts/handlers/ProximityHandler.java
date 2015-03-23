@@ -52,14 +52,14 @@ public class ProximityHandler implements IHandler {
         if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
                 VideoUtil.pauseVideo();
-                //Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
 
                 // Add splash screen\
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
-                        imageView.setVisibility(View.VISIBLE);
+//                        ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+//                        imageView.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -77,8 +77,8 @@ public class ProximityHandler implements IHandler {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
-                imageView.setVisibility(View.INVISIBLE);
+//                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+//                imageView.setVisibility(View.INVISIBLE);
             }
         });
         VideoUtil.resumeVideoWhenPaused();

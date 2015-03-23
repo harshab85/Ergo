@@ -53,7 +53,7 @@ ADDED from AndroidManifest.xml:17:9
 		ADDED from AndroidManifest.xml:19:13
 	android:name
 		ADDED from AndroidManifest.xml:18:13
-activity#uoftprojects.ergo.MainActivity
+activity#uoftprojects.ergo.decapitated.MainActivity
 ADDED from AndroidManifest.xml:22:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:25:13

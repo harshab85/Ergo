@@ -2,19 +2,31 @@ package uoftprojects.ergo;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.GridView;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.view.View;
+import android.view.WindowManager;
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import android.widget.Toolbar;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uoftprojects.ergo.engine.SparkPlug;
+import uoftprojects.ergo.util.ActivityUtil;
 
 /**
  * Created by ryanprimeau on 15-03-22.
@@ -31,6 +43,12 @@ public class TopActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
+
+        ActivityUtil.setMainActivity(this);
+
+        videoView.setVisibility(View.INVISIBLE);
 
         toolbar.setTitle("Ergo Video Player!");
 
@@ -61,14 +79,86 @@ public class TopActivity extends Activity {
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(TopActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        System.out.println("HI!!");
+
+
+                        if (cursor.moveToPosition(position)) {
+                            int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                            String videoFilePath = cursor.getString(fileColumn);
+
+                            VideoView videoView = (VideoView) toggleVideoMode();
+                            MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+
+                            videoView.setMediaController(mediaController);
+                            videoView.setVideoPath(videoFilePath);
+
+                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    //toggleGalleryMode();
+                                    SparkPlug.stop();
+
+                                }
+                            });
+
+                            SparkPlug.start();
+                            videoView.start();
+                            //requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        }
+
+
                     }
                 })
         );
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        toggleGalleryMode();
+        SparkPlug.stop();
+    }
+
+    private void toggleFullscreen(boolean fullscreen)
+    {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        if (fullscreen)
+        {
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        }
+        else
+        {
+            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        }
+        getWindow().setAttributes(attrs);
+    }
+
+
+    private View toggleVideoMode() {
+        VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
+        videoView.setVisibility(View.VISIBLE);
+
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recycler.setVisibility(View.INVISIBLE);
+
+        toggleFullscreen(true);
+
+        return videoView;
+    }
+
+    private View toggleGalleryMode() {
+        VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
+        videoView.setVisibility(View.INVISIBLE);
+
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recycler.setVisibility(View.VISIBLE);
+
+        toggleFullscreen(false);
+        return recycler;
+    }
+
 
     private Cursor cursor;
     private List<VideoInfo> loadVideos(){
@@ -97,18 +187,18 @@ public class TopActivity extends Activity {
                 String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
                 String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
 
-                videoInfo.displayName = displayName;
+                videoInfo.displayName = "Finding Nemo";
                 videoInfo.filePath = filePath;
 
 
-                /*ContentResolver crThumb = getContentResolver();
+                ContentResolver crThumb = getContentResolver();
                 BitmapFactory.Options options=new BitmapFactory.Options();
                 options.inSampleSize = 1;
                 Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
                 System.out.println();
                 if(curThumb != null) {
-                    videoInfo.thumbPath = curThumb;
-                }*/
+                    videoInfo.thumbPath = String.valueOf(curThumb);
+                }
 
 
                 Cursor thumbCursor = managedQuery(
@@ -123,6 +213,8 @@ public class TopActivity extends Activity {
 
 
                 videos.add(videoInfo);
+
+
             } while (cursor.moveToNext());
         }
 
@@ -131,27 +223,27 @@ public class TopActivity extends Activity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
 

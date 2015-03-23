@@ -1,4 +1,4 @@
-package uoftprojects.ergo;
+package uoftprojects.ergo.decapitated;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -21,7 +21,9 @@ import android.view.View;
 
 import java.util.Locale;
 
+import uoftprojects.ergo.R;
 import uoftprojects.ergo.SignUpScreens.WelcomeFragments;
+import uoftprojects.ergo.VideoActivity;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
 

@@ -61,7 +61,7 @@ public class SparkPlug {
             GetUpdates getUpdates = new GetUpdates();
             getUpdates.execute();
             }
-        }, 5000, 2500);
+        }, 1000, 500);
     }
 
     static class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {

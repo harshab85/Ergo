@@ -32,8 +32,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
 
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         //public CardView cardViewErgo;
@@ -67,6 +65,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_card_view, parent, false);
+
+
+
         // set the view's size, margins, paddings and layout parameter
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -79,20 +80,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.mTextView.setText(mVideos.get(position).displayName);
 
+        holder.mImageView.setImageResource(R.drawable.ergoinspace);
 
         File imgFile = new  File(mVideos.get(position).thumbPath);
 
         if(imgFile.exists()){
-
+            System.out.println("EXISTS");
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
             holder.mImageView.setImageBitmap(myBitmap);
 
+        }else{
+
+            System.out.println("NOT EXISTS");
         }
 
         //holder.mImageView.setImageResource(mVideos.get(position).thumbPath);
         holder.mCardView.setCardElevation(25);
-
 
     }
 

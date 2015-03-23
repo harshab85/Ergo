@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.view.View;
+
 import android.widget.Toolbar;
 
 import java.util.ArrayList;
@@ -57,6 +59,14 @@ public class TopActivity extends Activity {
 
         mAdapter = new MyAdapter(videos);
         mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(TopActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        System.out.println("HI!!");
+                    }
+                })
+        );
 
     }
 
@@ -116,11 +126,7 @@ public class TopActivity extends Activity {
             } while (cursor.moveToNext());
         }
 
-        VideoInfo videoInfo = new VideoInfo();
 
-        videoInfo.displayName = "hi";
-        videos.add(videoInfo);
-        
         return videos;
     }
 

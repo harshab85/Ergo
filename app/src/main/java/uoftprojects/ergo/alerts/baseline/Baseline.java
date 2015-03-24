@@ -1,4 +1,4 @@
-package uoftprojects.ergo.alerts.handlers.baseline;
+package uoftprojects.ergo.alerts.baseline;
 
 /**
  * Created by Harsha Balasubramanian on 2/24/2015.

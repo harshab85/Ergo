@@ -1,4 +1,4 @@
-package uoftprojects.ergo.alerts.handlers;
+package uoftprojects.ergo.alerts.handlers.intf;
 
 import uoftprojects.ergo.metrics.IMetric;
 

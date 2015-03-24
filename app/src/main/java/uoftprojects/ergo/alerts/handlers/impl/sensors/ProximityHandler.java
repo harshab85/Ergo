@@ -1,12 +1,12 @@
-package uoftprojects.ergo.alerts.handlers;
+package uoftprojects.ergo.alerts.handlers.impl.sensors;
 
 import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import uoftprojects.ergo.R;
-import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
+import uoftprojects.ergo.alerts.handlers.intf.IHandler;
+import uoftprojects.ergo.alerts.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 import uoftprojects.ergo.metrics.Tilt;

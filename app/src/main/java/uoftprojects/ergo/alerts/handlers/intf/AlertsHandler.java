@@ -1,5 +1,7 @@
-package uoftprojects.ergo.alerts.handlers;
+package uoftprojects.ergo.alerts.handlers.intf;
 
+import uoftprojects.ergo.alerts.sensorhandlers.ProximityHandler;
+import uoftprojects.ergo.alerts.sensorhandlers.TiltHandler;
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
@@ -26,9 +28,9 @@ public class AlertsHandler {
         else if(type == IMetric.MetricType.Tilt){
             return TiltHandler.getInstance();
         }
-        else if(type == IMetric.MetricType.Time){
+        /*else if(type == IMetric.MetricType.Time){
             return TimerHandler.getInstance();
-        }
+        }*/
 
         return null;
     }
@@ -36,7 +38,6 @@ public class AlertsHandler {
     public static void cancelAlerts(){
         ProximityHandler.getInstance().cancel();
         TiltHandler.getInstance().cancel();
-        TimerHandler.getInstance().cancel();
     }
 
 }

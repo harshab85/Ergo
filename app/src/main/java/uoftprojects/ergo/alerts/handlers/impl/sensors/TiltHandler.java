@@ -1,10 +1,11 @@
-package uoftprojects.ergo.alerts.handlers;
+package uoftprojects.ergo.alerts.handlers.impl.sensors;
 
 import android.content.Context;
 import android.os.Vibrator;
 import android.widget.Toast;
 
-import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
+import uoftprojects.ergo.alerts.handlers.intf.IHandler;
+import uoftprojects.ergo.alerts.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Tilt;
 import uoftprojects.ergo.util.ActivityUtil;

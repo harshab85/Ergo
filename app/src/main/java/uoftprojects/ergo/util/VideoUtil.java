@@ -23,7 +23,6 @@ public final class VideoUtil {
                 VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (videoView != null && videoView.canPause()) {
                     videoView.pause();
-                    resize();
                     PAUSED = true;
                 }
             }
@@ -37,7 +36,7 @@ public final class VideoUtil {
                 MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (PAUSED && videoView != null && !videoView.isPlaying()) {
                     videoView.start();
-                    videoView.changeVideoSize(1.0f);
+
                     PAUSED = false;
 
                 }
@@ -45,25 +44,14 @@ public final class VideoUtil {
         });
     }
 
-    public static void resize() {
+    public static void resize(float size) {
+
+        final float whyisthisrequired = size;
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-
-
-                videoView.changeVideoSize(1.25f);
-
-
-//                RelativeLayout.LayoutParams videoviewlp = new RelativeLayout.LayoutParams(1000, 1000);
-//                videoviewlp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-//                videoviewlp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-//                videoView.setLayoutParams(videoviewlp);
-//                videoView.setScaleX(1.0f);
-//                videoView.setScaleY(1.0f);
-//                videoView.invalidate();
-
-                //videoView.onMeasure(10,10);
+                videoView.changeVideoSize(whyisthisrequired);
             }
         });
     }

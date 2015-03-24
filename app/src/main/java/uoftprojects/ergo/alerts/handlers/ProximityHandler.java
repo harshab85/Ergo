@@ -49,6 +49,13 @@ public class ProximityHandler implements IHandler {
 
         System.out.println(proximity.getRectArea());
         // If phone is too close (<25cm), face detection stops. Handles that case
+        if(proximity.getRectArea() != 0){
+            float trial = (proximity.getRectArea()/65000);
+            System.out.println("HERE IS THE FLOAT");
+            System.out.println(trial);
+            VideoUtil.resize(trial);
+        }
+
         if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
                 VideoUtil.pauseVideo();

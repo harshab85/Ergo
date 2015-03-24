@@ -58,7 +58,7 @@ public class ProximityHandler implements IHandler {
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+                        ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.proximity_alert_image);
                         imageView.setVisibility(View.VISIBLE);
 
                         // play audio
@@ -81,7 +81,7 @@ public class ProximityHandler implements IHandler {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.proximity_alert_image);
                 imageView.setVisibility(View.INVISIBLE);
             }
         });

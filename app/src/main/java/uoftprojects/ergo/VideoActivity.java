@@ -48,7 +48,7 @@ public class VideoActivity extends Activity {
 
     @Override
     protected void onPause() {
-        AlertsHandler.cancelAlerts();
+        //AlertsHandler.cancelAlerts();
         SparkPlug.stop();
         super.onPause();
     }

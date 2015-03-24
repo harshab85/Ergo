@@ -44,14 +44,13 @@ public final class VideoUtil {
         });
     }
 
-    public static void resize(float size) {
+    public static void resize(final float size) {
 
-        final float whyisthisrequired = size;
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                videoView.changeVideoSize(whyisthisrequired);
+                videoView.changeVideoSize(size);
             }
         });
     }

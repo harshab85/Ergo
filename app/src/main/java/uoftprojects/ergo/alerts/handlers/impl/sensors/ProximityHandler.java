@@ -59,6 +59,7 @@ public class ProximityHandler implements IHandler {
                     @Override
                     public void run() {
                         ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.proximity_alert_image);
+                        imageView.setImageResource(R.drawable.ergobackup);
                         imageView.setVisibility(View.VISIBLE);
 
                         // play audio

@@ -2,6 +2,7 @@ package uoftprojects.ergo.alerts.handlers.intf;
 
 import uoftprojects.ergo.alerts.handlers.impl.sensors.ProximityHandler;
 import uoftprojects.ergo.alerts.handlers.impl.sensors.TiltHandler;
+import uoftprojects.ergo.alerts.handlers.impl.timer.TimerHandler;
 import uoftprojects.ergo.metrics.IMetric;
 
 /**
@@ -28,9 +29,9 @@ public class AlertsHandler {
         else if(type == IMetric.MetricType.Tilt){
             return TiltHandler.getInstance();
         }
-        /*else if(type == IMetric.MetricType.Time){
+        else if(type == IMetric.MetricType.Time){
             return TimerHandler.getInstance();
-        }*/
+        }
 
         return null;
     }

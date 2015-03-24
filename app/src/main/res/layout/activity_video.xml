@@ -27,15 +27,11 @@
         android:visibility="invisible"/>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
         android:id="@+id/proximity_alert_image"
-        android:src="@drawable/ergobackup"
         android:visibility="invisible"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

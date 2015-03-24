@@ -30,8 +30,8 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".MaterialVideoSelectionActivity"
-            android:label="@string/title_activity_material_video_selection" >
+            android:name=".MainActivity"
+            android:label= "MainActivity" >
         </activity>
     </application>
 

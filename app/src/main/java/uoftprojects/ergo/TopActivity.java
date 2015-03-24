@@ -1,6 +1,7 @@
 package uoftprojects.ergo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import java.util.List;
 import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
+import android.content.SharedPreferences;
+
 
 /**
  * Created by ryanprimeau on 15-03-22.
@@ -53,6 +56,25 @@ public class TopActivity extends Activity {
 
         toolbar.setTitle("Ergo Video Player!");
 
+        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+
+
+        if(sharedPreferences != null) {
+            boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
+            if (!setupCompleted) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        }
+
+        initialize();
+
+
+    }
+
+    private void initialize() {
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -70,8 +92,6 @@ public class TopActivity extends Activity {
 //        for(int i = 0 ; i < mDataset.length; i++){
 //            mDataset[i] = "Title:"+i;
 //        }
-
-
 
 
         List<VideoInfo> videos = loadVideos(); //,"Batman","Elmo","Shrek","Bugs Life","Frozen"};
@@ -112,7 +132,6 @@ public class TopActivity extends Activity {
                     }
                 })
         );
-
     }
 
 

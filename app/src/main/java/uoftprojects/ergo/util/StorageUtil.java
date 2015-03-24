@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
  */
 public final class StorageUtil {
 
-    private static final SharedPreferences sharedPreferences = ActivityUtil.getMainActivity().getSharedPreferences("ErgoSetup", 0);
+    private static final SharedPreferences sharedPreferences = ActivityUtil.getCurrentActivity().getSharedPreferences("ErgoSetup", 0);
     private static final SharedPreferences.Editor editor = sharedPreferences.edit();
 
     public static boolean addLocalFlag(String flagName, boolean value){

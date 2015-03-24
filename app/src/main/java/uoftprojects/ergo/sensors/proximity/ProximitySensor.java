@@ -68,7 +68,7 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
         }
 
         try {
-            int rotation = ActivityUtil.getMainActivity().getWindowManager().getDefaultDisplay().getRotation();
+            int rotation = ActivityUtil.getCurrentActivity().getWindowManager().getDefaultDisplay().getRotation();
             switch (rotation){
                 case 0:
                     camera.setDisplayOrientation(90);
@@ -87,7 +87,7 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
             camera.startFaceDetection();
         }
         catch (Throwable e) {
-            Toast.makeText(ActivityUtil.getMainActivity(), "Error in proximity sensor", Toast.LENGTH_LONG).show();
+            Toast.makeText(ActivityUtil.getCurrentActivity(), "Error in proximity sensor", Toast.LENGTH_LONG).show();
         }
     }
 

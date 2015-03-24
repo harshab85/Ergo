@@ -7,13 +7,13 @@ import android.app.Activity;
  */
 public final class ActivityUtil {
 
-    private static Activity mainActivity;
+    private static Activity currentActivity;
 
-    public static void setMainActivity(Activity activity){
-        mainActivity = activity;
+    public static void setCurrentActivity(Activity activity){
+        currentActivity = activity;
     }
 
-    public static Activity getMainActivity(){
-        return mainActivity;
+    public static Activity getCurrentActivity(){
+        return currentActivity;
     }
 }

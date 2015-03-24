@@ -52,18 +52,19 @@ public class ProximityHandler implements IHandler {
         // If phone is too close (<25cm), face detection stops. Handles that case
         if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
-                VideoUtil.pauseVideo();
 
                 // Add splash screen\
-                ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+                ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.proximity_alert_image);
+                        VideoUtil.pauseVideo();
+
+                        ImageView imageView = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
                         imageView.setImageResource(R.drawable.ergobackup);
                         imageView.setVisibility(View.VISIBLE);
 
                         // play audio
-                        MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_too_close);
+                        MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getCurrentActivity(), R.raw.ergo_too_close);
                         mediaPlayer.start();
                     }
                 });
@@ -79,13 +80,15 @@ public class ProximityHandler implements IHandler {
 
     @Override
     public void cancel() {
-        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+        ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.proximity_alert_image);
+                ImageView  imageView = (ImageView)ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
+                imageView.setImageResource(0);
                 imageView.setVisibility(View.INVISIBLE);
+
+                VideoUtil.resumeVideoWhenPaused();
             }
         });
-        VideoUtil.resumeVideoWhenPaused();
     }
 }

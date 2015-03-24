@@ -21,7 +21,7 @@ public class TiltHandler implements IHandler {
     private static TiltHandler INSTANCE = null;
 
     private TiltHandler(){
-        vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+        vibrator = (Vibrator) ActivityUtil.getCurrentActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
     }
 
     public static TiltHandler getInstance(){
@@ -46,18 +46,23 @@ public class TiltHandler implements IHandler {
         float tiltAngle = tilt.getValue();
         if(tiltAngle > Baseline.PHONE_FLAT_MAX_ANGLE) {
             if (tiltAngle < Baseline.MIN_TILT_ANGLE || tiltAngle > Baseline.MAX_TILT_ANGLE) {
-                VideoUtil.pauseVideo();
+
+                ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        VideoUtil.pauseVideo();
+                    }
+                });
 
                 String message = "Hold phone at the correct angle (40 to 70). Current: " + tiltAngle;
 
                 vibrator.vibrate(Baseline.VIBRATION_ALERT_PATTERN, 0);
-                Toast.makeText(ActivityUtil.getMainActivity(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityUtil.getCurrentActivity(), message, Toast.LENGTH_SHORT).show();
 
                 return true;
             }
             else{
-                VideoUtil.resumeVideoWhenPaused();
-                vibrator.cancel();
+                cancel();
             }
         }
 
@@ -66,9 +71,17 @@ public class TiltHandler implements IHandler {
 
     @Override
     public void cancel() {
-        if(vibrator != null){
-            vibrator.cancel();
-        }
+
+        ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(vibrator != null){
+                    vibrator.cancel();
+                }
+
+                VideoUtil.resumeVideoWhenPaused();
+            }
+        });
     }
 
 }

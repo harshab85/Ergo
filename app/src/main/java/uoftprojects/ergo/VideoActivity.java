@@ -1,16 +1,11 @@
 package uoftprojects.ergo;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.MediaController;
@@ -61,7 +56,7 @@ public class VideoActivity extends Activity {
 
     private void initialize() {
 
-        ActivityUtil.setMainActivity(this);
+        ActivityUtil.setCurrentActivity(this);
 
         List<VideoInfo> videos = loadVideos();
 
@@ -96,7 +91,7 @@ public class VideoActivity extends Activity {
                     String videoFilePath = cursor.getString(fileColumn);
 
                     VideoView videoView = (VideoView) toggleVideoMode();
-                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+                    MediaController mediaController = new MediaController(ActivityUtil.getCurrentActivity());
 
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
@@ -166,17 +161,6 @@ public class VideoActivity extends Activity {
                 videoInfo.displayName = displayName;
                 videoInfo.filePath = filePath;
 
-
-                /*ContentResolver crThumb = getContentResolver();
-                BitmapFactory.Options options=new BitmapFactory.Options();
-                options.inSampleSize = 1;
-                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
-                System.out.println();
-                if(curThumb != null) {
-                    videoInfo.thumbPath = curThumb;
-                }*/
-
-
                 Cursor thumbCursor = managedQuery(
                         MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
                         thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
@@ -201,3 +185,9 @@ class VideoInfo {
     String filePath;
     String thumbPath;
 }
+
+
+
+
+
+

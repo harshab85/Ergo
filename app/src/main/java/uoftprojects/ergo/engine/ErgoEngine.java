@@ -26,7 +26,7 @@ public class ErgoEngine implements IRegistration {
 
     @Override
     public void register() {
-        SensorManager sensorManager = (SensorManager) ActivityUtil.getMainActivity().getSystemService(Activity.SENSOR_SERVICE);
+        SensorManager sensorManager = (SensorManager) ActivityUtil.getCurrentActivity().getSystemService(Activity.SENSOR_SERVICE);
 
         tiltSensor = new TiltSensor(sensorManager);
 

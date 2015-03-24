@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
             }
         }*/
 
-        ActivityUtil.setMainActivity(this);
+        ActivityUtil.setCurrentActivity(this);
 
         if( SetupUtil.isSetupCompeted()){
             openVideoLibrary(findViewById(R.id.button));

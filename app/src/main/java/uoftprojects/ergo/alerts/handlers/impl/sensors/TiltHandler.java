@@ -65,6 +65,9 @@ public class TiltHandler implements IHandler {
                 cancel();
             }
         }
+        else{
+            cancel();
+        }
 
         return false;
     }

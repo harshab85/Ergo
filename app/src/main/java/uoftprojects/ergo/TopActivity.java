@@ -25,6 +25,7 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
+import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
 
@@ -187,7 +188,7 @@ public class TopActivity extends Activity {
                 String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
                 String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
 
-                videoInfo.displayName = "Finding Nemo";
+                videoInfo.displayName = displayName;
                 videoInfo.filePath = filePath;
 
 

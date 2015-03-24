@@ -1,7 +1,7 @@
 package uoftprojects.ergo.alerts.handlers.intf;
 
-import uoftprojects.ergo.alerts.sensorhandlers.ProximityHandler;
-import uoftprojects.ergo.alerts.sensorhandlers.TiltHandler;
+import uoftprojects.ergo.alerts.handlers.impl.sensors.ProximityHandler;
+import uoftprojects.ergo.alerts.handlers.impl.sensors.TiltHandler;
 import uoftprojects.ergo.metrics.IMetric;
 
 /**

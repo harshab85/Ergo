@@ -1,11 +1,9 @@
 package uoftprojects.ergo.engine;
 
-import android.app.Activity;
-
 import java.util.List;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
-import uoftprojects.ergo.alerts.handlers.IHandler;
+import uoftprojects.ergo.alerts.handlers.intf.AlertsHandler;
+import uoftprojects.ergo.alerts.handlers.intf.IHandler;
 import uoftprojects.ergo.metrics.IMetric;
 
 /**

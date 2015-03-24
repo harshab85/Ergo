@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
+import uoftprojects.ergo.alerts.handlers.intf.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
 

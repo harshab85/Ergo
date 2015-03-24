@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
+import uoftprojects.ergo.alerts.handlers.intf.AlertsHandler;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 

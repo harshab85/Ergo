@@ -1,27 +1,38 @@
 package uoftprojects.ergo;
 
+import android.app.Activity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.content.SharedPreferences;
+
+
+
+
+
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.Locale;
 
+import uoftprojects.ergo.R;
 import uoftprojects.ergo.SignUpScreens.WelcomeFragments;
+import uoftprojects.ergo.VideoActivity;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
 
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
  */
-public class MainActivity extends ActionBarActivity implements WelcomeFragments.OnFragmentInteractionListener{
+public class MainActivity extends FragmentActivity implements WelcomeFragments.OnFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -51,30 +62,32 @@ public class MainActivity extends ActionBarActivity implements WelcomeFragments.
             }
         }*/
 
-        ActivityUtil.setMainActivity(this);
-
-        if( SetupUtil.isSetupCompeted()){
-            openVideoLibrary(findViewById(R.id.button));
-        }
-
+      //  ActivityUtil.setMainActivity(this);
+//
+//        if( SetupUtil.isSetupCompeted()){
+ //           openVideoLibrary(findViewById(R.id.button));
+//        }
+//
        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+ //       primary sections of the activity.
+
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
     }
 
     public void openVideoLibrary(View view) {
         //TODO: Add are you sure you want to proceed without an email address?
-        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
-        editor.commit();*/
-        SetupUtil.setupCompleted();
+        editor.commit();
+        //SetupUtil.setupCompleted();
 
-        Intent intent = new Intent(this, VideoActivity.class);
+        Intent intent = new Intent(this, TopActivity.class);
         startActivity(intent);
         finish();
     }

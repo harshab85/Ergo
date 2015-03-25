@@ -55,9 +55,11 @@ public class TiltHandler implements IHandler {
                 return true;
             }
             else{
-                VideoUtil.resumeVideoWhenPaused();
-                vibrator.cancel();
+                cancel();
             }
+        }
+        else{
+            cancel();
         }
 
         return false;
@@ -68,6 +70,9 @@ public class TiltHandler implements IHandler {
         if(vibrator != null){
             vibrator.cancel();
         }
+
+        VideoUtil.resumeVideoWhenPaused();
+
     }
 
 }

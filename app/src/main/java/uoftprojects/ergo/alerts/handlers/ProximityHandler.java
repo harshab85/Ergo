@@ -17,6 +17,8 @@ import uoftprojects.ergo.util.VideoUtil;
  */
 public class ProximityHandler implements IHandler {
 
+    private double factor = 1;
+
     private static ProximityHandler INSTANCE = null;
 
     private ProximityHandler(){
@@ -47,8 +49,15 @@ public class ProximityHandler implements IHandler {
             phoneAngle = ((Tilt)tilt).getValue();
         }
 
-        System.out.println(proximity.getRectArea());
+        //System.out.println(proximity.getRectArea());
         // If phone is too close (<25cm), face detection stops. Handles that case
+        /*if(proximity.getRectArea() != 0){
+            float trial = (proximity.getRectArea()/65000);
+            System.out.println("HERE IS THE FLOAT");
+            System.out.println(trial);
+            VideoUtil.resize(trial);
+        }*/
+
         if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
                 VideoUtil.pauseVideo();
@@ -58,8 +67,16 @@ public class ProximityHandler implements IHandler {
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
-                        imageView.setVisibility(View.VISIBLE);
+
+                        if(factor > Baseline.MAX_ZOOM_FACTOR) {
+                            ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+                            imageView.setVisibility(View.VISIBLE);
+                            imageView.bringToFront();
+                        }
+                        else {
+                            factor = factor + 0.2;
+                            VideoUtil.resize((float) factor);
+                        }
                     }
                 });
 
@@ -77,10 +94,13 @@ public class ProximityHandler implements IHandler {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
-                imageView.setVisibility(View.INVISIBLE);
+            ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
+            imageView.setVisibility(View.INVISIBLE);
             }
         });
+        VideoUtil.resize(1f);
         VideoUtil.resumeVideoWhenPaused();
+
+        factor = 1;
     }
 }

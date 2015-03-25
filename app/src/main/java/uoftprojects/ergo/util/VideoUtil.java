@@ -1,7 +1,9 @@
 package uoftprojects.ergo.util;
 
 import android.app.Activity;
+import android.view.Window;
 import android.widget.VideoView;
+import android.widget.RelativeLayout;
 
 import uoftprojects.ergo.R;
 
@@ -18,7 +20,7 @@ public final class VideoUtil {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (videoView != null && videoView.canPause()) {
                     videoView.pause();
                     PAUSED = true;
@@ -31,14 +33,28 @@ public final class VideoUtil {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                 if (PAUSED && videoView != null && !videoView.isPlaying()) {
                     videoView.start();
+
                     PAUSED = false;
+
                 }
             }
         });
     }
+
+    public static void resize(final float size) {
+
+        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+                videoView.changeVideoSize(size);
+            }
+        });
+    }
+
 
     public static void setMovedToBkgrnd() {
         StorageUtil.addLocalFlag(MOVED_TO_BKGRND_FLAG_NAME, true);

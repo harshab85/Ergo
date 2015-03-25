@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import uoftprojects.ergo.alerts.handlers.AlertsHandler;
+import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 
@@ -61,7 +62,7 @@ public class SparkPlug {
             GetUpdates getUpdates = new GetUpdates();
             getUpdates.execute();
             }
-        }, 1000, 500);
+        }, Baseline.POLL_START_DELAY, Baseline.POLL_INTERVAL);
     }
 
     static class GetUpdates extends AsyncTask<String, Void, List<IMetric>> {

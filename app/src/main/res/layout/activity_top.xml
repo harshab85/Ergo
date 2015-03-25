@@ -29,7 +29,13 @@
         android:layout_centerHorizontal="true" />
 
 
-
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView3"
+        android:src="@drawable/ergobackup"
+        android:visibility="invisible"
+        />
     <!--<VideoView-->
         <!--android:id="@+id/videoViewMaterial"-->
         <!--android:layout_width="fill_parent"-->

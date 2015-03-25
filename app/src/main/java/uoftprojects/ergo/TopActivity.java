@@ -117,7 +117,7 @@ public class TopActivity extends Activity {
                             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 @Override
                                 public void onCompletion(MediaPlayer mp) {
-                                    //toggleGalleryMode();
+                                    toggleGalleryMode();
                                     SparkPlug.stop();
 
                                 }
@@ -134,6 +134,17 @@ public class TopActivity extends Activity {
         );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialize();
+    }
+
+    @Override
+    protected void onPause() {
+        SparkPlug.stop();
+        super.onPause();
+    }
 
     @Override
     public void onBackPressed() {

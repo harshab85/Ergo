@@ -59,6 +59,19 @@
         android:layout_height="fill_parent"
         android:visibility="invisible"/>
 
+    <SeekBar
+        android:id="@+id/tilt_detection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:outlineProvider="background"
+        android:layout_marginLeft="250dp"
+        android:rotation="270"
+        android:clickable="false"
+        android:longClickable="false"
+        android:max="360"
+        android:visibility="invisible"
+        />
 
 
 </RelativeLayout>

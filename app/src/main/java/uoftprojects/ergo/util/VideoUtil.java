@@ -16,32 +16,22 @@ public final class VideoUtil {
 
     private static boolean PAUSED = false;
 
+    private static boolean isExerciseRunning = false;
+
     public static void pauseVideo() {
-        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                if (videoView != null && videoView.canPause()) {
-                    videoView.pause();
-                    PAUSED = true;
-                }
-            }
-        });
+        VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+        if (videoView != null && videoView.canPause()) {
+            videoView.pause();
+            PAUSED = true;
+        }
     }
 
     public static void resumeVideoWhenPaused() {
-        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                MyVideoView videoView = (MyVideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                if (PAUSED && videoView != null && !videoView.isPlaying()) {
-                    videoView.start();
-
-                    PAUSED = false;
-
-                }
-            }
-        });
+        VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+        if (PAUSED && videoView != null && !videoView.isPlaying()) {
+            videoView.start();
+            PAUSED = false;
+        }
     }
 
     public static void resize(final float size) {
@@ -62,6 +52,14 @@ public final class VideoUtil {
 
     public static boolean fromBackGround() {
         return StorageUtil.getFlag(MOVED_TO_BKGRND_FLAG_NAME);
+    }
+
+    public static boolean isExerciseRunning(){
+        return isExerciseRunning;
+    }
+
+    public static void setIsExerciseRunning(boolean isRunning){
+        isExerciseRunning = isRunning;
     }
 
 }

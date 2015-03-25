@@ -1,5 +1,6 @@
 package uoftprojects.ergo.alerts.handlers;
 
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,6 +36,10 @@ public class ProximityHandler implements IHandler {
     @Override
     public boolean handle(IMetric metric) {
 
+        if(VideoUtil.isExerciseRunning()){
+            return false;
+        }
+
         Proximity proximity = null;
         if(metric instanceof Proximity){
             proximity = (Proximity)metric;
@@ -49,29 +54,23 @@ public class ProximityHandler implements IHandler {
             phoneAngle = ((Tilt)tilt).getValue();
         }
 
-        //System.out.println(proximity.getRectArea());
-        // If phone is too close (<25cm), face detection stops. Handles that case
-        /*if(proximity.getRectArea() != 0){
-            float trial = (proximity.getRectArea()/65000);
-            System.out.println("HERE IS THE FLOAT");
-            System.out.println(trial);
-            VideoUtil.resize(trial);
-        }*/
-
         if(proximity.getRectArea() == 0){
             if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
-                VideoUtil.pauseVideo();
-                //Toast.makeText(ActivityUtil.getMainActivity(), "Too close to face", Toast.LENGTH_SHORT).show();
 
-                // Add splash screen\
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        VideoUtil.pauseVideo();
 
                         if(factor > Baseline.MAX_ZOOM_FACTOR) {
                             ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
                             imageView.setVisibility(View.VISIBLE);
                             imageView.bringToFront();
+
+                            // play audio
+                            MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_too_close);
+                            mediaPlayer.start();
                         }
                         else {
                             factor = factor + 0.2;
@@ -96,11 +95,13 @@ public class ProximityHandler implements IHandler {
             public void run() {
             ImageView  imageView = (ImageView)ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
             imageView.setVisibility(View.INVISIBLE);
+
+                VideoUtil.resize(1f);
+                VideoUtil.resumeVideoWhenPaused();
+
+                factor = 1;
             }
         });
-        VideoUtil.resize(1f);
-        VideoUtil.resumeVideoWhenPaused();
 
-        factor = 1;
     }
 }

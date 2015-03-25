@@ -15,12 +15,12 @@ import uoftprojects.ergo.util.VideoUtil;
  */
 public class TiltHandler implements IHandler {
 
-    private Vibrator vibrator = null;
+    //private Vibrator vibrator = null;
 
     private static TiltHandler INSTANCE = null;
 
     private TiltHandler(){
-        vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+        //vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
     }
 
     public static TiltHandler getInstance(){
@@ -34,6 +34,10 @@ public class TiltHandler implements IHandler {
 
     public boolean handle(IMetric metric){
 
+        if(VideoUtil.isExerciseRunning()){
+            return false;
+        }
+
         Tilt tilt = null;
         if(metric instanceof Tilt){
             tilt = (Tilt)metric;
@@ -45,11 +49,18 @@ public class TiltHandler implements IHandler {
         float tiltAngle = tilt.getValue();
         if(tiltAngle > Baseline.PHONE_FLAT_MAX_ANGLE) {
             if (tiltAngle < Baseline.MIN_TILT_ANGLE || tiltAngle > Baseline.MAX_TILT_ANGLE) {
-                VideoUtil.pauseVideo();
+
+                ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        VideoUtil.pauseVideo();
+                    }
+                });
+
 
                 String message = "Hold phone at the correct angle (40 to 70). Current: " + tiltAngle;
 
-                vibrator.vibrate(Baseline.VIBRATION_ALERT_PATTERN, 0);
+                //vibrator.vibrate(Baseline.VIBRATION_ALERT_PATTERN, 0);
                 Toast.makeText(ActivityUtil.getMainActivity(), message, Toast.LENGTH_SHORT).show();
 
                 return true;
@@ -67,11 +78,17 @@ public class TiltHandler implements IHandler {
 
     @Override
     public void cancel() {
-        if(vibrator != null){
+        /*if(vibrator != null){
             vibrator.cancel();
-        }
+        }*/
 
-        VideoUtil.resumeVideoWhenPaused();
+        ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VideoUtil.resumeVideoWhenPaused();
+            }
+        });
+
 
     }
 

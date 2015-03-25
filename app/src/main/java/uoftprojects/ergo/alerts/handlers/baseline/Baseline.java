@@ -20,8 +20,8 @@ public final class Baseline {
     public static final long MAX_RECT_AREA = 800000;
 
     // Sensor polling - msec
-    public static final int POLL_START_DELAY = 1000;
-    public static final int POLL_INTERVAL = 1000;
+    public static final int POLL_START_DELAY = 3000;
+    public static final int POLL_INTERVAL = 750;
 
 
 

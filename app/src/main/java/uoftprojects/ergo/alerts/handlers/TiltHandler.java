@@ -1,9 +1,11 @@
 package uoftprojects.ergo.alerts.handlers;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -64,15 +66,32 @@ public class TiltHandler implements IHandler {
                         /*VideoView view2 = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
                         videoSeekTime = view2.getCurrentPosition();*/
                         //view2.setVisibility(View.INVISIBLE);
+                        // Play instruction audio
+                        MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
+                        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
+                                seekBar.bringToFront();
+                                seekBar.setVisibility(View.VISIBLE);
+                                //seekBar.setEnabled(false);
 
-                        
+                                seekBar.setProgress((int)tiltAngle);
+                                //seekBar.setAlpha(1f);
+                            }
+                        });
+                        mediaPlayer.start();
 
-                        seekBar.setVisibility(View.VISIBLE);
+
+                        //VideoView view2 = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+                        //view2.(0.5f);
+
+
+
+                       /* seekBar.setVisibility(View.VISIBLE);
                         //seekBar.setEnabled(false);
                         seekBar.bringToFront();
                         seekBar.setProgress((int)tiltAngle);
-                        seekBar.setAlpha(1f);
-
+                        seekBar.setAlpha(1f);*/
                         Toast.makeText(ActivityUtil.getMainActivity(), "Ideal tilt angle (40 to 70). Current : " + tiltAngle, Toast.LENGTH_SHORT).show();
                     }
                 });

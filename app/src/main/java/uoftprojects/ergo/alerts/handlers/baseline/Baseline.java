@@ -21,7 +21,7 @@ public final class Baseline {
 
     // Sensor polling - msec
     public static final int POLL_START_DELAY = 3000;
-    public static final int POLL_INTERVAL = 750;
+    public static final int POLL_INTERVAL = 1750;
 
 
 

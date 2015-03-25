@@ -59,6 +59,7 @@
         android:layout_alignStart="@+id/button"
         android:layout_alignRight="@+id/button"
         android:layout_alignEnd="@+id/button"
-        android:text="harshab85@gmail.com"/>
+        android:text="harshab85@gmail.com"
+        android:textColor="#ff000000" />
 
 </RelativeLayout>

@@ -59,7 +59,7 @@ public class ProximityHandler implements IHandler {
                     public void run() {
                         VideoUtil.pauseVideo();
 
-                        ImageView imageView = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
+                        ImageView imageView = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_proximity_alert);
                         imageView.setImageResource(R.drawable.ergobackup);
                         imageView.setVisibility(View.VISIBLE);
 
@@ -83,7 +83,7 @@ public class ProximityHandler implements IHandler {
         ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView  imageView = (ImageView)ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
+                ImageView  imageView = (ImageView)ActivityUtil.getCurrentActivity().findViewById(R.id.image_proximity_alert);
                 imageView.setImageResource(0);
                 imageView.setVisibility(View.INVISIBLE);
 

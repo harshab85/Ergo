@@ -13,7 +13,7 @@ public final class Baseline {
     public static final long[] VIBRATION_ALERT_PATTERN = new long[]{500, 50};
 
     // Timer Baseline
-    public static final long MAX_CONTINUOUS_DEVICE_TIME = 25000;
+    public static final long MAX_CONTINUOUS_DEVICE_TIME = 5000;
 
     // Proximity Baseline
     public static final long MIN_RECT_AREA = 500000;

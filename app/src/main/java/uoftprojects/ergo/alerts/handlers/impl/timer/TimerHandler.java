@@ -82,23 +82,16 @@ public class TimerHandler implements IHandler {
                     // play audio
                     MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getCurrentActivity(), R.raw.ergo_blink_2);
 
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
+                                ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView textView = (TextView) ActivityUtil.getCurrentActivity().findViewById(R.id.text_placeholder);
-                                    textView.setText("You eyes must be getting pretty tired looking at this screen. A quick way to help our eyes stay alert is to blink. By blinking you make tears that keep your eyes refreshed. Let’s bink 30 times together -- follow me.");
-                                    textView.setVisibility(View.VISIBLE);
-
-                                    Bitmap b = BitmapFactory.decodeResource(ActivityUtil.getCurrentActivity().getResources(), R.drawable.ergo_alert_2);
-                                    Drawable d = ActivityUtil.getCurrentActivity().getResources().getDrawable(R.drawable.ergo_alert_2);
-                                    ImageView imageView = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
-                                    imageView.setVisibility(View.VISIBLE);
-                                    imageView.setImageBitmap(b);
-                                    current = b;
-                                }
+                                TextView textView = (TextView) ActivityUtil.getCurrentActivity().findViewById(R.id.text_placeholder);
+                                textView.setText("You eyes must be getting pretty tired looking at this screen. A quick way to help our eyes stay alert is to blink. By blinking you make tears that keep your eyes refreshed. Let’s bink 30 times together -- follow me.");
+                                textView.setVisibility(View.VISIBLE);
+                            }
                             });
                         }
                     });
@@ -110,61 +103,17 @@ public class TimerHandler implements IHandler {
                                 @Override
                                 public void run() {
 
+                            ImageView imageView_Alert = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_ergo_alert);
+                            ImageView imageView_Blink = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_ergo_blink);
 
-                                    final ImageView imageView = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
+                             for(int i=0; i<1000000; i++) {
+                                 imageView_Alert.setVisibility(View.VISIBLE);
+                                 imageView_Alert.bringToFront();
+                                 imageView_Blink.setVisibility(View.VISIBLE);
+                                 imageView_Blink.bringToFront();
+                             }
 
-                                    final Bitmap b1 = BitmapFactory.decodeResource(ActivityUtil.getCurrentActivity().getResources(), R.drawable.ergo_alert_2);
-                                    final Bitmap b2 = BitmapFactory.decodeResource(ActivityUtil.getCurrentActivity().getResources(), R.drawable.ergo_blink_3);
-
-                                    Drawable d1 = ActivityUtil.getCurrentActivity().getResources().getDrawable(R.drawable.ergo_alert_2);
-                                    java.util.Timer timer = new java.util.Timer();
-                                    Drawable d2 = ActivityUtil.getCurrentActivity().getResources().getDrawable(R.drawable.ergo_blink_3);
-
-                                    timer.scheduleAtFixedRate(new TimerTask() {
-                                        @Override
-                                        public void run() {
-
-                                            if(count > 0){
-                                                count--;
-                                            }
-                                            else{
-                                                isRunning = false;
-                                                this.cancel();
-                                            }
-
-                                            if(current == b1) {
-                                                imageView.setImageBitmap(b2);
-                                                current = b2;
-                                            }
-                                            else{
-                                                imageView.setImageBitmap(b1);
-                                                current = b1;
-                                            }
-
-                                        }
-                                    }, 2000, 5000);
-
-
-
-
-
-
-
-
-
-
-                                    //imageView.setImageBitmap(b1);
-                                    //imageView.setImageBitmap(b2);
-                                    //imageView.setImageBitmap(b1);
-
-                                    //for (int i = 0; i<10; i++) {
-                                    /*imageView.setImageDrawable(d2);
-                                    sleep(5);*/
-                                        /*imageView.setImageDrawable(d1);
-                                        sleep(5);*/
-                        //            }
-
-                                    //isRunning = false;
+                             isRunning = false;
 
                         }
                                                   });
@@ -197,12 +146,12 @@ public class TimerHandler implements IHandler {
         ActivityUtil.getCurrentActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageView imageView1 = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_1);
+                ImageView imageView1 = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_ergo_alert);
                 imageView1.setVisibility(View.INVISIBLE);
 
-                /*ImageView imageView2 = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_placeholder_2);
+                ImageView imageView2 = (ImageView) ActivityUtil.getCurrentActivity().findViewById(R.id.image_ergo_blink);
                 imageView2.setVisibility(View.INVISIBLE);
-*/
+
                 TextView textView = (TextView) ActivityUtil.getCurrentActivity().findViewById(R.id.text_placeholder);
                 textView.setVisibility(View.INVISIBLE);
 

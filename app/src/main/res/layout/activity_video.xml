@@ -39,9 +39,26 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/image_placeholder_1"
+        android:id="@+id/image_proximity_alert"
         android:visibility="invisible"
-        android:layout_below="@+id/text_placeholder"/>
+        android:layout_below="@+id/text_placeholder"
+        android:src="@drawable/ergobackup"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_ergo_alert"
+        android:visibility="invisible"
+        android:layout_below="@+id/text_placeholder"
+        android:src="@drawable/ergo_alert_2"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_ergo_blink"
+        android:visibility="invisible"
+        android:layout_below="@+id/text_placeholder"
+        android:src="@drawable/ergo_blink_3"/>
 
 
 </RelativeLayout>

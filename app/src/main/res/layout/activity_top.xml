@@ -64,14 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:outlineProvider="background"
-        android:layout_marginLeft="250dp"
-        android:rotation="270"
-        android:clickable="false"
-        android:longClickable="false"
-        android:max="360"
+        android:max="90"
         android:visibility="invisible"
-        />
+        android:minWidth="100dp"/>
 
 
 </RelativeLayout>

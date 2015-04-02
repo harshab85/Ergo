@@ -1,6 +1,8 @@
 package uoftprojects.ergo.alerts.handlers;
 
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,10 +20,13 @@ import uoftprojects.ergo.util.VideoUtil;
 public class ProximityHandler implements IHandler {
 
     private double factor = 1;
-
     private static ProximityHandler INSTANCE = null;
+    private Vibrator vibrator = null;
+
 
     private ProximityHandler(){
+        vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+
     }
 
     public static ProximityHandler getInstance(){
@@ -62,14 +67,16 @@ public class ProximityHandler implements IHandler {
 
                         VideoUtil.pauseVideo();
 
+                        vibrator.vibrate(BaselineUtil.VIBRATION_ALERT_PATTERN, 0);
+
+                        // play audio
+                        MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_too_close);
+                        mediaPlayer.start();
+
                         if(factor > BaselineUtil.MAX_ZOOM_FACTOR) {
                             ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
                             imageView.setVisibility(View.VISIBLE);
                             imageView.bringToFront();
-
-                            // play audio
-                            MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_too_close);
-                            mediaPlayer.start();
                         }
                         else {
                             factor = factor + 0.2;
@@ -89,6 +96,11 @@ public class ProximityHandler implements IHandler {
 
     @Override
     public void cancel() {
+
+        if(vibrator != null){
+            vibrator.cancel();
+        }
+
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

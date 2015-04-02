@@ -10,7 +10,7 @@ public final class BaselineUtil {
     public static final int MAX_TILT_ANGLE = 70;
     public static final int PHONE_FLAT_MAX_ANGLE = 10;
     public static final int PHONE_MIN_USAGE_ANGLE = 20;
-    public static final long[] VIBRATION_ALERT_PATTERN = new long[]{1000, 50};
+    public static final long[] VIBRATION_ALERT_PATTERN = new long[]{300, 50};
 
     // Timer Baseline
     public static final long MAX_CONTINUOUS_DEVICE_TIME = 60000;
@@ -26,5 +26,5 @@ public final class BaselineUtil {
 
 
     // Max zoom factor
-    public static final double MAX_ZOOM_FACTOR = 2.0;
+    public static final double MAX_ZOOM_FACTOR = 1.5;
 }

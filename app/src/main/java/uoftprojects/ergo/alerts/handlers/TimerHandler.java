@@ -3,14 +3,11 @@ package uoftprojects.ergo.alerts.handlers;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import uoftprojects.ergo.R;
-import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
-import uoftprojects.ergo.engine.SparkPlug;
+import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.StartTime;
 import uoftprojects.ergo.sensors.timer.Timer;
@@ -55,7 +52,7 @@ public class TimerHandler implements IHandler {
         }
 
         long currentTime = System.currentTimeMillis();
-        if((currentTime - startTime.getTime()) >= Baseline.MAX_CONTINUOUS_DEVICE_TIME) {
+        if((currentTime - startTime.getTime()) >= BaselineUtil.MAX_CONTINUOUS_DEVICE_TIME) {
 
             // Show Text
             ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {

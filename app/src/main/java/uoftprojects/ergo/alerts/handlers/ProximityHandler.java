@@ -3,10 +3,9 @@ package uoftprojects.ergo.alerts.handlers;
 import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import uoftprojects.ergo.R;
-import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
+import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
 import uoftprojects.ergo.metrics.Tilt;
@@ -55,7 +54,7 @@ public class ProximityHandler implements IHandler {
         }
 
         if(proximity.getRectArea() == 0){
-            if(phoneAngle > Baseline.PHONE_MIN_USAGE_ANGLE){
+            if(phoneAngle > BaselineUtil.PHONE_MIN_USAGE_ANGLE){
 
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -63,7 +62,7 @@ public class ProximityHandler implements IHandler {
 
                         VideoUtil.pauseVideo();
 
-                        if(factor > Baseline.MAX_ZOOM_FACTOR) {
+                        if(factor > BaselineUtil.MAX_ZOOM_FACTOR) {
                             ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
                             imageView.setVisibility(View.VISIBLE);
                             imageView.bringToFront();

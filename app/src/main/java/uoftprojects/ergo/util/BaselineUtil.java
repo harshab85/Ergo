@@ -1,9 +1,9 @@
-package uoftprojects.ergo.alerts.handlers.baseline;
+package uoftprojects.ergo.util;
 
 /**
  * Created by Harsha Balasubramanian on 2/24/2015.
  */
-public final class Baseline {
+public final class BaselineUtil {
 
     // Tilt Baseline
     public static final int MIN_TILT_ANGLE = 40;

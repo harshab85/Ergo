@@ -1,16 +1,16 @@
-package uoftprojects.ergo.alerts.handlers.baseline;
+package uoftprojects.ergo.util;
 
 /**
  * Created by Harsha Balasubramanian on 2/24/2015.
  */
-public final class Baseline {
+public final class BaselineUtil {
 
     // Tilt Baseline
     public static final int MIN_TILT_ANGLE = 40;
     public static final int MAX_TILT_ANGLE = 70;
     public static final int PHONE_FLAT_MAX_ANGLE = 10;
     public static final int PHONE_MIN_USAGE_ANGLE = 20;
-    public static final long[] VIBRATION_ALERT_PATTERN = new long[]{1000, 50};
+    public static final long[] VIBRATION_ALERT_PATTERN = new long[]{300, 50};
 
     // Timer Baseline
     public static final long MAX_CONTINUOUS_DEVICE_TIME = 60000;
@@ -26,5 +26,5 @@ public final class Baseline {
 
 
     // Max zoom factor
-    public static final double MAX_ZOOM_FACTOR = 2.0;
+    public static final double MAX_ZOOM_FACTOR = 1.5;
 }

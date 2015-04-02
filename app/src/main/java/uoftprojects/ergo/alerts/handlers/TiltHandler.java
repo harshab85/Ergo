@@ -5,12 +5,10 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import uoftprojects.ergo.R;
-import uoftprojects.ergo.alerts.handlers.baseline.Baseline;
+import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Tilt;
 import uoftprojects.ergo.util.ActivityUtil;
@@ -21,14 +19,13 @@ import uoftprojects.ergo.util.VideoUtil;
  */
 public class TiltHandler implements IHandler {
 
-    //private Vibrator vibrator = null;
+    private Vibrator vibrator = null;
 
     private static TiltHandler INSTANCE = null;
     private SeekBar seekBar = (SeekBar)ActivityUtil.getMainActivity().findViewById(R.id.tilt_detection);
-    //private int videoSeekTime;
 
     private TiltHandler(){
-        //vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+        vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
     }
 
     public static TiltHandler getInstance(){
@@ -55,44 +52,30 @@ public class TiltHandler implements IHandler {
         }
 
         final float tiltAngle = tilt.getValue();
-        if(tiltAngle > Baseline.PHONE_FLAT_MAX_ANGLE) {
-            if (tiltAngle < Baseline.MIN_TILT_ANGLE || tiltAngle > Baseline.MAX_TILT_ANGLE) {
+        if(tiltAngle > BaselineUtil.PHONE_FLAT_MAX_ANGLE) {
+            if (tiltAngle < BaselineUtil.MIN_TILT_ANGLE || tiltAngle > BaselineUtil.MAX_TILT_ANGLE) {
+
+                final MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
+
+                vibrator.vibrate(BaselineUtil.VIBRATION_ALERT_PATTERN, 0);
 
                 ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         VideoUtil.pauseVideo();
 
-                        /*VideoView view2 = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                        videoSeekTime = view2.getCurrentPosition();*/
-                        //view2.setVisibility(View.INVISIBLE);
-                        // Play instruction audio
-                        MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
                         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                             @Override
                             public void onPrepared(MediaPlayer mp) {
                                 seekBar.bringToFront();
                                 seekBar.setVisibility(View.VISIBLE);
-                                //seekBar.setEnabled(false);
-
                                 seekBar.setProgress((int)tiltAngle);
-                                //seekBar.setAlpha(1f);
                             }
                         });
                         mediaPlayer.start();
 
 
-                        //VideoView view2 = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                        //view2.(0.5f);
-
-
-
-                       /* seekBar.setVisibility(View.VISIBLE);
-                        //seekBar.setEnabled(false);
-                        seekBar.bringToFront();
-                        seekBar.setProgress((int)tiltAngle);
-                        seekBar.setAlpha(1f);*/
-                        Toast.makeText(ActivityUtil.getMainActivity(), "Ideal tilt angle (40 to 70). Current : " + tiltAngle, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ActivityUtil.getMainActivity(), "Ideal tilt angle (40 to 70). Current : " + tiltAngle, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -111,18 +94,15 @@ public class TiltHandler implements IHandler {
 
     @Override
     public void cancel() {
+
+        if(vibrator != null){
+            vibrator.cancel();
+        }
+
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 seekBar.setVisibility(View.INVISIBLE);
-                /*VideoView view2 = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
-                view2.setVisibility(View.VISIBLE);*/
-
-                /*if(videoSeekTime > 0) {
-                    view2.seekTo(videoSeekTime);
-                    videoSeekTime = 0;
-                }*/
-
                 VideoUtil.resumeVideoWhenPaused();
             }
         });

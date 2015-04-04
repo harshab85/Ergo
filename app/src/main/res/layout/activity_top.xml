@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context="uoftprojects.ergo.TopActivity" tools:ignore="MergeRootFrame"
-    android:background="#ffffffff">
+    android:background="#BBDEFB">
 
     <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
@@ -11,13 +11,13 @@
         android:minHeight="?android:attr/actionBarSize"
         android:background="?android:attr/colorPrimary" />
 
-    <android.support.v7.widget.RecyclerView
-    android:id="@+id/my_recycler_view"
-    android:scrollbars="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentStart="true"
-    android:layout_below="@+id/toolbar" />
+        <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar" />
 
 
     <view
@@ -67,6 +67,50 @@
         android:max="90"
         android:visibility="invisible"
         android:minWidth="100dp"/>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewReward"
+        android:layout_width="310dp"
+        android:layout_height="250dp"
+        android:elevation="55dp"
+        android:padding="10dp"
+        android:background="#ffffffff"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:name="uoftprojects.ergo.RewardFragment"
+                android:id="@+id/rewardLocation"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                tools:layout="@layout/fragment_reward"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:background="@drawable/oval"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="end|bottom"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:elevation="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:tint="@android:color/white"
+        android:src="@android:drawable/ic_input_add" />
 
 
 </RelativeLayout>

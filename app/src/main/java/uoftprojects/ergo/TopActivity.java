@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.widget.GridView;
+
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.view.View;
@@ -19,6 +17,9 @@ import android.view.WindowManager;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import java.io.File;
+
 
 import android.widget.Toolbar;
 import android.widget.VideoView;
@@ -26,7 +27,6 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.util.ActivityUtil;
 import android.content.SharedPreferences;
@@ -58,7 +58,6 @@ public class TopActivity extends Activity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
 
-
         if(sharedPreferences != null) {
             boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
             if (!setupCompleted) {
@@ -69,8 +68,53 @@ public class TopActivity extends Activity {
             }
         }
 
+
+
+
         initialize();
 
+//
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.add(RewardFragment.newInstance("hi","no"), null);
+//        ft.commit();
+
+
+
+
+
+
+//
+//
+//        // Create new fragment and transaction
+//        Fragment newFragment = new RewardFragment();
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//
+//// Replace whatever is in the fragment_container view with this fragment,
+//// and add the transaction to the back stack
+//        transaction.replace(R.id.rewardLocation, newFragment);
+//        transaction.addToBackStack(null);
+//
+//// Commit the transaction
+//        transaction.commit();
+//
+
+
+
+
+
+
+
+
+
+
+      //  startActivity(new Intent(this, RewardFragment.class));
+
+
+//        RewardFragment nextFrag= new RewardFragment();
+//        this.getFragmentManager().beginTransaction()
+//                .replace(R.id.rewards, nextFrag, null)
+//                .addToBackStack(null)
+//                .commit();
 
     }
 
@@ -94,7 +138,7 @@ public class TopActivity extends Activity {
 //        }
 
 
-        List<VideoInfo> videos = loadVideos(); //,"Batman","Elmo","Shrek","Bugs Life","Frozen"};
+        List<VideoInfo> videos = loadVideos();
 
         mAdapter = new MyAdapter(videos);
         mRecyclerView.setAdapter(mAdapter);
@@ -119,6 +163,15 @@ public class TopActivity extends Activity {
                                 public void onCompletion(MediaPlayer mp) {
                                     toggleGalleryMode();
                                     SparkPlug.stop();
+                                    Toast.makeText(ActivityUtil.getMainActivity(), "SUCCESS!", Toast.LENGTH_SHORT).show();
+
+
+//                                    RewardFragment nextFrag= new RewardFragment();
+//                                    ActivityUtil.getMainActivity().getFragmentManager().beginTransaction()
+//                                            .replace(R.id.rewards, nextFrag, null)
+//                                            .addToBackStack(null)
+//                                            .commit();
+                                    //Check for reward
 
                                 }
                             });
@@ -133,6 +186,9 @@ public class TopActivity extends Activity {
                 })
         );
     }
+
+
+
 
     @Override
     protected void onResume() {
@@ -206,48 +262,99 @@ public class TopActivity extends Activity {
                 MediaStore.Video.Media.TITLE,
                 MediaStore.Video.Media.MIME_TYPE };
 
-        cursor = managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                mediaColumns, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                VideoInfo videoInfo = new VideoInfo();
-
-                int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-
-                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
-                String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-
-                videoInfo.displayName = displayName;
-                videoInfo.filePath = filePath;
 
 
-                ContentResolver crThumb = getContentResolver();
-                BitmapFactory.Options options=new BitmapFactory.Options();
-                options.inSampleSize = 1;
-                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
-                System.out.println();
-                if(curThumb != null) {
-                    videoInfo.thumbPath = String.valueOf(curThumb);
-                }
 
 
-                Cursor thumbCursor = managedQuery(
-                        MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
-                        thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
-                                + "=" + id, null, null);
 
-                if (thumbCursor.moveToFirst()) {
-                    videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
-                    System.out.println(videoInfo.thumbPath);
-                }
+       VideoInfo videoInfo = new VideoInfo();
+
+        String path = "android.resource://" + ActivityUtil.getMainActivity().getPackageName() + "/" + R.raw.bighero6clip;
+
+        Uri url = Uri.parse(path);
+
+        String displayName = "Big Hero 6 clip";//cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+        String filePath = url.toString(); //cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+
+        videoInfo.displayName = displayName;
+        videoInfo.filePath = path;
 
 
-                videos.add(videoInfo);
-
-
-            } while (cursor.moveToNext());
+        ContentResolver crThumb = getContentResolver();
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inSampleSize = 1;
+        Bitmap curThumb = null; //MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+        System.out.println();
+        if(curThumb != null) {
+            videoInfo.thumbPath = String.valueOf(curThumb);
         }
+
+
+//        Cursor thumbCursor = managedQuery(
+//                MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+//                thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
+//                        + "=" + id, null, null);
+
+//        if (thumbCursor.moveToFirst()) {
+//            videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+//            System.out.println(videoInfo.thumbPath);
+//        }
+
+
+        videos.add(videoInfo);
+
+
+
+
+
+
+
+//        cursor = managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+//                mediaColumns, null, null, null);
+
+//
+
+//
+//        cursor = managedQuery(url,mediaColumns, null, null, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//            do {
+//                VideoInfo videoInfo = new VideoInfo();
+//
+//                int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+//
+//                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+//                String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+//
+//                videoInfo.displayName = displayName;
+//                videoInfo.filePath = filePath;
+//
+//
+//                ContentResolver crThumb = getContentResolver();
+//                BitmapFactory.Options options=new BitmapFactory.Options();
+//                options.inSampleSize = 1;
+//                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+//                System.out.println();
+//                if(curThumb != null) {
+//                    videoInfo.thumbPath = String.valueOf(curThumb);
+//                }
+//
+//
+//                Cursor thumbCursor = managedQuery(
+//                        MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+//                        thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
+//                                + "=" + id, null, null);
+//
+//                if (thumbCursor.moveToFirst()) {
+//                    videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+//                    System.out.println(videoInfo.thumbPath);
+//                }
+//
+//
+//                videos.add(videoInfo);
+//
+//
+//            } while (cursor.moveToNext());
+//        }
 
 
         return videos;

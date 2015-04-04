@@ -16,5 +16,13 @@
     <dimen name="horizontal_page_margin">@dimen/margin_medium</dimen>
     <dimen name="vertical_page_margin">@dimen/margin_medium</dimen>
 
+    <!-- res/values/dimens.xml -->
+    <dimen name="diameter">48dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_high">4dp</dimen>
+    <dimen name="add_button_margin">16dp</dimen>
+
+    <dimen name="round_button_diameter">50dp</dimen>
+
 
 </resources>

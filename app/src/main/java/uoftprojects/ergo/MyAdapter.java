@@ -82,9 +82,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.mImageView.setImageResource(R.drawable.ergoinspace);
 
-        File imgFile = new  File(mVideos.get(position).thumbPath);
+        File imgFile = null;
+        if(mVideos.get(position).thumbPath != null){
+            imgFile = new  File(mVideos.get(position).thumbPath);
+        }
 
-        if(imgFile.exists()){
+
+        if(imgFile != null && imgFile.exists()){
             System.out.println("EXISTS");
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 

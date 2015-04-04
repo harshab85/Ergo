@@ -21,7 +21,7 @@
     android:layout_width="fill_parent"
     android:padding="0dp"
     android:orientation="horizontal"
-    android:background="@android:color/white">
+    android:background="@android:color/transparent">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardviewHERE"
@@ -59,7 +59,8 @@
                 android:id="@+id/imageView4"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/textView" />
+                android:layout_below="@+id/textView"
+                android:background="@android:color/transparent" />
 
 
         </RelativeLayout>

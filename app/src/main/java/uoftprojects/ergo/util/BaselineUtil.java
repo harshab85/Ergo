@@ -14,6 +14,7 @@ public final class BaselineUtil {
 
     // Timer Baseline
     public static final long MAX_CONTINUOUS_DEVICE_TIME = 60000;
+    public static final int BLINK_REPETITION = 5;
 
     // Proximity Baseline
     public static final long MIN_RECT_AREA = 500000;
@@ -27,4 +28,8 @@ public final class BaselineUtil {
 
     // Max zoom factor
     public static final double MAX_ZOOM_FACTOR = 1.5;
+
+    //Rewards
+    public static final int MAX_TILT_ERRORS_UNTIL_UNLOCK = 3;
+    public static final int MAX_PROXIMITY_ERRORS_UNTIL_UNLOCK = 3;
 }

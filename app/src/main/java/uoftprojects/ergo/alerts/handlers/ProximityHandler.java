@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import uoftprojects.ergo.R;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Proximity;
@@ -108,11 +109,15 @@ public class ProximityHandler implements IHandler {
             imageView.setVisibility(View.INVISIBLE);
 
                 VideoUtil.resize(1f);
-                VideoUtil.resumeVideoWhenPaused();
+                boolean resumeNeeded = VideoUtil.resumeVideoWhenPaused();
+                if(resumeNeeded){
+                    MetricsStorage.getInstance().updateCurrProximityErrors();
+                }
 
                 factor = 1;
             }
         });
+
 
     }
 }

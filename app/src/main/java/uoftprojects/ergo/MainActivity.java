@@ -76,16 +76,18 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        SetupUtil.setAppStartDate();
     }
 
     public void openVideoLibrary(View view) {
         //TODO: Add are you sure you want to proceed without an email address?
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
-        editor.commit();
-        //SetupUtil.setupCompleted();
+        editor.commit();*/
+        SetupUtil.setupCompleted();
 
         Intent intent = new Intent(this, TopActivity.class);
         startActivity(intent);

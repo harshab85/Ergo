@@ -1,11 +1,15 @@
 package uoftprojects.ergo.rewards;
 
+import android.media.MediaPlayer;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import uoftprojects.ergo.R;
 import uoftprojects.ergo.metrics.usage.MetricsComparison;
 import uoftprojects.ergo.metrics.usage.MetricsStorage;
+import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.util.SetupUtil;
 
@@ -16,21 +20,24 @@ public final class RewardsHandler {
 
     private JSONObject initialMetrics;
 
-    private RewardsList rewardsList = new RewardsList();
-
     public RewardsHandler(JSONObject initialMetrics){
         this.initialMetrics = initialMetrics;
     }
 
     public boolean shouldUnlockReward(){
         if(!SetupUtil.hasWatchedFirstVideo()){
-            SetupUtil.watchedFirstVideo();
+
+            // Play first sticker video
+            //MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_first_sticker);
+            //mediaPlayer.start();
+
+            //SetupUtil.watchedFirstVideo();
             return true;
         }
         else{
             try {
                 JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
-                MetricsComparison metricsComparison = MetricsStorage.getInstance().compare(currentMetrics, initialMetrics);
+                MetricsComparison metricsComparison = MetricsStorage.getInstance().compare(initialMetrics, currentMetrics);
                 if(metricsComparison.getProximityDelta() > BaselineUtil.MAX_PROXIMITY_ERRORS_UNTIL_UNLOCK){
                     return false;
                 }
@@ -50,7 +57,7 @@ public final class RewardsHandler {
     }
 
     public IReward unlock(){
-        return rewardsList.next();
+        return RewardsList.getInstance().nextReward();
     }
 
 }

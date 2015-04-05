@@ -32,6 +32,7 @@ import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.rewards.IReward;
 import uoftprojects.ergo.rewards.RewardType;
 import uoftprojects.ergo.rewards.RewardsHandler;
+import uoftprojects.ergo.rewards.RewardsList;
 import uoftprojects.ergo.rewards.StickerReward;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
@@ -101,7 +102,7 @@ public class TopActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
+        // specify an adapter (see also nextReward example)
 
 //        String[] mDataset = new String[10];
 //
@@ -165,7 +166,8 @@ public class TopActivity extends Activity {
 
                                             // TODO Apply sticker to video thumbnails
                                             int resourceId = stickerReward.getResourceId();
-                                            String name = stickerReward.getName();
+
+                                            System.out.println("Resource: " + resourceId);
                                         }
                                     }
                                 }
@@ -213,6 +215,7 @@ public class TopActivity extends Activity {
     protected void onPause() {
         SparkPlug.stop();
         MetricsStorage.getInstance().store();
+        RewardsList.getInstance().store();
         super.onPause();
     }
 

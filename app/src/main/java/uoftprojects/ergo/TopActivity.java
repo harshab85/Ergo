@@ -1,15 +1,22 @@
 package uoftprojects.ergo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import android.view.ViewOutlineProvider;
+import android.graphics.Outline;
+
+
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -53,6 +60,18 @@ public class TopActivity extends Activity {
         setActionBar(toolbar);
         toolbar.setLogo(R.drawable.ic_launcher);
 
+
+
+        // CrimeListFragment.java - onCreateView()
+        View addButton = findViewById(R.id.add_button);
+        addButton.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                int diameter = getResources().getDimensionPixelSize(R.dimen.diameter);
+                outline.setOval(0, 0, diameter, diameter);
+            }
+        });
+        addButton.setClipToOutline(true);
 
 
 
@@ -397,12 +416,10 @@ public class TopActivity extends Activity {
 
 
 
-    public void selfDestruct(View view) {
+    public void orangeButtonPressed(View view) {
         //noinspection SimplifiableIfStatement
 
         Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
     }
-
-
 
 }

@@ -40,6 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public CardView mCardView;
         public TextView mTextView;
         public ImageView mImageView;
+        public ImageView mRewardSticker;
 
 
         public ViewHolder(View v) {
@@ -48,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mCardView = (CardView) v.findViewById(R.id.cardviewHERE);
             mTextView = (TextView) v.findViewById(R.id.textView);
             mImageView = (ImageView) v.findViewById(R.id.imageView4);
-
+            mRewardSticker = (ImageView) v.findViewById(R.id.rewardSticker);
         }
     }
 

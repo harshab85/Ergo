@@ -91,16 +91,17 @@
 
     <ImageButton
         android:id="@+id/add_button"
-        android:background="@drawable/oval"
+        android:background="@drawable/oval_ripple"
         android:layout_width="@dimen/round_button_diameter"
         android:layout_height="@dimen/round_button_diameter"
         android:layout_gravity="end|bottom"
-        android:elevation="5dp"
         android:layout_marginRight="5dp"
+        android:elevation="@dimen/elevation_low"
+        android:stateListAnimator="@anim/button_elevation"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="5dp"
-        android:onClick="selfDestruct"/>
+        android:onClick="orangeButtonPressed"/>
 
 
     <!--<ImageButton-->

@@ -397,6 +397,11 @@ public class TopActivity extends Activity {
 
 
 
+    public void selfDestruct(View view) {
+        //noinspection SimplifiableIfStatement
+
+        Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
+    }
 
 
 

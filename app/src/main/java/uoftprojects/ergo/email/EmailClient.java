@@ -8,12 +8,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
 
 /**
  * Created by home on 2015-04-05.
@@ -24,13 +27,47 @@ public class EmailClient {
 
     private HttpClient httpClient = new DefaultHttpClient();
 
+    private boolean completed = false;
+
+    private Object lock = new Object();
+
     private EmailClient(){}
 
     public static final EmailClient getInstance(){
         return INSTANCE;
     }
 
-    public boolean send(String emailAddress, JSONObject emailBody){
+
+    public void send(final String emailAddress, final JSONObject emailBody){
+
+        System.out.println();
+
+        new Thread(){
+            @Override
+            public void run() {
+                threadLogic(emailAddress, emailBody);
+
+                synchronized (lock) {
+                    completed = true;
+                    lock.notifyAll();
+                }
+            }
+        }.start();
+
+        synchronized (lock){
+            while(!completed){
+                try {
+                    lock.wait();
+                }
+                catch (InterruptedException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
+
+
+    public boolean threadLogic(String emailAddress, JSONObject emailBody){
 
         try {
             JSONObject params = new JSONObject();
@@ -42,13 +79,12 @@ public class EmailClient {
             HttpPost post = new HttpPost(postUrl.toURI());
             post.setEntity(stringEntity);
             post.setHeader("Content-Type", "application/json");
-            post.setHeader("Accept-Encoding", "application/json");
 
             return executePost(post);
 
         }
         catch (Exception e){
-            // Ignote
+            // Ignore
         }
 
 
@@ -71,6 +107,7 @@ public class EmailClient {
             }
         }
         catch (Exception e){
+            e.printStackTrace();
             // ignore
         }
         finally{

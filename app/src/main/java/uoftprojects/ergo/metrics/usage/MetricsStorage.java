@@ -20,7 +20,7 @@ public final class MetricsStorage {
      */
     private static final MetricsStorage INSTANCE = new MetricsStorage();
 
-    public static final String STORAGE_KEY = "metrics";
+    public static final String METRICS_STORAGE_KEY = "metrics";
 
     private MetricsStorage(){
     }
@@ -84,7 +84,7 @@ public final class MetricsStorage {
     // storage
     public void store(){
         // Get previous values from shared pref
-        String metrics = StorageUtil.getString(STORAGE_KEY);
+        String metrics = StorageUtil.getString(METRICS_STORAGE_KEY);
 
         // if not present (first-time), store current values directly
         if(metrics == null || metrics.isEmpty()){
@@ -96,7 +96,7 @@ public final class MetricsStorage {
             metrics = updateMetrics(metrics);
         }
 
-        StorageUtil.addString(STORAGE_KEY, metrics);
+        StorageUtil.addString(METRICS_STORAGE_KEY, metrics);
     }
 
     private String updateMetrics(String metrics) {
@@ -125,8 +125,7 @@ public final class MetricsStorage {
                 currentMetrics.put("week", currentWeek);
                 storedMetrics.put("activeMetrics", currentMetrics);
 
-                // TODO send email using 'active metrics'
-                // get email address
+                // Send email
                 String emailAddress = StorageUtil.getString("emailAddress");
                 EmailClient.getInstance().send(emailAddress, activeMetrics);
             }
@@ -134,6 +133,9 @@ public final class MetricsStorage {
                 JSONObject currentMetrics = getCurrentMetrics();
                 storedMetrics.put("activeMetrics", currentMetrics);
             }
+
+            String emailAddress = StorageUtil.getString("emailAddress");
+            EmailClient.getInstance().send(emailAddress, activeMetrics);
 
             return storedMetrics.toString();
         }

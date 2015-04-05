@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.widget.GridView;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.view.View;
@@ -26,7 +22,6 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.rewards.IReward;
@@ -37,8 +32,6 @@ import uoftprojects.ergo.rewards.StickerReward;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
 import uoftprojects.ergo.util.StorageUtil;
-
-import android.content.SharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,7 +74,7 @@ public class TopActivity extends Activity {
             //}
         }
 
-        String storedMetrics = StorageUtil.getString(MetricsStorage.STORAGE_KEY);
+        String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
         if(storedMetrics != null && !storedMetrics.isEmpty()){
             MetricsStorage.getInstance().initialize(storedMetrics);
         }

@@ -126,8 +126,8 @@ public final class MetricsStorage {
                 storedMetrics.put("activeMetrics", currentMetrics);
 
                 // Send email
-                String emailAddress = StorageUtil.getString("emailAddress");
-                EmailClient.getInstance().send(emailAddress, activeMetrics);
+                //String emailAddress = StorageUtil.getString("emailAddress");
+                //.getInstance().send(emailAddress, activeMetrics);
             }
             else{
                 JSONObject currentMetrics = getCurrentMetrics();

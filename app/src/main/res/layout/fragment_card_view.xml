@@ -33,25 +33,14 @@
         android:layout_marginLeft="@dimen/margin_large"
         android:layout_marginRight="@dimen/margin_large"
         android:padding="10dp"
-        android:background="#ffffffff"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:text="Title"
-                android:id="@+id/textView"
-                android:layout_alignParentStart="true"
-                android:textColor="@android:color/black"
-                android:gravity="center"
-                android:layout_alignParentEnd="true"
-                android:typeface="normal" />
+            android:layout_height="match_parent"
+            android:background="#E3F2FD">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -61,6 +50,33 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView"
                 android:background="@android:color/transparent" />
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageView5"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/largeyellowstar" />
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageView6"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Title"
+                android:id="@+id/textView"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:typeface="normal"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imageView5"
+                android:layout_toStartOf="@+id/imageView6" />
 
 
         </RelativeLayout>

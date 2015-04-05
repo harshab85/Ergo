@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
+import uoftprojects.ergo.email.EmailClient;
 import uoftprojects.ergo.util.SetupUtil;
 import uoftprojects.ergo.util.StorageUtil;
 
@@ -126,7 +127,8 @@ public final class MetricsStorage {
 
                 // TODO send email using 'active metrics'
                 // get email address
-
+                String emailAddress = StorageUtil.getString("emailAddress");
+                EmailClient.getInstance().send(emailAddress, activeMetrics);
             }
             else{
                 JSONObject currentMetrics = getCurrentMetrics();

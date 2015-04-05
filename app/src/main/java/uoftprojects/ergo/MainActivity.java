@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import java.util.Locale;
 
@@ -28,6 +29,7 @@ import uoftprojects.ergo.SignUpScreens.WelcomeFragments;
 import uoftprojects.ergo.VideoActivity;
 import uoftprojects.ergo.util.ActivityUtil;
 import uoftprojects.ergo.util.SetupUtil;
+import uoftprojects.ergo.util.StorageUtil;
 
 /**
  * Created by Harsha Balasubramanian on 3/2/2015.
@@ -87,6 +89,10 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
         editor.commit();*/
+        EditText editText = (EditText)findViewById(R.id.editText);
+        String emailAddress = editText.getText().toString();
+
+        StorageUtil.addString("emailAddress", emailAddress);
         SetupUtil.setupCompleted();
 
         Intent intent = new Intent(this, TopActivity.class);

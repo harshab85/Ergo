@@ -23,11 +23,10 @@ public class ProximityHandler implements IHandler {
     private double factor = 1;
     private static ProximityHandler INSTANCE = null;
     private Vibrator vibrator = null;
-
+    private boolean alertThreshold;
 
     private ProximityHandler(){
         vibrator = (Vibrator) ActivityUtil.getMainActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
-
     }
 
     public static ProximityHandler getInstance(){
@@ -78,6 +77,7 @@ public class ProximityHandler implements IHandler {
                             ImageView imageView = (ImageView) ActivityUtil.getMainActivity().findViewById(R.id.imageView3);
                             imageView.setVisibility(View.VISIBLE);
                             imageView.bringToFront();
+                            alertThreshold = true;
                         }
                         else {
                             factor = factor + 0.2;
@@ -110,8 +110,9 @@ public class ProximityHandler implements IHandler {
 
                 VideoUtil.resize(1f);
                 boolean resumeNeeded = VideoUtil.resumeVideoWhenPaused();
-                if(resumeNeeded){
+                if(resumeNeeded && alertThreshold){
                     MetricsStorage.getInstance().updateCurrProximityErrors();
+                    alertThreshold = false;
                 }
 
                 factor = 1;

@@ -27,7 +27,7 @@ public final class BaselineUtil {
 
 
     // Max zoom factor
-    public static final double MAX_ZOOM_FACTOR = 1.5;
+    public static final double MAX_ZOOM_FACTOR = 2.0;
 
     //Rewards
     public static final int MAX_TILT_ERRORS_UNTIL_UNLOCK = 3;

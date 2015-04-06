@@ -8,7 +8,7 @@
     <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:minHeight="?android:attr/actionBarSize"
         android:background="?android:attr/colorPrimary" />
 
@@ -69,26 +69,25 @@
         android:minWidth="100dp"/>
 
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="invisible">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:clickable="false">-->
 
-        <fragment
-            android:name="uoftprojects.ergo.RewardFragment"
-            android:id="@+id/rewardLocation"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            tools:layout="@layout/fragment_reward"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_alignParentRight="false" />
+        <!--<fragment-->
+            <!--android:name="uoftprojects.ergo.RewardFragment"-->
+            <!--android:id="@+id/rewardLocation"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--tools:layout="@layout/fragment_reward"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:visibility="invisible"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_alignParentRight="false" />-->
 
-    </RelativeLayout>
-
-
+    <!--</RelativeLayout>-->
 
     <ImageButton
         android:id="@+id/add_button"

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.app.FragmentManager;
 
 import android.view.ViewOutlineProvider;
 import android.graphics.Outline;
@@ -61,7 +63,12 @@ public class TopActivity extends Activity {
         toolbar.setLogo(R.mipmap.ic_launcher);
         setActionBar(toolbar);
 
-        // CrimeListFragment.java - onCreateView()
+
+//        View v = findViewById(R.id.rewardLocation);
+//        v.setVisibility(View.INVISIBLE);
+//        v.bringToFront();
+
+
         View addButton = findViewById(R.id.add_button);
         addButton.setOutlineProvider(new ViewOutlineProvider() {
             @Override
@@ -73,14 +80,11 @@ public class TopActivity extends Activity {
         addButton.setClipToOutline(true);
 
 
-
         VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
 
         ActivityUtil.setMainActivity(this);
 
         videoView.setVisibility(View.INVISIBLE);
-
-    //    toolbar.setTitle("Ergo Video Player!");
 
         SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
 
@@ -99,49 +103,6 @@ public class TopActivity extends Activity {
 
         initialize();
 
-//
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.add(RewardFragment.newInstance("hi","no"), null);
-//        ft.commit();
-
-
-
-
-
-
-//
-//
-//        // Create new fragment and transaction
-//        Fragment newFragment = new RewardFragment();
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//// Replace whatever is in the fragment_container view with this fragment,
-//// and add the transaction to the back stack
-//        transaction.replace(R.id.rewardLocation, newFragment);
-//        transaction.addToBackStack(null);
-//
-//// Commit the transaction
-//        transaction.commit();
-//
-
-
-
-
-
-
-
-
-
-
-      //  startActivity(new Intent(this, RewardFragment.class));
-
-
-//        RewardFragment nextFrag= new RewardFragment();
-//        this.getFragmentManager().beginTransaction()
-//                .replace(R.id.rewards, nextFrag, null)
-//                .addToBackStack(null)
-//                .commit();
-
     }
 
     private void initialize() {
@@ -155,15 +116,6 @@ public class TopActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-
-//        String[] mDataset = new String[10];
-//
-//        for(int i = 0 ; i < mDataset.length; i++){
-//            mDataset[i] = "Title:"+i;
-//        }
-
-
         List<VideoInfo> videos = loadVideos();
 
         mAdapter = new MyAdapter(videos);
@@ -171,7 +123,7 @@ public class TopActivity extends Activity {
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                    @Override public void onItemClick(final View view, int position) {
 
 
                         if (cursor.moveToPosition(position)) {
@@ -184,20 +136,38 @@ public class TopActivity extends Activity {
                             videoView.setMediaController(mediaController);
                             videoView.setVideoPath(videoFilePath);
 
+
+
+
                             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 @Override
                                 public void onCompletion(MediaPlayer mp) {
                                     toggleGalleryMode();
                                     SparkPlug.stop();
-                                    Toast.makeText(ActivityUtil.getMainActivity(), "SUCCESS!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityUtil.getMainActivity(), "SUCCESS!2", Toast.LENGTH_SHORT).show();
 
 
+
+                                    RewardFragment nextFrag= new RewardFragment();
+
+                                    FragmentManager fm = getFragmentManager();
+                                    fm.beginTransaction()
+                                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                                            .show(nextFrag)
+                                            .commit();
+
+//                                    View v = findViewById(R.id.rewardLocation);
+//                                    v.setVisibility(View.VISIBLE);
+//
 //                                    RewardFragment nextFrag= new RewardFragment();
+//                                    Toast.makeText(ActivityUtil.getMainActivity(), ""+nextFrag.isVisible(), Toast.LENGTH_SHORT).show();
 //                                    ActivityUtil.getMainActivity().getFragmentManager().beginTransaction()
-//                                            .replace(R.id.rewards, nextFrag, null)
+//                                            .replace(R.id.rewardLocation, nextFrag, null)
 //                                            .addToBackStack(null)
 //                                            .commit();
-                                    //Check for reward
+//                                    nextFrag.setUserVisibleHint(true);
+
+//                                    Check for reward
 
                                 }
                             });
@@ -232,6 +202,7 @@ public class TopActivity extends Activity {
     public void onBackPressed() {
         toggleGalleryMode();
         SparkPlug.stop();
+
     }
 
     private void toggleFullscreen(boolean fullscreen)
@@ -412,8 +383,6 @@ public class TopActivity extends Activity {
 
 
     public void orangeButtonPressed(View view) {
-        //noinspection SimplifiableIfStatement
-
         Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
     }
 

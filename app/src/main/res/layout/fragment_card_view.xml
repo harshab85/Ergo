@@ -43,7 +43,7 @@
             android:background="#E3F2FD">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="150dp"
                 android:id="@+id/imageView4"
                 android:layout_alignParentBottom="true"
@@ -57,7 +57,8 @@
                 android:id="@+id/rewardSticker"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:background="@drawable/largeyellowstar" />
+                android:background="@drawable/largeyellowstar"
+                android:visibility="invisible" />
 
             <ImageView
                 android:layout_width="35dp"
@@ -73,10 +74,11 @@
                 android:id="@+id/textView"
                 android:textColor="@android:color/black"
                 android:gravity="center"
-                android:typeface="normal"
+                android:typeface="serif"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/rewardSticker"
-                android:layout_toStartOf="@+id/imageView6" />
+                android:layout_toStartOf="@+id/imageView6"
+                android:textSize="@dimen/textSize" />
 
 
         </RelativeLayout>

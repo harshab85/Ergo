@@ -103,11 +103,13 @@ public class TopActivity extends Activity {
 
 
 
-
+ //       initializeForTutorials();
         initialize();
-
+//
     }
 
+    RecyclerItemClickListener one;
+    RecyclerItemClickListener two;
     private void initialize() {
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -116,6 +118,8 @@ public class TopActivity extends Activity {
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
+        //notifyDataSetChanged(mRecylerView);
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -123,50 +127,54 @@ public class TopActivity extends Activity {
 
         mAdapter = new MyAdapter(videos);
         mRecyclerView.setAdapter(mAdapter);
-
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(final View view, int position) {
+        mRecyclerView.removeOnItemTouchListener(one);
+        mRecyclerView.removeOnItemTouchListener(two);
 
 
-                        if (cursor.moveToPosition(position)) {
-                            int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-                            String videoFilePath = cursor.getString(fileColumn);
-
-                            VideoView videoView = (VideoView) toggleVideoMode();
-                            MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
-
-                            videoView.setMediaController(mediaController);
-                            videoView.setVideoPath(videoFilePath);
+        one =  new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(final View view, int position) {
 
 
+                if (cursor.moveToPosition(position)) {
+                    int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                    String videoFilePath = cursor.getString(fileColumn);
+
+                    VideoView videoView = (VideoView) toggleVideoMode();
+                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+
+                    videoView.setMediaController(mediaController);
+                    videoView.setVideoPath(videoFilePath);
 
 
-                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    toggleGalleryMode();
-                                    SparkPlug.stop();
+                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            toggleGalleryMode();
+                            SparkPlug.stop();
 
-                                    View v = view.findViewById(R.id.rewardSticker);
-                                    v.setVisibility(View.VISIBLE);
-                                    FragmentManager fg = getFragmentManager();
-                                    RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-                                    fragment.getView().setVisibility(View.VISIBLE);
+                            View v = view.findViewById(R.id.rewardSticker);
+                            v.setVisibility(View.VISIBLE);
+                            FragmentManager fg = getFragmentManager();
+                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                            fragment.getView().setVisibility(View.VISIBLE);
 
 
-                                }
-                            });
-
-                            SparkPlug.start();
-                            videoView.start();
-                            //requestWindowFeature(Window.FEATURE_NO_TITLE);
                         }
+                    });
+
+                    SparkPlug.start();
+                    videoView.start();
+                }
 
 
-                    }
-                })
-        );
+            }
+        });
+
+        mRecyclerView.addOnItemTouchListener(one);
+
+        mAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -368,8 +376,108 @@ public class TopActivity extends Activity {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void initializeForTutorials() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        List<VideoInfo> videos = loadVideos();
+
+        mAdapter = new MyAdapter(videos);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.removeOnItemTouchListener(one);
+        mRecyclerView.removeOnItemTouchListener(two);
+
+
+        two =  new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(final View view, int position) {
+
+
+                if (cursor.moveToPosition(position)) {
+                    int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                    String videoFilePath = cursor.getString(fileColumn);
+
+                    VideoView videoView = (VideoView) toggleVideoMode();
+                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+
+                    videoView.setMediaController(mediaController);
+                    videoView.setVideoPath(videoFilePath);
+
+
+                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            toggleGalleryMode();
+                            SparkPlug.stop();
+
+                            View v = view.findViewById(R.id.rewardSticker);
+                            v.setVisibility(View.VISIBLE);
+                            FragmentManager fg = getFragmentManager();
+                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                            fragment.getView().setVisibility(View.VISIBLE);
+
+
+                        }
+                    });
+
+                    videoView.start();
+                }
+
+
+            }
+        });
+        mRecyclerView.addOnItemTouchListener(two);
+
+
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+
+
+
+
+
+
+
+
+
+    Boolean check = true;
+
     public void orangeButtonPressed(View view) {
         Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        if(check){
+            toolbar.setTitle("Ergo Tutorials");
+            initializeForTutorials();
+        }else{
+            toolbar.setTitle("Ergo");
+            initialize();
+        }
+        check = !check;
     }
 
     public void continueVideos(View view) {

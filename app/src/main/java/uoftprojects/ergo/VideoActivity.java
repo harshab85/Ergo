@@ -24,6 +24,7 @@ import java.util.Map;
 
 import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.util.ActivityUtil;
 
 /**
@@ -48,7 +49,6 @@ public class VideoActivity extends Activity {
 
     @Override
     protected void onPause() {
-        //AlertsHandler.cancelAlerts();
         SparkPlug.stop();
         super.onPause();
     }
@@ -57,6 +57,7 @@ public class VideoActivity extends Activity {
     public void onBackPressed() {
         toggleGalleryMode();
         SparkPlug.stop();
+        MetricsStorage.getInstance().toString();
     }
 
     private void initialize() {
@@ -107,6 +108,22 @@ public class VideoActivity extends Activity {
                             toggleGalleryMode();
                             SparkPlug.stop();
 
+
+                            long minutes = 0;
+                            long duration_msec = mp.getDuration();
+                            long seconds = duration_msec/1000;
+                            if(seconds > 30 && seconds <= 60){
+                                minutes = 1;
+                            }
+                            else{
+                                minutes = seconds/60;
+                                long reminder = seconds % 60;
+                                if(reminder > 30){
+                                    minutes++;
+                                }
+                            }
+
+                            MetricsStorage.getInstance().updateCurrVideoWatched_Minutes(minutes);
                         }
                     });
 

@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import uoftprojects.ergo.R;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Tilt;
@@ -102,12 +103,13 @@ public class TiltHandler implements IHandler {
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                seekBar.setVisibility(View.INVISIBLE);
-                VideoUtil.resumeVideoWhenPaused();
+            seekBar.setVisibility(View.INVISIBLE);
+            boolean neededResume = VideoUtil.resumeVideoWhenPaused();
+            if(neededResume){
+                MetricsStorage.getInstance().updateCurrTiltErrors();
+            }
             }
         });
-
-
     }
 
 }

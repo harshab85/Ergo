@@ -44,8 +44,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uoftprojects.ergo.engine.SparkPlug;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
+import uoftprojects.ergo.rewards.IReward;
+import uoftprojects.ergo.rewards.RewardType;
+import uoftprojects.ergo.rewards.RewardsHandler;
+import uoftprojects.ergo.rewards.RewardsList;
+import uoftprojects.ergo.rewards.StickerReward;
 import uoftprojects.ergo.util.ActivityUtil;
+import uoftprojects.ergo.util.SetupUtil;
+import uoftprojects.ergo.util.StorageUtil;
+
 import android.content.SharedPreferences;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 
 /**
@@ -91,14 +102,18 @@ public class TopActivity extends Activity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
 
-        if(sharedPreferences != null) {
-            boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
-            if (!setupCompleted) {
+        if(!SetupUtil.isSetupCompeted()){//sharedPreferences != null) {
+            //boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
+            //if (!setupCompleted) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
             }
+
+        String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
+        if(storedMetrics != null && !storedMetrics.isEmpty()){
+            MetricsStorage.getInstance().initialize(storedMetrics);
         }
 
 
@@ -123,7 +138,16 @@ public class TopActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        List<VideoInfo> videos = loadVideos();
+        // specify an adapter (see also nextReward example)
+
+//        String[] mDataset = new String[10];
+//
+//        for(int i = 0 ; i < mDataset.length; i++){
+//            mDataset[i] = "Title:"+i;
+//        }
+
+
+        List<VideoInfo> videos = loadVideos(); //,"Batman","Elmo","Shrek","Bugs Life","Frozen"};
 
         mAdapter = new MyAdapter(videos);
         mRecyclerView.setAdapter(mAdapter);
@@ -159,6 +183,51 @@ public class TopActivity extends Activity {
                             RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
                             fragment.getView().setVisibility(View.VISIBLE);
 
+                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    duration_msec = mp.getDuration();
+                                    try {
+                                        JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
+                                        rewardsHandler = new RewardsHandler(currentMetrics);
+
+                                    }
+                                    catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    updateVideoWatchTime(duration_msec);
+                                    duration_msec = 0;
+                                    toggleGalleryMode();
+                                    SparkPlug.stop();
+
+                                    // Check for rewards at the end of the video
+                                    if(rewardsHandler.shouldUnlockReward()){
+                                        IReward reward = rewardsHandler.unlock();
+
+                                        if(reward == null){
+                                            Toast.makeText(ActivityUtil.getMainActivity(), "All rewards have been unlocked", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(reward.getType() == RewardType.Sticker){
+                                            StickerReward stickerReward = (StickerReward)reward;
+
+                                            // TODO Apply sticker to video thumbnails
+                                            int resourceId = stickerReward.getResourceId();
+											View v = view.findViewById(R.id.rewardSticker);
+                            v.setVisibility(View.VISIBLE);
+                            FragmentManager fg = getFragmentManager();
+                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                            fragment.getView().setVisibility(View.VISIBLE);
+                                            System.out.println("Resource: " + resourceId);
+                                        }
+                                    }
+                                }
+                            });
 
                         }
                     });
@@ -177,8 +246,26 @@ public class TopActivity extends Activity {
 
     }
 
+    private int duration_msec = 0;
+    private RewardsHandler rewardsHandler = null;
 
 
+    private void updateVideoWatchTime(int duration_msec){
+        long minutes = 0;
+        long seconds = duration_msec/1000;
+        if(seconds > 30 && seconds <= 60){
+            minutes = 1;
+        }
+        else{
+            minutes = seconds/60;
+            long reminder = seconds % 60;
+            if(reminder > 30){
+                minutes++;
+            }
+        }
+
+        MetricsStorage.getInstance().updateCurrVideoWatched_Minutes(minutes);
+    }
 
     @Override
     protected void onResume() {
@@ -189,6 +276,8 @@ public class TopActivity extends Activity {
     @Override
     protected void onPause() {
         SparkPlug.stop();
+        MetricsStorage.getInstance().store();
+        RewardsList.getInstance().store();
         super.onPause();
     }
 

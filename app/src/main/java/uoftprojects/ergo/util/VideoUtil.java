@@ -12,7 +12,7 @@ import uoftprojects.ergo.R;
  */
 public final class VideoUtil {
 
-    public static final String MOVED_TO_BKGRND_FLAG_NAME = "background";
+    //public static final String MOVED_TO_BKGRND_FLAG_NAME = "background";
 
     private static boolean PAUSED = false;
 
@@ -26,12 +26,16 @@ public final class VideoUtil {
         }
     }
 
-    public static void resumeVideoWhenPaused() {
+    public static boolean resumeVideoWhenPaused() {
         VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
         if (PAUSED && videoView != null && !videoView.isPlaying()) {
             videoView.start();
             PAUSED = false;
+
+            return true;
         }
+
+        return false;
     }
 
     public static void resize(final float size) {
@@ -46,13 +50,13 @@ public final class VideoUtil {
     }
 
 
-    public static void setMovedToBkgrnd() {
-        StorageUtil.addLocalFlag(MOVED_TO_BKGRND_FLAG_NAME, true);
+    /*public static void setMovedToBkgrnd() {
+        StorageUtil.addBoolean(MOVED_TO_BKGRND_FLAG_NAME, true);
     }
 
     public static boolean fromBackGround() {
-        return StorageUtil.getFlag(MOVED_TO_BKGRND_FLAG_NAME);
-    }
+        return StorageUtil.getBoolean(MOVED_TO_BKGRND_FLAG_NAME);
+    }*/
 
     public static boolean isExerciseRunning(){
         return isExerciseRunning;

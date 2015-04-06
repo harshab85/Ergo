@@ -135,7 +135,9 @@ public final class MetricsStorage {
             }
 
             String emailAddress = StorageUtil.getString("emailAddress");
-            EmailClient.getInstance().send(emailAddress, activeMetrics);
+            if(emailAddress != null && !emailAddress.isEmpty()) {
+                EmailClient.getInstance().send(emailAddress, activeMetrics);
+            }
 
             return storedMetrics.toString();
         }

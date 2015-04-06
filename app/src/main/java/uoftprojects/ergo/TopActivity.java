@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.widget.GridView;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.view.View;
@@ -26,10 +22,19 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
-import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
+import uoftprojects.ergo.rewards.IReward;
+import uoftprojects.ergo.rewards.RewardType;
+import uoftprojects.ergo.rewards.RewardsHandler;
+import uoftprojects.ergo.rewards.RewardsList;
+import uoftprojects.ergo.rewards.StickerReward;
 import uoftprojects.ergo.util.ActivityUtil;
-import android.content.SharedPreferences;
+import uoftprojects.ergo.util.SetupUtil;
+import uoftprojects.ergo.util.StorageUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -54,19 +59,24 @@ public class TopActivity extends Activity {
 
         videoView.setVisibility(View.INVISIBLE);
 
-        toolbar.setTitle("Ergo Video Player!");
+        toolbar.setTitle("Ergo Video Gallery");
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
+        //SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
 
 
-        if(sharedPreferences != null) {
-            boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
-            if (!setupCompleted) {
+        if(!SetupUtil.isSetupCompeted()){//sharedPreferences != null) {
+            //boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
+            //if (!setupCompleted) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
-            }
+            //}
+        }
+
+        String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
+        if(storedMetrics != null && !storedMetrics.isEmpty()){
+            MetricsStorage.getInstance().initialize(storedMetrics);
         }
 
         initialize();
@@ -85,7 +95,7 @@ public class TopActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
+        // specify an adapter (see also nextReward example)
 
 //        String[] mDataset = new String[10];
 //
@@ -114,12 +124,45 @@ public class TopActivity extends Activity {
                             videoView.setMediaController(mediaController);
                             videoView.setVideoPath(videoFilePath);
 
+                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    duration_msec = mp.getDuration();
+                                    try {
+                                        JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
+                                        rewardsHandler = new RewardsHandler(currentMetrics);
+
+                                    }
+                                    catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
                             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 @Override
                                 public void onCompletion(MediaPlayer mp) {
+                                    updateVideoWatchTime(duration_msec);
+                                    duration_msec = 0;
                                     toggleGalleryMode();
                                     SparkPlug.stop();
 
+                                    // Check for rewards at the end of the video
+                                    if(rewardsHandler.shouldUnlockReward()){
+                                        IReward reward = rewardsHandler.unlock();
+
+                                        if(reward == null){
+                                            Toast.makeText(ActivityUtil.getMainActivity(), "All rewards have been unlocked", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(reward.getType() == RewardType.Sticker){
+                                            StickerReward stickerReward = (StickerReward)reward;
+
+                                            // TODO Apply sticker to video thumbnails
+                                            int resourceId = stickerReward.getResourceId();
+
+                                            System.out.println("Resource: " + resourceId);
+                                        }
+                                    }
                                 }
                             });
 
@@ -134,6 +177,27 @@ public class TopActivity extends Activity {
         );
     }
 
+    private int duration_msec = 0;
+    private RewardsHandler rewardsHandler = null;
+
+
+    private void updateVideoWatchTime(int duration_msec){
+        long minutes = 0;
+        long seconds = duration_msec/1000;
+        if(seconds > 30 && seconds <= 60){
+            minutes = 1;
+        }
+        else{
+            minutes = seconds/60;
+            long reminder = seconds % 60;
+            if(reminder > 30){
+                minutes++;
+            }
+        }
+
+        MetricsStorage.getInstance().updateCurrVideoWatched_Minutes(minutes);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -143,6 +207,8 @@ public class TopActivity extends Activity {
     @Override
     protected void onPause() {
         SparkPlug.stop();
+        MetricsStorage.getInstance().store();
+        RewardsList.getInstance().store();
         super.onPause();
     }
 
@@ -150,6 +216,7 @@ public class TopActivity extends Activity {
     public void onBackPressed() {
         toggleGalleryMode();
         SparkPlug.stop();
+        MetricsStorage.getInstance().toString();
     }
 
     private void toggleFullscreen(boolean fullscreen)

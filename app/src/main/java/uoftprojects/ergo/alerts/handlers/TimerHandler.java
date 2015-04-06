@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import uoftprojects.ergo.R;
+import uoftprojects.ergo.metrics.usage.MetricsStorage;
 import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.StartTime;
@@ -71,7 +72,7 @@ public class TimerHandler implements IHandler {
                     view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            if(videoPlayCount < 10) {
+                            if(videoPlayCount < BaselineUtil.BLINK_REPETITION) {
                                 mp.start();
                                 videoPlayCount++;
                             }

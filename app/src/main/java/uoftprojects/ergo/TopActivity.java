@@ -1,12 +1,15 @@
 package uoftprojects.ergo;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.app.Fragment;
+
 import android.app.FragmentManager;
 
 import android.view.ViewOutlineProvider;
@@ -23,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.view.View;
 import android.view.WindowManager;
@@ -62,11 +66,11 @@ public class TopActivity extends Activity {
         toolbar.setTitle("Ergo");
         toolbar.setLogo(R.mipmap.ic_launcher);
         setActionBar(toolbar);
+        ActivityUtil.setMainActivity(this);
 
-
-//        View v = findViewById(R.id.rewardLocation);
-//        v.setVisibility(View.INVISIBLE);
-//        v.bringToFront();
+        FragmentManager fg = getFragmentManager();
+        RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+        fragment.getView().setVisibility(View.VISIBLE);
 
 
         View addButton = findViewById(R.id.add_button);
@@ -82,7 +86,6 @@ public class TopActivity extends Activity {
 
         VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
 
-        ActivityUtil.setMainActivity(this);
 
         videoView.setVisibility(View.INVISIBLE);
 
@@ -144,30 +147,13 @@ public class TopActivity extends Activity {
                                 public void onCompletion(MediaPlayer mp) {
                                     toggleGalleryMode();
                                     SparkPlug.stop();
-                                    Toast.makeText(ActivityUtil.getMainActivity(), "SUCCESS!2", Toast.LENGTH_SHORT).show();
 
+                                    View v = view.findViewById(R.id.rewardSticker);
+                                    v.setVisibility(View.VISIBLE);
+                                    FragmentManager fg = getFragmentManager();
+                                    RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                                    fragment.getView().setVisibility(View.VISIBLE);
 
-
-                                    RewardFragment nextFrag= new RewardFragment();
-
-                                    FragmentManager fm = getFragmentManager();
-                                    fm.beginTransaction()
-                                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                                            .show(nextFrag)
-                                            .commit();
-
-//                                    View v = findViewById(R.id.rewardLocation);
-//                                    v.setVisibility(View.VISIBLE);
-//
-//                                    RewardFragment nextFrag= new RewardFragment();
-//                                    Toast.makeText(ActivityUtil.getMainActivity(), ""+nextFrag.isVisible(), Toast.LENGTH_SHORT).show();
-//                                    ActivityUtil.getMainActivity().getFragmentManager().beginTransaction()
-//                                            .replace(R.id.rewardLocation, nextFrag, null)
-//                                            .addToBackStack(null)
-//                                            .commit();
-//                                    nextFrag.setUserVisibleHint(true);
-
-//                                    Check for reward
 
                                 }
                             });
@@ -385,5 +371,12 @@ public class TopActivity extends Activity {
     public void orangeButtonPressed(View view) {
         Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
     }
+
+    public void continueVideos(View view) {
+        FragmentManager fg = getFragmentManager();
+        RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+        fragment.getView().setVisibility(View.INVISIBLE);
+    }
+
 
 }

@@ -69,26 +69,6 @@
         android:minWidth="100dp"/>
 
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:clickable="false">-->
-
-        <!--<fragment-->
-            <!--android:name="uoftprojects.ergo.RewardFragment"-->
-            <!--android:id="@+id/rewardLocation"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--tools:layout="@layout/fragment_reward"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:visibility="invisible"-->
-            <!--android:layout_marginBottom="5dp"-->
-            <!--android:layout_marginLeft="5dp"-->
-            <!--android:layout_alignParentRight="false" />-->
-
-    <!--</RelativeLayout>-->
-
     <ImageButton
         android:id="@+id/add_button"
         android:background="@drawable/oval_ripple"
@@ -102,6 +82,15 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="5dp"
         android:onClick="orangeButtonPressed"/>
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="uoftprojects.ergo.RewardFragment"
+        android:id="@+id/fragmentVideoReward"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        tools:layout="@layout/fragment_reward" />
 
 
     <!--<ImageButton-->

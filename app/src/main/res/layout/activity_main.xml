@@ -3,24 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/mainActivtyOne"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/testMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Click the button to go to the video gallery"
-        android:layout_centerHorizontal="true"/>
+    <VideoView
+        android:id="@+id/video_playbackMain"
+        android:layout_width="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="fill_parent"
+        android:visibility="invisible"
+        android:padding="50dp" />
 
-
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Video Library"
-        android:layout_below="@+id/testMessage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>

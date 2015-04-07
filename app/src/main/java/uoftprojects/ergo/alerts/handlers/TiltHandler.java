@@ -53,7 +53,7 @@ public class TiltHandler implements IHandler {
         }
 
         final float tiltAngle = tilt.getValue();
-        if(true) {
+        //if(tiltAngle > BaselineUtil.PHONE_FLAT_MAX_ANGLE) {
             if (tiltAngle < BaselineUtil.MIN_TILT_ANGLE || tiltAngle > BaselineUtil.MAX_TILT_ANGLE) {
 
                 final MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
@@ -85,10 +85,10 @@ public class TiltHandler implements IHandler {
             else{
                 cancel();
             }
-        }
+       /* }
         else{
             cancel();
-        }
+        }*/
 
         return false;
     }

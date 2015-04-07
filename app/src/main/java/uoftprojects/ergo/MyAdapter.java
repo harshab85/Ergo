@@ -40,6 +40,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public CardView mCardView;
         public TextView mTextView;
         public ImageView mImageView;
+        public ImageView mRewardSticker;
+
+
+        public ImageView mLeftRewardSticker;
 
 
         public ViewHolder(View v) {
@@ -48,6 +52,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mCardView = (CardView) v.findViewById(R.id.cardviewHERE);
             mTextView = (TextView) v.findViewById(R.id.textView);
             mImageView = (ImageView) v.findViewById(R.id.imageView4);
+            mRewardSticker = (ImageView) v.findViewById(R.id.rewardSticker);
+            mLeftRewardSticker = (ImageView) v.findViewById(R.id.leftSticker);
 
         }
     }
@@ -82,9 +88,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.mImageView.setImageResource(R.drawable.ergoinspace);
 
-        File imgFile = new  File(mVideos.get(position).thumbPath);
 
-        if(imgFile.exists()){
+        File imgFile = null;
+        if(mVideos.get(position).thumbPath != null){
+            imgFile = new  File(mVideos.get(position).thumbPath);
+        }
+
+
+        if(imgFile != null && imgFile.exists()){
             System.out.println("EXISTS");
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 

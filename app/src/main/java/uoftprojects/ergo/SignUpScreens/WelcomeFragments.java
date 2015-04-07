@@ -55,7 +55,7 @@ public class WelcomeFragments extends Fragment {
                 rootView = inflater.inflate(R.layout.fragment_welcome_3, container, false);
                 break;
             case 3:
-                rootView = inflater.inflate(R.layout.fragment_welcome_2, container, false);
+                rootView = inflater.inflate(R.layout.fragment_welcome_1, container, false);
                 break;
             default:
                 System.err.println("The should not have defaulted, please ensure a page is set");

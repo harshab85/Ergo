@@ -3,6 +3,7 @@ package uoftprojects.ergo;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,14 +14,14 @@ import android.support.v4.app.FragmentActivity;
 import android.content.SharedPreferences;
 
 
-
-
-
-
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import java.util.Locale;
 
@@ -89,27 +90,75 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("setupCompleted", true);
         editor.commit();*/
+
+
         EditText editText = (EditText)findViewById(R.id.editText);
         String emailAddress = editText.getText().toString();
 
         StorageUtil.addString("emailAddress", emailAddress);
         SetupUtil.setupCompleted();
 
+
+        setContentView(R.layout.activity_main);
+
+        final VideoView videoView = (VideoView) toggleVideoMode();
+        MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+
+        videoView.setMediaController(mediaController);
+
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.ergo_tutorial;
+        videoView.setVideoURI(Uri.parse(path));
+
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                LeavePlace();
+
+            }
+        });
+
+        videoView.start();
+
+
+//        Intent intent = new Intent(this, TopActivity.class);
+//
+//
+//
+//        startActivity(intent);
+
+
+//        finish();
+    }
+
+    void LeavePlace(){
+
         Intent intent = new Intent(this, TopActivity.class);
-
-
-
-
-
-
-
-
-
-
-
-
         startActivity(intent);
         finish();
+    }
+
+    private VideoView toggleVideoMode() {
+        VideoView videoView = (VideoView) findViewById(R.id.video_playbackMain);
+        videoView.setVisibility(View.VISIBLE);
+
+        toggleFullscreen(true);
+
+        return videoView;
+    }
+
+    private void toggleFullscreen(boolean fullscreen)
+    {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        if (fullscreen)
+        {
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        }
+        else
+        {
+            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        }
+        getWindow().setAttributes(attrs);
     }
 
 

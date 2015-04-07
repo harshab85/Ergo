@@ -57,14 +57,6 @@ public final class StorageUtil {
         return sharedPreferences.getLong(key, 0);
     }
 
-    public static boolean addInt(String key, int value){
-        editor.putInt(key, value);
-        return editor.commit();
-    }
-
-    public static int getInt(String key){
-        return sharedPreferences.getInt(key, 0);
-    }
 
 
 }

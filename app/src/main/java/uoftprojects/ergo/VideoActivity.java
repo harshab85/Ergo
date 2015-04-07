@@ -3,7 +3,6 @@ package uoftprojects.ergo;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,17 +11,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.MediaController;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,26 +25,20 @@ import java.util.Map;
 import uoftprojects.ergo.alerts.handlers.AlertsHandler;
 import uoftprojects.ergo.engine.SparkPlug;
 import uoftprojects.ergo.metrics.usage.MetricsStorage;
-import uoftprojects.ergo.rewards.IReward;
-import uoftprojects.ergo.rewards.RewardType;
-import uoftprojects.ergo.rewards.RewardsHandler;
-import uoftprojects.ergo.rewards.RewardsList;
-import uoftprojects.ergo.rewards.StickerReward;
 import uoftprojects.ergo.util.ActivityUtil;
-import uoftprojects.ergo.util.StorageUtil;
 
 /**
  * Created by Harsha Balasubramanian on 2/22/2015.
  */
 public class VideoActivity extends Activity {
 
-    private int duration_msec = 0;
-    private RewardsHandler rewardsHandler = null;
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+        initialize();
     }
 
     @Override
@@ -61,117 +49,172 @@ public class VideoActivity extends Activity {
 
     @Override
     protected void onPause() {
-        VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
-
-        StorageUtil.addInt("video_playback_duration", videoView.getCurrentPosition());
-
         SparkPlug.stop();
-        MetricsStorage.getInstance().store();
-        RewardsList.getInstance().store();
         super.onPause();
     }
 
     @Override
     public void onBackPressed() {
-        SparkPlug.stop();
         toggleGalleryMode();
+        SparkPlug.stop();
+        MetricsStorage.getInstance().toString();
     }
 
     private void initialize() {
 
         ActivityUtil.setMainActivity(this);
-        toggleFullscreen(true);
 
-        String videoFilePath = getIntent().getStringExtra("videoFilePath");
-        final VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
-        MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
-        videoView.setMediaController(mediaController);
-        videoView.setVideoPath(videoFilePath);
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        List<VideoInfo> videos = loadVideos();
+
+        if(videos == null || videos.isEmpty()){
+            Toast.makeText(this, "No videos in phone library.", Toast.LENGTH_SHORT).show();
+        }/*else{
+            Toast.makeText(this, "Yes videos!", Toast.LENGTH_SHORT).show();
+        }*/
+
+        //System.out.println("NO ERROR YET?");
+
+        List<Map<String, String>> aList = new ArrayList<>();
+        for(int i=0 ; i<videos.size() ; i++){
+            Map<String, String> hm = new HashMap<>();
+            hm.put("thumbnail", videos.get(i).thumbPath);
+            hm.put("name", videos.get(i).displayName);
+            aList.add(hm);
+        }
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+
+        String[] rows = new String[]{"thumbnail", "name"};
+        int[] ids = new int[]{R.id.thumbnail, R.id.thumbnail_name};
+
+        gridview.setAdapter(new SimpleAdapter(this, aList, R.layout.video_layout, rows, ids));
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onPrepared(MediaPlayer mp) {
-                duration_msec = mp.getDuration();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (cursor.moveToPosition(position)) {
+                    int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                    String videoFilePath = cursor.getString(fileColumn);
 
-                int seek = StorageUtil.getInt("video_playback_duration");
-                mp.seekTo(seek);
-                StorageUtil.addInt("video_playback_duration", 0);
+                    VideoView videoView = (VideoView) toggleVideoMode();
+                    MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
 
-                try {
-                    JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
-                    rewardsHandler = new RewardsHandler(currentMetrics);
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
+                    videoView.setMediaController(mediaController);
+                    videoView.setVideoPath(videoFilePath);
+
+                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            toggleGalleryMode();
+                            SparkPlug.stop();
+
+
+                            long minutes = 0;
+                            long duration_msec = mp.getDuration();
+                            long seconds = duration_msec/1000;
+                            if(seconds > 30 && seconds <= 60){
+                                minutes = 1;
+                            }
+                            else{
+                                minutes = seconds/60;
+                                long reminder = seconds % 60;
+                                if(reminder > 30){
+                                    minutes++;
+                                }
+                            }
+
+                            MetricsStorage.getInstance().updateCurrVideoWatched_Minutes(minutes);
+                        }
+                    });
+
+                    SparkPlug.start();
+                    videoView.start();
                 }
             }
         });
+    }
+
+    private View toggleVideoMode() {
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setVisibility(View.INVISIBLE);
+
+        VideoView videoView = (VideoView) findViewById(R.id.video_playback);
+        videoView.setVisibility(View.VISIBLE);
+
+        return videoView;
+    }
+
+    private View  toggleGalleryMode() {
+        VideoView videoView = (VideoView) findViewById(R.id.video_playback);
+        videoView.setVisibility(View.INVISIBLE);
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setVisibility(View.VISIBLE);
+
+        return gridview;
+    }
+
+    private List<VideoInfo> loadVideos(){
+        List<VideoInfo> videos = new ArrayList<>();
+
+        String[] thumbColumns = {
+                MediaStore.Video.Thumbnails.DATA,
+                MediaStore.Video.Thumbnails.VIDEO_ID,
+        };
+
+        String[] mediaColumns = {
+                MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.TITLE,
+                MediaStore.Video.Media.MIME_TYPE };
+
+        cursor = managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                mediaColumns, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                VideoInfo videoInfo = new VideoInfo();
+
+                int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+
+                String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+                String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+
+                videoInfo.displayName = displayName;
+                videoInfo.filePath = filePath;
 
 
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                updateVideoWatchTime(duration_msec);
-                duration_msec = 0;
-                toggleGalleryMode();
-                SparkPlug.stop();
+                /*ContentResolver crThumb = getContentResolver();
+                BitmapFactory.Options options=new BitmapFactory.Options();
+                options.inSampleSize = 1;
+                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+                System.out.println();
+                if(curThumb != null) {
+                    videoInfo.thumbPath = curThumb;
+                }*/
 
-                // Check for rewards at the end of the video
-                if(rewardsHandler.shouldUnlockReward()){
-                    IReward reward = rewardsHandler.unlock();
 
-                    if(reward == null){
-                        Toast.makeText(ActivityUtil.getMainActivity(), "All rewards have been unlocked", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(reward.getType() == RewardType.Sticker){
-                        StickerReward stickerReward = (StickerReward)reward;
+                Cursor thumbCursor = managedQuery(
+                        MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+                        thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
+                                + "=" + id, null, null);
 
-                        // TODO Apply sticker to video thumbnails
-                        int resourceId = stickerReward.getResourceId();
-
-                        System.out.println("Resource: " + resourceId);
-                    }
+                if (thumbCursor.moveToFirst()) {
+                    videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+                    System.out.println(videoInfo.thumbPath);
                 }
-            }
-        });
 
-        SparkPlug.start();
-        videoView.start();
-    }
 
-    private void updateVideoWatchTime(int duration_msec){
-        long minutes = 0;
-        long seconds = duration_msec/1000;
-        if(seconds > 30 && seconds <= 60){
-            minutes = 1;
-        }
-        else{
-            minutes = seconds/60;
-            long reminder = seconds % 60;
-            if(reminder > 30){
-                minutes++;
-            }
+                videos.add(videoInfo);
+            } while (cursor.moveToNext());
         }
 
-        MetricsStorage.getInstance().updateCurrVideoWatched_Minutes(minutes);
+        return videos;
     }
+}
 
-
-    private void toggleGalleryMode() {
-        Intent intent = new Intent(this, TopActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void toggleFullscreen(boolean fullscreen){
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        if (fullscreen)
-        {
-            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        }
-        else
-        {
-            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        }
-        getWindow().setAttributes(attrs);
-    }
+class VideoInfo {
+    String displayName;
+    String filePath;
+    String thumbPath;
 }

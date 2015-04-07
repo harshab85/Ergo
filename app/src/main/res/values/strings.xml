@@ -4,8 +4,6 @@
     <string name="app_name">Ergo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Parental Settings</string>
-    <string name="action_restart">Restart Sign Up</string>
-
     <string name="title_activity_video">VideoActivity</string>
     <string name="title_activity_set_up">SetUp</string>
 

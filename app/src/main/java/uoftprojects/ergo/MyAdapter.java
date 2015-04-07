@@ -24,7 +24,7 @@ import java.io.*;
  * Created by ryanprimeau on 15-03-20.
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private List<TopActivity.VideoInfo> mVideos;
+    private List<VideoInfo> mVideos;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -40,9 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public CardView mCardView;
         public TextView mTextView;
         public ImageView mImageView;
-
-
-        public ImageView mLeftRewardSticker;
+        public ImageView mRewardSticker;
 
 
         public ViewHolder(View v) {
@@ -51,17 +49,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mCardView = (CardView) v.findViewById(R.id.cardviewHERE);
             mTextView = (TextView) v.findViewById(R.id.textView);
             mImageView = (ImageView) v.findViewById(R.id.imageView4);
-<<<<<<< HEAD
             mRewardSticker = (ImageView) v.findViewById(R.id.rewardSticker);
-            mLeftRewardSticker = (ImageView) v.findViewById(R.id.leftSticker);
-=======
->>>>>>> origin/master
-
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<TopActivity.VideoInfo> videos) {
+    public MyAdapter(List<VideoInfo> videos) {
         mVideos = videos;
     }
 
@@ -90,26 +83,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.mImageView.setImageResource(R.drawable.ergoinspace);
 
-<<<<<<< HEAD
-
         File imgFile = null;
         if(mVideos.get(position).thumbPath != null){
             imgFile = new  File(mVideos.get(position).thumbPath);
         }
 
-=======
-        File imgFile = new  File(mVideos.get(position).thumbPath);
->>>>>>> origin/master
 
-        if(imgFile.exists()){
-            //System.out.println("EXISTS");
+        if(imgFile != null && imgFile.exists()){
+            System.out.println("EXISTS");
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
             holder.mImageView.setImageBitmap(myBitmap);
 
         }else{
 
-            //System.out.println("NOT EXISTS");
+            System.out.println("NOT EXISTS");
         }
 
         //holder.mImageView.setImageResource(mVideos.get(position).thumbPath);

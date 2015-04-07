@@ -4,25 +4,17 @@
     android:layout_height="match_parent"
     android:id="@+id/video_layout">
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView3"
-        android:src="@drawable/ergobackup"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_placeholder"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:background="#ffffff"
-        android:textColor="#ff000000"
-        android:text="You eyes must be getting pretty tired looking at this screen. A quick way to help our eyes stay alert is to blink. By blinking you make tears that keep your eyes refreshed. Let’s bink together."/>
-    />
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"/>
 
     <VideoView
         android:id="@+id/video_playback"
@@ -34,22 +26,16 @@
         android:layout_height="fill_parent"
         android:visibility="invisible"/>
 
-    <view
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        class="uoftprojects.ergo.util.MyVideoView"
-        android:id="@+id/videoViewMaterial"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-
-    <SeekBar
-        android:id="@+id/tilt_detection"
+    <!--<ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:max="90"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView3"
+        android:src="@drawable/ergobackup"
         android:visibility="invisible"
-        android:minWidth="100dp"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        />-->
 
 </RelativeLayout>

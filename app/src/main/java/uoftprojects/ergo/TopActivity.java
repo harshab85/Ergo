@@ -201,6 +201,12 @@ public class TopActivity extends Activity {
                             toggleGalleryMode();
                             SparkPlug.stop();
 
+
+
+                            View v2 = view.findViewById(R.id.rewardSticker);
+                            v2.setVisibility(View.VISIBLE);
+
+
                             // Check for rewards at the end of the video
                             if(rewardsHandler.shouldUnlockReward()){
                                 IReward reward = rewardsHandler.unlock();

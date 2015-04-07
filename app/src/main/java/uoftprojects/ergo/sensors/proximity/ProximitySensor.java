@@ -101,6 +101,7 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
             int width = Math.abs(rect.width());
             int height = Math.abs(rect.height());
             this.rectArea = width * height;
+            //System.out.println("Face area: " + this.rectArea);
         }
         else{
             this.detectedFace = false;
@@ -109,6 +110,7 @@ public class ProximitySensor implements Camera.FaceDetectionListener {
     }
 
     public Proximity getProximity(){
+        //System.out.println("Face area: " + this.rectArea);
         Proximity proximity = new Proximity(this.rectArea, this.detectedFace);
         return proximity;
     }

@@ -20,7 +20,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar" />
 
-    <view
+    <!--<view
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         class="uoftprojects.ergo.util.MyVideoView"
@@ -97,7 +97,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         tools:layout="@layout/fragment_reward" />
-
+-->
 
     <!--<ImageButton-->
         <!--android:id="@+id/add_button"-->

@@ -96,6 +96,18 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
         SetupUtil.setupCompleted();
 
         Intent intent = new Intent(this, TopActivity.class);
+
+
+
+
+
+
+
+
+
+
+
+
         startActivity(intent);
         finish();
     }

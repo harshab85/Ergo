@@ -163,6 +163,21 @@ public class TopActivity extends Activity {
         mRecyclerView.removeOnItemTouchListener(two);
 
 
+
+        String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
+        if(storedMetrics != null && !storedMetrics.isEmpty()){
+            MetricsStorage.getInstance().initialize(storedMetrics);
+        }
+
+        if(rewardsHandler == null){
+            try{
+                JSONObject storedMetricsJSON = new JSONObject(storedMetrics);
+                rewardsHandler = new RewardsHandler(storedMetricsJSON);
+            }catch (Exception e) {
+
+            }
+        }
+
         one =  new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(final View view, int position) {
@@ -177,34 +192,6 @@ public class TopActivity extends Activity {
 
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
-
-
-//                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                        @Override
-//                        public void onCompletion(MediaPlayer mp) {
-//                            toggleGalleryMode();
-//                            SparkPlug.stop();
-//
-//                            View v = view.findViewById(R.id.rewardSticker);
-//                            v.setVisibility(View.VISIBLE);
-//                            FragmentManager fg = getFragmentManager();
-//                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-//                            fragment.getView().setVisibility(View.VISIBLE);
-//
-//                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                                @Override
-//                                public void onPrepared(MediaPlayer mp) {
-//                                    duration_msec = mp.getDuration();
-//                                    try {
-//                                        JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
-//                                        rewardsHandler = new RewardsHandler(currentMetrics);
-//
-//                                    }
-//                                    catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            });
 
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override

@@ -81,7 +81,7 @@ public class TopActivity extends Activity {
 
         FragmentManager fg = getFragmentManager();
         RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-        fragment.getView().setVisibility(View.VISIBLE);
+        fragment.getView().setVisibility(View.INVISIBLE);
 
 
         View addButton = findViewById(R.id.add_button);
@@ -116,9 +116,17 @@ public class TopActivity extends Activity {
             MetricsStorage.getInstance().initialize(storedMetrics);
         }
 
+        try{
+            JSONObject storedMetricsJSON = new JSONObject(storedMetrics);
+            rewardsHandler = new RewardsHandler(storedMetricsJSON);
+        }catch (Exception e){
+
+        }
 
 
- //       initializeForTutorials();
+
+
+        //       initializeForTutorials();
         initialize();
 //
     }
@@ -164,73 +172,72 @@ public class TopActivity extends Activity {
                     int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
                     String videoFilePath = cursor.getString(fileColumn);
 
-                    VideoView videoView = (VideoView) toggleVideoMode();
+                    final VideoView videoView = (VideoView) toggleVideoMode();
                     MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
 
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
 
 
+//                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                        @Override
+//                        public void onCompletion(MediaPlayer mp) {
+//                            toggleGalleryMode();
+//                            SparkPlug.stop();
+//
+//                            View v = view.findViewById(R.id.rewardSticker);
+//                            v.setVisibility(View.VISIBLE);
+//                            FragmentManager fg = getFragmentManager();
+//                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+//                            fragment.getView().setVisibility(View.VISIBLE);
+//
+//                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                                @Override
+//                                public void onPrepared(MediaPlayer mp) {
+//                                    duration_msec = mp.getDuration();
+//                                    try {
+//                                        JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
+//                                        rewardsHandler = new RewardsHandler(currentMetrics);
+//
+//                                    }
+//                                    catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            });
+
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
+                            updateVideoWatchTime(duration_msec);
+                            duration_msec = 0;
                             toggleGalleryMode();
                             SparkPlug.stop();
 
-                            View v = view.findViewById(R.id.rewardSticker);
-                            v.setVisibility(View.VISIBLE);
-                            FragmentManager fg = getFragmentManager();
-                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-                            fragment.getView().setVisibility(View.VISIBLE);
+                            // Check for rewards at the end of the video
+                            if(rewardsHandler.shouldUnlockReward()){
+                                IReward reward = rewardsHandler.unlock();
 
-                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(MediaPlayer mp) {
-                                    duration_msec = mp.getDuration();
-                                    try {
-                                        JSONObject currentMetrics = MetricsStorage.getInstance().getCurrentMetrics();
-                                        rewardsHandler = new RewardsHandler(currentMetrics);
-
-                                    }
-                                    catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                if(reward == null){
+                                    Toast.makeText(ActivityUtil.getMainActivity(), "All rewards have been unlocked", Toast.LENGTH_SHORT).show();
                                 }
-                            });
+                                else if(reward.getType() == RewardType.Sticker){
+                                    StickerReward stickerReward = (StickerReward)reward;
 
-                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    updateVideoWatchTime(duration_msec);
-                                    duration_msec = 0;
-                                    toggleGalleryMode();
-                                    SparkPlug.stop();
-
-                                    // Check for rewards at the end of the video
-                                    if(rewardsHandler.shouldUnlockReward()){
-                                        IReward reward = rewardsHandler.unlock();
-
-                                        if(reward == null){
-                                            Toast.makeText(ActivityUtil.getMainActivity(), "All rewards have been unlocked", Toast.LENGTH_SHORT).show();
-                                        }
-                                        else if(reward.getType() == RewardType.Sticker){
-                                            StickerReward stickerReward = (StickerReward)reward;
-
-                                            // TODO Apply sticker to video thumbnails
-                                            int resourceId = stickerReward.getResourceId();
-											View v = view.findViewById(R.id.rewardSticker);
-                            v.setVisibility(View.VISIBLE);
-                            FragmentManager fg = getFragmentManager();
-                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-                            fragment.getView().setVisibility(View.VISIBLE);
-                                            System.out.println("Resource: " + resourceId);
-                                        }
-                                    }
+                                    // TODO Apply sticker to video thumbnails
+                                    int resourceId = stickerReward.getResourceId();
+                                    View v = view.findViewById(R.id.leftSticker);
+                                    v.setBackground(ActivityUtil.getMainActivity().getResources().getDrawable(resourceId));
+                                    v.setVisibility(View.VISIBLE);
+                                    FragmentManager fg = getFragmentManager();
+                                    RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                                    fragment.getView().setVisibility(View.VISIBLE);
+                                    System.out.println("Resource: " + resourceId);
                                 }
-                            });
-
+                            }
                         }
                     });
+
 
                     SparkPlug.start();
                     videoView.start();
@@ -457,7 +464,18 @@ public class TopActivity extends Activity {
         }
 
         if (id == R.id.action_search) {
-            Toast.makeText(ActivityUtil.getMainActivity(), "Implement Server Call Here", Toast.LENGTH_SHORT).show();
+            MetricsStorage.getInstance().store();
+            Toast.makeText(ActivityUtil.getMainActivity(), "Email Sent", Toast.LENGTH_SHORT).show();
+        }
+
+        if (id == R.id.action_restart) {
+
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
+         //   Toast.makeText(ActivityUtil.getMainActivity(), "Implement Server Call Here", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);

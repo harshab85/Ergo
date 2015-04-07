@@ -78,7 +78,7 @@ public class TopActivity extends Activity {
         toolbar.setLogo(R.mipmap.ic_launcher);
         setActionBar(toolbar);
         ActivityUtil.setMainActivity(this);
-        
+
 
         View addButton = findViewById(R.id.add_button);
         addButton.setOutlineProvider(new ViewOutlineProvider() {

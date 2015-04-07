@@ -79,6 +79,10 @@ public class TopActivity extends Activity {
         setActionBar(toolbar);
         ActivityUtil.setMainActivity(this);
 
+        FragmentManager fg = getFragmentManager();
+        RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+        fragment.getView().setVisibility(View.INVISIBLE);
+
 
         View addButton = findViewById(R.id.add_button);
         addButton.setOutlineProvider(new ViewOutlineProvider() {

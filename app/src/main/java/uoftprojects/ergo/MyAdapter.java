@@ -43,6 +43,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ImageView mRewardSticker;
 
 
+        public ImageView mLeftRewardSticker;
+
+
         public ViewHolder(View v) {
             super(v);
             cardViewErgo = v;
@@ -50,6 +53,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mTextView = (TextView) v.findViewById(R.id.textView);
             mImageView = (ImageView) v.findViewById(R.id.imageView4);
             mRewardSticker = (ImageView) v.findViewById(R.id.rewardSticker);
+            mLeftRewardSticker = (ImageView) v.findViewById(R.id.leftSticker);
+
         }
     }
 
@@ -82,6 +87,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.mTextView.setText(mVideos.get(position).displayName);
 
         holder.mImageView.setImageResource(R.drawable.ergoinspace);
+
+        if(position%2 == 0){
+            holder.mLeftRewardSticker.setVisibility(View.VISIBLE);
+        }else{
+            holder.mLeftRewardSticker.setVisibility(View.INVISIBLE);
+        }
 
         File imgFile = null;
         if(mVideos.get(position).thumbPath != null){

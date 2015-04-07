@@ -174,8 +174,13 @@ public class TopActivity extends Activity {
                 JSONObject storedMetricsJSON = new JSONObject(storedMetrics);
                 rewardsHandler = new RewardsHandler(storedMetricsJSON);
             }catch (Exception e) {
-
+                Toast.makeText(ActivityUtil.getMainActivity(), "ERROR WHEN SETTING REWARDS", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if(rewardsHandler == null) {
+            Toast.makeText(ActivityUtil.getMainActivity(), "NULL REWARDS HANDLER", Toast.LENGTH_SHORT).show();
+
         }
 
         one =  new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {

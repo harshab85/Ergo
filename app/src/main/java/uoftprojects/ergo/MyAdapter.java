@@ -88,11 +88,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.mImageView.setImageResource(R.drawable.ergoinspace);
 
-        if(position%2 == 0){
-            holder.mLeftRewardSticker.setVisibility(View.VISIBLE);
-        }else{
-            holder.mLeftRewardSticker.setVisibility(View.INVISIBLE);
-        }
 
         File imgFile = null;
         if(mVideos.get(position).thumbPath != null){

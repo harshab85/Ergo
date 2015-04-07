@@ -38,7 +38,7 @@
 
     <Button
         android:id="@+id/button"
-        android:text="VIDEOS"
+        android:text="Start Tutorial"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:elevation="10dp"

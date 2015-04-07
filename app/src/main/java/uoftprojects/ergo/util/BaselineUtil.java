@@ -8,7 +8,7 @@ public final class BaselineUtil {
     // Tilt Baseline
     public static final int MIN_TILT_ANGLE = 40;
     public static final int MAX_TILT_ANGLE = 70;
-    public static final int PHONE_FLAT_MAX_ANGLE = 10;
+    public static final int PHONE_FLAT_MAX_ANGLE = 5;
     public static final int PHONE_MIN_USAGE_ANGLE = 20;
     public static final long[] VIBRATION_ALERT_PATTERN = new long[]{300, 50};
 
@@ -21,13 +21,13 @@ public final class BaselineUtil {
     public static final long MAX_RECT_AREA = 800000;
 
     // Sensor polling - msec
-    public static final int POLL_START_DELAY = 3000;
+    public static final int POLL_START_DELAY = 5000;
     public static final int POLL_INTERVAL = 1750;
 
 
 
     // Max zoom factor
-    public static final double MAX_ZOOM_FACTOR = 2.0;
+    public static final double MAX_ZOOM_FACTOR = 1.8;
 
     //Rewards
     public static final int MAX_TILT_ERRORS_UNTIL_UNLOCK = 3;

@@ -60,6 +60,7 @@ public class TiltSensor implements SensorEventListener {
     }
 
     public Tilt getTilt(){
+        //System.out.println(this.tilt);
         Tilt tilt = new Tilt(this.tilt);
         return tilt;
     }

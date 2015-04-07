@@ -2,11 +2,13 @@ package uoftprojects.ergo;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -84,7 +86,7 @@ public class VideoActivity extends Activity {
 
         String videoFilePath = getIntent().getStringExtra("videoFilePath");
         final VideoView videoView = (VideoView) findViewById(R.id.videoViewMaterial);
-        MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
+        MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
         videoView.setVideoPath(videoFilePath);
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -127,6 +129,15 @@ public class VideoActivity extends Activity {
 
                         // TODO Apply sticker to video thumbnails
                         int resourceId = stickerReward.getResourceId();
+
+                        View v = TopActivity.INSTANCE.findViewById(R.id.leftSticker);
+                        Drawable drawable = TopActivity.INSTANCE.getResources().getDrawable(resourceId);
+                        v.setBackground(drawable);
+                        v.setVisibility(View.VISIBLE);
+
+                        //FragmentManager fg = getFragmentManager();
+                        //RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                        //fragment.getView().setVisibility(View.VISIBLE);
 
                         System.out.println("Resource: " + resourceId);
                     }

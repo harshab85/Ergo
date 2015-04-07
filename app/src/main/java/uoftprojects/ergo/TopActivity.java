@@ -1,13 +1,18 @@
 package uoftprojects.ergo;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Outline;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewOutlineProvider;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.view.View;
@@ -42,16 +47,23 @@ import org.json.JSONObject;
  */
 public class TopActivity extends Activity {
 
+    public static TopActivity INSTANCE;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
 
+    private RecyclerItemClickListener one;
+    private RecyclerItemClickListener two;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
-<<<<<<< HEAD
+
+        INSTANCE = this;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Ergo");
         toolbar.setLogo(R.mipmap.ic_launcher);
@@ -60,10 +72,11 @@ public class TopActivity extends Activity {
 
         FragmentManager fg = getFragmentManager();
         RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+
         fragment.getView().setVisibility(View.INVISIBLE);
 
 
-        View addButton = findViewById(R.id.add_button);
+        /*View addButton = findViewById(R.id.add_button);
         addButton.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
@@ -71,15 +84,8 @@ public class TopActivity extends Activity {
                 outline.setOval(0, 0, diameter, diameter);
             }
         });
-        addButton.setClipToOutline(true);
+        addButton.setClipToOutline(true);*/
 
-=======
->>>>>>> origin/master
-
-        ActivityUtil.setMainActivity(this);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Ergo Video Gallery");
 
         if(!SetupUtil.isSetupCompeted()){
             Intent intent = new Intent(this, MainActivity.class);
@@ -93,7 +99,7 @@ public class TopActivity extends Activity {
             MetricsStorage.getInstance().initialize(storedMetrics);
         }
 
-<<<<<<< HEAD
+
         try{
             JSONObject storedMetricsJSON = new JSONObject(storedMetrics);
             rewardsHandler = new RewardsHandler(storedMetricsJSON);
@@ -101,12 +107,6 @@ public class TopActivity extends Activity {
 
         }
 
-
-
-
-        //       initializeForTutorials();
-=======
->>>>>>> origin/master
         initialize();
     }
 
@@ -125,7 +125,7 @@ public class TopActivity extends Activity {
 
         mAdapter = new MyAdapter(videos);
         mRecyclerView.setAdapter(mAdapter);
-<<<<<<< HEAD
+
         mRecyclerView.removeOnItemTouchListener(one);
         mRecyclerView.removeOnItemTouchListener(two);
 
@@ -159,7 +159,12 @@ public class TopActivity extends Activity {
                     int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
                     String videoFilePath = cursor.getString(fileColumn);
 
-                    final VideoView videoView = (VideoView) toggleVideoMode();
+                    Intent intent = new Intent(ActivityUtil.getMainActivity(), VideoActivity.class);
+                    intent.putExtra("videoFilePath", videoFilePath);
+                    ActivityUtil.getMainActivity().startActivity(intent);
+                    ActivityUtil.getMainActivity().finish();
+
+                    /*final VideoView videoView = (VideoView) toggleVideoMode();
                     MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
 
                     videoView.setMediaController(mediaController);
@@ -205,7 +210,7 @@ public class TopActivity extends Activity {
 
 
                     SparkPlug.start();
-                    videoView.start();
+                    videoView.start();*/
                 }
 
 
@@ -220,11 +225,10 @@ public class TopActivity extends Activity {
 
     private int duration_msec = 0;
     private RewardsHandler rewardsHandler = null;
-=======
->>>>>>> origin/master
 
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+
+    /*mRecyclerView.addOnItemTouchListener(
+        new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         if (cursor.moveToPosition(position)) {
                             int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
@@ -239,7 +243,7 @@ public class TopActivity extends Activity {
                     }
                 })
         );
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -313,15 +317,13 @@ public class TopActivity extends Activity {
         return videos;
     }
 
-<<<<<<< HEAD
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.materialmenu, menu);
         return true;
     }
-//
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -367,7 +369,7 @@ public class TopActivity extends Activity {
 
 
 
-    private void initializeForTutorials() {
+    /*private void initializeForTutorials() {
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -431,6 +433,7 @@ public class TopActivity extends Activity {
         mAdapter.notifyDataSetChanged();
 
     }
+*/
 
 
 
@@ -440,10 +443,9 @@ public class TopActivity extends Activity {
 
 
 
+    //Boolean check = true;
 
-    Boolean check = true;
-
-    public void orangeButtonPressed(View view) {
+    /*public void orangeButtonPressed(View view) {
         Toast.makeText(ActivityUtil.getMainActivity(), "Orange Button Pressed", Toast.LENGTH_SHORT).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -456,18 +458,18 @@ public class TopActivity extends Activity {
             initialize();
         }
         check = !check;
-    }
+    }*/
 
     public void continueVideos(View view) {
         FragmentManager fg = getFragmentManager();
         RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
         fragment.getView().setVisibility(View.INVISIBLE);
-=======
+    }
+
     class VideoInfo{
         String thumbPath;
         String displayName;
         String filePath;
->>>>>>> origin/master
     }
 
 }

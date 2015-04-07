@@ -164,7 +164,7 @@ public class TopActivity extends Activity {
                     int fileColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
                     String videoFilePath = cursor.getString(fileColumn);
 
-                    VideoView videoView = (VideoView) toggleVideoMode();
+                    final VideoView videoView = (VideoView) toggleVideoMode();
                     MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
 
                     videoView.setMediaController(mediaController);
@@ -219,10 +219,11 @@ public class TopActivity extends Activity {
                                             // TODO Apply sticker to video thumbnails
                                             int resourceId = stickerReward.getResourceId();
 											View v = view.findViewById(R.id.rewardSticker);
-                            v.setVisibility(View.VISIBLE);
-                            FragmentManager fg = getFragmentManager();
-                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
-                            fragment.getView().setVisibility(View.VISIBLE);
+//                                            v.setBackground(ActivityUtil.getMainActivity().getResources().getDrawable(resourceId));
+                                            v.setVisibility(View.VISIBLE);
+                                            FragmentManager fg = getFragmentManager();
+                                            RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
+                                            fragment.getView().setVisibility(View.VISIBLE);
                                             System.out.println("Resource: " + resourceId);
                                         }
                                     }
@@ -457,7 +458,18 @@ public class TopActivity extends Activity {
         }
 
         if (id == R.id.action_search) {
-            Toast.makeText(ActivityUtil.getMainActivity(), "Implement Server Call Here", Toast.LENGTH_SHORT).show();
+            MetricsStorage.getInstance().store();
+            Toast.makeText(ActivityUtil.getMainActivity(), "Email Sent", Toast.LENGTH_SHORT).show();
+        }
+
+        if (id == R.id.action_restart) {
+
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
+         //   Toast.makeText(ActivityUtil.getMainActivity(), "Implement Server Call Here", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);

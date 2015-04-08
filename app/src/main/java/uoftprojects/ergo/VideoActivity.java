@@ -201,7 +201,7 @@ public class VideoActivity extends Activity {
 
                 if (thumbCursor.moveToFirst()) {
                     videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
-                    System.out.println(videoInfo.thumbPath);
+                    //System.out.println(videoInfo.thumbPath);
                 }
 
 

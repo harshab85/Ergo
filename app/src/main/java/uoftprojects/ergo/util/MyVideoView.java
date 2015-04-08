@@ -74,13 +74,13 @@ public class MyVideoView extends VideoView {
         else if (displayMode == DisplayMode.SCALE) {
 
 
-            System.out.println("HERE1");
+            //System.out.println("HERE1");
             width2 = (int)(((float)width)*scale);
             height2 = (int)(((float)height)*scale);
 
-            System.out.println("HERE");
+            /*System.out.println("HERE");
             System.out.println(width);
-            System.out.println(height);
+            System.out.println(height);*/
         }
 
         setMeasuredDimension(width2, height2);

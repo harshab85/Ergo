@@ -7,17 +7,22 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import uoftprojects.ergo.R;
 import uoftprojects.ergo.metrics.usage.MetricsStorage;
+import uoftprojects.ergo.sensors.timer.Timer;
 import uoftprojects.ergo.util.BaselineUtil;
 import uoftprojects.ergo.metrics.IMetric;
 import uoftprojects.ergo.metrics.Tilt;
 import uoftprojects.ergo.util.ActivityUtil;
+import uoftprojects.ergo.util.StorageUtil;
 import uoftprojects.ergo.util.VideoUtil;
 
 /**
@@ -26,6 +31,9 @@ import uoftprojects.ergo.util.VideoUtil;
 public class TiltHandler implements IHandler {
 
     private Vibrator vibrator = null;
+    private int errorCount = 0;
+    private boolean threshold;
+
 
     private static TiltHandler INSTANCE = null;
     private SeekBar seekBar = (SeekBar)ActivityUtil.getMainActivity().findViewById(R.id.tilt_detection);
@@ -58,50 +66,91 @@ public class TiltHandler implements IHandler {
         }
 
         final float tiltAngle = tilt.getValue();
-        if(true) {
+
             if (tiltAngle < BaselineUtil.MIN_TILT_ANGLE || tiltAngle > BaselineUtil.MAX_TILT_ANGLE) {
 
-                final MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
+                errorCount++;
+                VideoUtil.pause();
 
-                vibrator.vibrate(BaselineUtil.VIBRATION_ALERT_PATTERN, 0);
 
-                ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        VideoUtil.pauseVideo();
+                if(errorCount < 5) {
 
-                        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                            @Override
-                            public void onPrepared(MediaPlayer mp) {
-                                seekBar.bringToFront();
-                                seekBar.setVisibility(View.VISIBLE);
+                    final MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_tilt_the_device);
+                    ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    Matrix mat = new Matrix();
+                                    Bitmap bMap = BitmapFactory.decodeResource(ActivityUtil.getMainActivity().getResources(), R.mipmap.ic_launcher);
+                                    mat.postRotate(-90);
+                                    Bitmap bMapRotate = Bitmap.createBitmap(bMap, 0, 0, bMap.getWidth(), bMap.getHeight(), mat, true);
+                                    Drawable d = new BitmapDrawable(ActivityUtil.getMainActivity().getResources(), bMapRotate);
 
-                                Matrix mat = new Matrix();
-                                Bitmap bMap = BitmapFactory.decodeResource(ActivityUtil.getMainActivity().getResources(), R.mipmap.ic_launcher);
-                                mat.postRotate(90);
-                                Bitmap bMapRotate = Bitmap.createBitmap(bMap, 0, 0,bMap.getWidth(),bMap.getHeight(), mat, true);
-                                Drawable d = new BitmapDrawable(ActivityUtil.getMainActivity().getResources(), bMapRotate);
+                                    seekBar.setThumb(d);
+                                    seekBar.setProgress((int) tiltAngle);
+                                    seekBar.bringToFront();
+                                    seekBar.setVisibility(View.VISIBLE);
 
-                                seekBar.setThumb(d);
-                                seekBar.setProgress((int)tiltAngle);
+                                    vibrator.vibrate(BaselineUtil.VIBRATION_ALERT_PATTERN, 0);
+
+                                    mediaPlayer.start();
+                                }
+                            });
+
+                        }
+                    });
+                }
+                else{
+
+                    threshold = true;
+
+                    // Show Text
+                    ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if(!VideoUtil.isTiltVideoRunning()) {
+                                VideoUtil.setIsTiltVideoRunning(true);
+                                seekBar.setVisibility(View.INVISIBLE);
                             }
-                        });
-                        mediaPlayer.start();
 
+                            // Pick a tilt video
+                            String path = "android.resource://" + ActivityUtil.getMainActivity().getPackageName() + "/";
+                            if (tiltAngle < BaselineUtil.MIN_TILT_ANGLE) {
+                                path += R.raw.tilt_toward_you;
+                            }
+                            else{
+                                path += R.raw.tilt_away_from_you;
+                            }
 
-                        //Toast.makeText(ActivityUtil.getMainActivity(), "Ideal tilt angle (40 to 70). Current : " + tiltAngle, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            VideoView view = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                            view.setVisibility(View.VISIBLE);
+                            view.bringToFront();
+                            view.setVideoURI(Uri.parse(path));
+
+                            view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    mp.start();
+                                }
+                            });
+
+                            if(!VideoUtil.getTiltErrorVideo().equals(path)){
+                                VideoUtil.setTiltErrorVideo(path);
+                                view.start();
+                            }
+                        }
+                    });
+
+                }
 
                 return true;
             }
             else{
                 cancel();
             }
-        }
-        else{
-            cancel();
-        }
 
         return false;
     }
@@ -113,14 +162,29 @@ public class TiltHandler implements IHandler {
             vibrator.cancel();
         }
 
+        errorCount = 0;
+
         ActivityUtil.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            seekBar.setVisibility(View.INVISIBLE);
-            boolean neededResume = VideoUtil.resumeVideoWhenPaused();
-            if(neededResume){
-                MetricsStorage.getInstance().updateCurrTiltErrors();
-            }
+                seekBar.setVisibility(View.INVISIBLE);
+
+                if(VideoUtil.isTiltVideoRunning()){
+                    VideoUtil.setIsTiltVideoRunning(false);
+
+                    VideoView view = (VideoView)ActivityUtil.getMainActivity().findViewById(R.id.video_playback);
+                    view.setVisibility(View.INVISIBLE);
+                    if(view.isPlaying()) {
+                        view.stopPlayback();
+                    }
+                }
+
+                boolean neededResume = VideoUtil.resume();
+                if(neededResume && threshold){
+                    MetricsStorage.getInstance().updateCurrTiltErrors();
+                    threshold = false;
+                }
+
             }
         });
     }

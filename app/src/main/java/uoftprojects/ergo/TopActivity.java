@@ -421,7 +421,7 @@ public class TopActivity extends Activity {
                 BitmapFactory.Options options=new BitmapFactory.Options();
                 options.inSampleSize = 1;
                 Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
-                System.out.println();
+                //System.out.println();
                 if(curThumb != null) {
                     videoInfo.thumbPath = String.valueOf(curThumb);
                 }
@@ -434,7 +434,7 @@ public class TopActivity extends Activity {
 
                 if (thumbCursor.moveToFirst()) {
                     videoInfo.thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
-                    System.out.println(videoInfo.thumbPath);
+                    //System.out.println(videoInfo.thumbPath);
                 }
 
 

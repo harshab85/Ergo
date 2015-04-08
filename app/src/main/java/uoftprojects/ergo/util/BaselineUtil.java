@@ -13,7 +13,7 @@ public final class BaselineUtil {
     public static final long[] VIBRATION_ALERT_PATTERN = new long[]{300, 50};
 
     // Timer Baseline
-    public static final long MAX_CONTINUOUS_DEVICE_TIME = 60000;
+    public static final long MAX_CONTINUOUS_DEVICE_TIME = 70000;
     public static final int BLINK_REPETITION = 5;
 
     // Proximity Baseline
@@ -21,7 +21,7 @@ public final class BaselineUtil {
     public static final long MAX_RECT_AREA = 800000;
 
     // Sensor polling - msec
-    public static final int POLL_START_DELAY = 2000;
+    public static final int POLL_START_DELAY = 1000;
     public static final int POLL_INTERVAL = 1400;
 
 
@@ -31,5 +31,5 @@ public final class BaselineUtil {
 
     //Rewards
     public static final int MAX_TILT_ERRORS_UNTIL_UNLOCK = 2;
-    public static final int MAX_PROXIMITY_ERRORS_UNTIL_UNLOCK = 3;
+    public static final int MAX_PROXIMITY_ERRORS_UNTIL_UNLOCK = 2;
 }

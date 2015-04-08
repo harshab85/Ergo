@@ -187,7 +187,7 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
 
 
     public void onFragmentInteraction(Uri uri){
-        System.out.println("ON FRAGMENT INTERACTION METHOD CALLED");
+       // System.out.println("ON FRAGMENT INTERACTION METHOD CALLED");
     }
 
 

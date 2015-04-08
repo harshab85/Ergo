@@ -67,6 +67,7 @@
         android:visibility="invisible"
         android:max="90"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:progressDrawable="@android:color/holo_red_light"
         android:thumb="@mipmap/ic_launcher"
      />

@@ -1,8 +1,5 @@
 package uoftprojects.ergo;
 
-import android.app.ProgressDialog;
-import android.database.Cursor;
-import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +10,6 @@ import android.widget.TextView;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
-import android.widget.VideoView;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
 
@@ -118,14 +112,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
         if(imgFile != null && imgFile.exists()){
-            System.out.println("EXISTS");
+            //System.out.println("EXISTS");
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
             holder.mImageView.setImageBitmap(myBitmap);
 
         }else{
 
-            System.out.println("NOT EXISTS");
+            //System.out.println("NOT EXISTS");
         }
 
         //holder.mImageView.setImageResource(mVideos.get(position).thumbPath);

@@ -1,9 +1,7 @@
 package uoftprojects.ergo.util;
 
-import android.app.Activity;
-import android.view.Window;
+import android.view.View;
 import android.widget.VideoView;
-import android.widget.RelativeLayout;
 
 import uoftprojects.ergo.R;
 
@@ -12,11 +10,13 @@ import uoftprojects.ergo.R;
  */
 public final class VideoUtil {
 
-    //public static final String MOVED_TO_BKGRND_FLAG_NAME = "background";
-
     private static boolean PAUSED = false;
 
     private static boolean isExerciseRunning = false;
+
+    private static boolean isTiltVideoRunning = false;
+
+    private static String tiltErrorVideo = "";
 
     public static void pauseVideo() {
         VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
@@ -26,9 +26,41 @@ public final class VideoUtil {
         }
     }
 
+    public static void pause() {
+        VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+        if (videoView != null && videoView.canPause()) {
+            videoView.setVisibility(View.INVISIBLE);
+
+            if(StorageUtil.getInt("videoSeekTime") <= 0) {
+                StorageUtil.addInt("videoSeekTime", videoView.getCurrentPosition());
+            }
+
+            videoView.pause();
+            PAUSED = true;
+        }
+    }
+
     public static boolean resumeVideoWhenPaused() {
         VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
         if (PAUSED && videoView != null && !videoView.isPlaying()) {
+            videoView.start();
+            PAUSED = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean resume() {
+        VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
+        if (PAUSED && videoView != null && !videoView.isPlaying()) {
+            videoView.setVisibility(View.VISIBLE);
+            videoView.bringToFront();
+
+            int seek = (StorageUtil.getInt("videoSeekTime") <= 0) ? 0:StorageUtil.getInt("videoSeekTime");
+            System.out.println("Seek : " + seek);
+            videoView.seekTo(seek);
             videoView.start();
             PAUSED = false;
 
@@ -50,13 +82,21 @@ public final class VideoUtil {
     }
 
 
-    /*public static void setMovedToBkgrnd() {
-        StorageUtil.addBoolean(MOVED_TO_BKGRND_FLAG_NAME, true);
+    public static void setIsTiltVideoRunning(boolean isRunning) {
+        isTiltVideoRunning = isRunning;
     }
 
-    public static boolean fromBackGround() {
-        return StorageUtil.getBoolean(MOVED_TO_BKGRND_FLAG_NAME);
-    }*/
+    public static boolean isTiltVideoRunning() {
+        return isTiltVideoRunning;
+    }
+
+    public static void setTiltErrorVideo(String video) {
+        tiltErrorVideo = video;
+    }
+
+    public static String getTiltErrorVideo() {
+        return tiltErrorVideo;
+    }
 
     public static boolean isExerciseRunning(){
         return isExerciseRunning;

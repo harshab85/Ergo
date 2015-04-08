@@ -62,11 +62,13 @@
     <SeekBar
         android:id="@+id/tilt_detection"
         android:layout_width="500dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:rotation="90"
         android:visibility="invisible"
-
-        android:layout_centerInParent="true"
+        android:max="90"
+        android:layout_centerHorizontal="true"
+        android:progressDrawable="@android:color/holo_red_light"
+        android:thumb="@mipmap/ic_launcher"
      />
 
 

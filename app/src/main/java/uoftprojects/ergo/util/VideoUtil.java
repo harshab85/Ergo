@@ -29,12 +29,13 @@ public final class VideoUtil {
     public static void pause() {
         VideoView videoView = (VideoView) ActivityUtil.getMainActivity().findViewById(R.id.videoViewMaterial);
         if (videoView != null && videoView.canPause()) {
-            videoView.setVisibility(View.INVISIBLE);
-
             if(StorageUtil.getInt("videoSeekTime") <= 0) {
-                StorageUtil.addInt("videoSeekTime", videoView.getCurrentPosition());
+                int seek = videoView.getCurrentPosition();
+                StorageUtil.addInt("videoSeekTime", seek);
+                System.out.println("Seek : " + seek);
             }
 
+            videoView.setVisibility(View.INVISIBLE);
             videoView.pause();
             PAUSED = true;
         }
@@ -59,8 +60,9 @@ public final class VideoUtil {
             videoView.bringToFront();
 
             int seek = (StorageUtil.getInt("videoSeekTime") <= 0) ? 0:StorageUtil.getInt("videoSeekTime");
-            System.out.println("Seek : " + seek);
             videoView.seekTo(seek);
+            StorageUtil.addInt("videoSeekTime", 0);
+
             videoView.start();
             PAUSED = false;
 

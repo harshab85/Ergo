@@ -20,18 +20,16 @@ public final class RewardsHandler {
 
     private JSONObject initialMetrics;
 
+    public RewardsHandler(){
+    }
+
     public RewardsHandler(JSONObject initialMetrics){
         this.initialMetrics = initialMetrics;
     }
 
     public boolean shouldUnlockReward(){
         if(!SetupUtil.hasWatchedFirstVideo()){
-
-            // Play first sticker video
-            //MediaPlayer mediaPlayer = MediaPlayer.create(ActivityUtil.getMainActivity(), R.raw.ergo_first_sticker);
-            //mediaPlayer.start();
-
-            //SetupUtil.watchedFirstVideo();
+            SetupUtil.watchedFirstVideo();
             return true;
         }
         else{

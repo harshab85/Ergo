@@ -68,6 +68,8 @@ public class TopActivity extends Activity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private int duration_msec = 0;
+    private RewardsHandler rewardsHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,15 +169,17 @@ public class TopActivity extends Activity {
         String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
         if(storedMetrics != null && !storedMetrics.isEmpty()){
             MetricsStorage.getInstance().initialize(storedMetrics);
-        }
-
-        if(rewardsHandler == null){
-            try{
-                JSONObject storedMetricsJSON = new JSONObject(storedMetrics);
-                rewardsHandler = new RewardsHandler(storedMetricsJSON);
-            }catch (Exception e) {
-                Toast.makeText(ActivityUtil.getMainActivity(), "ERROR WHEN SETTING REWARDS", Toast.LENGTH_SHORT).show();
+            JSONObject storedMetricsJSON = null;
+            try {
+                storedMetricsJSON = new JSONObject(storedMetrics);
             }
+            catch (JSONException e) {
+                // Ignore
+            }
+            rewardsHandler = new RewardsHandler(storedMetricsJSON);
+        }
+        else{
+            rewardsHandler = new RewardsHandler();
         }
 
         if(rewardsHandler == null) {
@@ -198,6 +202,10 @@ public class TopActivity extends Activity {
                     videoView.setMediaController(mediaController);
                     videoView.setVideoPath(videoFilePath);
 
+
+                    // Store video watched
+                    
+
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
@@ -206,11 +214,8 @@ public class TopActivity extends Activity {
                             toggleGalleryMode();
                             SparkPlug.stop();
 
-
-
                             View v2 = view.findViewById(R.id.rewardSticker);
                             v2.setVisibility(View.VISIBLE);
-
 
                             // Check for rewards at the end of the video
                             if(rewardsHandler.shouldUnlockReward()){
@@ -222,7 +227,6 @@ public class TopActivity extends Activity {
                                 else if(reward.getType() == RewardType.Sticker){
                                     StickerReward stickerReward = (StickerReward)reward;
 
-                                    // TODO Apply sticker to video thumbnails
                                     int resourceId = stickerReward.getResourceId();
                                     View v = view.findViewById(R.id.leftSticker);
                                     v.setBackground(ActivityUtil.getMainActivity().getResources().getDrawable(resourceId));
@@ -230,7 +234,10 @@ public class TopActivity extends Activity {
                                     FragmentManager fg = getFragmentManager();
                                     RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
                                     fragment.getView().setVisibility(View.VISIBLE);
-                                    System.out.println("Resource: " + resourceId);
+
+
+                                    //Store the sticker position
+
                                 }
                             }
                         }
@@ -251,8 +258,6 @@ public class TopActivity extends Activity {
 
     }
 
-    private int duration_msec = 0;
-    private RewardsHandler rewardsHandler = null;
 
 
     private void updateVideoWatchTime(int duration_msec){

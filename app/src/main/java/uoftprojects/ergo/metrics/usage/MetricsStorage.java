@@ -158,11 +158,16 @@ public final class MetricsStorage {
     public MetricsComparison compare(JSONObject one, JSONObject two){
 
         try {
-            int tiltErrors1 = one.getInt("tiltErrors");
+
+            if(one == null){
+                return new MetricsComparison(two.getInt("tiltErrors"), two.getInt("proximityErrors"));
+            }
+
+            int tiltErrors1 = one.getJSONObject("activeMetrics").getInt("tiltErrors");
             int tiltErrors2 = two.getInt("tiltErrors");
             int tiltDelta = tiltErrors2 - tiltErrors1;
 
-            int proximityErrors1 = one.getInt("proximityErrors");
+            int proximityErrors1 = one.getJSONObject("activeMetrics").getInt("proximityErrors");
             int proximityErrors2 = two.getInt("proximityErrors");
             int proximityDelta = proximityErrors2 - proximityErrors1;
 

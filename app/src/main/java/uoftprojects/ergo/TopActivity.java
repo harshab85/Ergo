@@ -189,7 +189,7 @@ public class TopActivity extends Activity {
 
         one =  new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(final View view, int position) {
+            public void onItemClick(final View view, final int position) {
 
 
                 if (cursor.moveToPosition(position)) {
@@ -204,7 +204,8 @@ public class TopActivity extends Activity {
 
 
                     // Store video watched
-                    
+                    String key = position + "_watched";
+                    StorageUtil.addBoolean(key, true);
 
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
@@ -237,7 +238,8 @@ public class TopActivity extends Activity {
 
 
                                     //Store the sticker position
-
+                                    String key = position + "_sticker";
+                                    StorageUtil.addInt(key, resourceId);
                                 }
                             }
                         }

@@ -61,17 +61,13 @@
 
     <SeekBar
         android:id="@+id/tilt_detection"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="500dp"
+        android:layout_height="50dp"
         android:rotation="90"
-        android:max="90"
         android:visibility="invisible"
-        android:minWidth="100dp"
+
         android:layout_centerInParent="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentRight="true"
-        style="@style/AppTheme" />
+     />
 
 
     <ImageButton

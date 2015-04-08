@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
 
+import uoftprojects.ergo.util.StorageUtil;
+
 
 /**
  * Created by ryanprimeau on 15-03-20.
@@ -83,6 +85,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+
+        boolean videoWatched = StorageUtil.getBoolean(position + "_watched");
+        if(videoWatched){
+            holder.mRewardSticker.setVisibility(View.VISIBLE);
+                int resourceId = StorageUtil.getInt(position + "_sticker");
+            if(resourceId >= 0){
+                holder.mLeftRewardSticker.setImageResource(resourceId);
+                holder.mLeftRewardSticker.setVisibility(View.VISIBLE);
+            }else{
+                holder.mLeftRewardSticker.setVisibility(View.INVISIBLE);
+
+            }
+
+        }else{
+            holder.mRewardSticker.setVisibility(View.INVISIBLE);
+            holder.mLeftRewardSticker.setVisibility(View.INVISIBLE);
+        }
+
+
 
         holder.mTextView.setText(mVideos.get(position).displayName);
 

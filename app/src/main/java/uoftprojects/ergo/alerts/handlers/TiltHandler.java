@@ -1,6 +1,11 @@
 package uoftprojects.ergo.alerts.handlers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.view.View;
@@ -70,6 +75,14 @@ public class TiltHandler implements IHandler {
                             public void onPrepared(MediaPlayer mp) {
                                 seekBar.bringToFront();
                                 seekBar.setVisibility(View.VISIBLE);
+
+                                Matrix mat = new Matrix();
+                                Bitmap bMap = BitmapFactory.decodeResource(ActivityUtil.getMainActivity().getResources(), R.mipmap.ic_launcher);
+                                mat.postRotate(90);
+                                Bitmap bMapRotate = Bitmap.createBitmap(bMap, 0, 0,bMap.getWidth(),bMap.getHeight(), mat, true);
+                                Drawable d = new BitmapDrawable(ActivityUtil.getMainActivity().getResources(), bMapRotate);
+
+                                seekBar.setThumb(d);
                                 seekBar.setProgress((int)tiltAngle);
                             }
                         });

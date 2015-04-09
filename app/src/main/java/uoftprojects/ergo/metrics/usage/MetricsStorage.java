@@ -126,17 +126,14 @@ public final class MetricsStorage {
                 storedMetrics.put("activeMetrics", currentMetrics);
 
                 // Send email
-                //String emailAddress = StorageUtil.getString("emailAddress");
-                //.getInstance().send(emailAddress, activeMetrics);
+                String emailAddress = StorageUtil.getString("emailAddress");
+                if(emailAddress != null && !emailAddress.isEmpty()) {
+                    EmailClient.getInstance().send(emailAddress, activeMetrics);
+                }
             }
             else{
                 JSONObject currentMetrics = getCurrentMetrics();
                 storedMetrics.put("activeMetrics", currentMetrics);
-            }
-
-            String emailAddress = StorageUtil.getString("emailAddress");
-            if(emailAddress != null && !emailAddress.isEmpty()) {
-                EmailClient.getInstance().send(emailAddress, activeMetrics);
             }
 
             return storedMetrics.toString();

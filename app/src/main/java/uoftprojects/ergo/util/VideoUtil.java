@@ -32,7 +32,7 @@ public final class VideoUtil {
             if(StorageUtil.getInt("videoSeekTime") <= 0) {
                 int seek = videoView.getCurrentPosition();
                 StorageUtil.addInt("videoSeekTime", seek);
-                System.out.println("Seek : " + seek);
+                //System.out.println("Seek : " + seek);
             }
 
             videoView.setVisibility(View.INVISIBLE);

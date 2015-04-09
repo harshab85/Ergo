@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -55,27 +56,11 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_main);
 
-        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
-        if(sharedPreferences != null) {
-            boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
-            if (setupCompleted) {
-                openVideoLibrary(findViewById(R.id.button));
-            }
-        }*/
+        ActivityUtil.setMainActivity(this);
 
-      //  ActivityUtil.setMainActivity(this);
-//
-//        if( SetupUtil.isSetupCompeted()){
- //           openVideoLibrary(findViewById(R.id.button));
-//        }
-//
-       // Create the adapter that will return a fragment for each of the three
- //       primary sections of the activity.
-
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -84,30 +69,41 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
     }
 
     public void openVideoLibrary(View view) {
-        //TODO: Add are you sure you want to proceed without an email address?
-
-        /*SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("setupCompleted", true);
-        editor.commit();*/
-
-
         EditText editText = (EditText)findViewById(R.id.editText);
         String emailAddress = editText.getText().toString();
 
         StorageUtil.addString("emailAddress", emailAddress);
         SetupUtil.setupCompleted();
 
+        VideoView videoView = (VideoView) findViewById(R.id.video_playbackMain);
+        videoView.setVisibility(View.VISIBLE);
+        videoView.setEnabled(false);
+        videoView.setClickable(false);
+        videoView.bringToFront();
 
-        setContentView(R.layout.activity_main);
-
-        final VideoView videoView = (VideoView) toggleVideoMode();
         MediaController mediaController = new MediaController(ActivityUtil.getMainActivity());
-
         videoView.setMediaController(mediaController);
 
         String path = "android.resource://" + getPackageName() + "/" + R.raw.ergo_tutorial;
         videoView.setVideoURI(Uri.parse(path));
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if(mViewPager != null) {
+                    mViewPager.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        videoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                System.out.println("Touched");
+                return true;
+            }
+        });
 
 
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -119,16 +115,6 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
         });
 
         videoView.start();
-
-
-//        Intent intent = new Intent(this, TopActivity.class);
-//
-//
-//
-//        startActivity(intent);
-
-
-//        finish();
     }
 
     void LeavePlace(){
@@ -141,8 +127,9 @@ public class MainActivity extends FragmentActivity implements WelcomeFragments.O
     private VideoView toggleVideoMode() {
         VideoView videoView = (VideoView) findViewById(R.id.video_playbackMain);
         videoView.setVisibility(View.VISIBLE);
+        videoView.bringToFront();;
 
-        toggleFullscreen(true);
+        //toggleFullscreen(true);
 
         return videoView;
     }

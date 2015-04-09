@@ -73,13 +73,25 @@ public class TopActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
+
+
+        ActivityUtil.setMainActivity(this);
+
+        if(!SetupUtil.isSetupCompeted()){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Ergo");
         toolbar.setLogo(R.mipmap.ic_launcher);
         setActionBar(toolbar);
-        ActivityUtil.setMainActivity(this);
+
 
         FragmentManager fg = getFragmentManager();
         RewardFragment fragment = (RewardFragment) fg.findFragmentById(R.id.fragmentVideoReward);
@@ -102,16 +114,7 @@ public class TopActivity extends Activity {
 
         videoView.setVisibility(View.INVISIBLE);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ErgoSetup", 0);
 
-        if(!SetupUtil.isSetupCompeted()){//sharedPreferences != null) {
-            //boolean setupCompleted = sharedPreferences.getBoolean("setupCompleted", false);
-            //if (!setupCompleted) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
 
         String storedMetrics = StorageUtil.getString(MetricsStorage.METRICS_STORAGE_KEY);
         if(storedMetrics != null && !storedMetrics.isEmpty()){
